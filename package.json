@@ -7,9 +7,7 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "test": "playwright test",
-    "test:ui": "playwright test --ui",
-    "partykit": "partykit dev"
+    "partykit": "npx partykit dev --port 54300"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",

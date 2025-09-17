@@ -19,6 +19,14 @@ export default function Footer() {
           >
             LinkedIn
           </a>
+          <a
+            href="https://kd.works"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-600 hover:text-gray-800 transition-colors"
+          >
+            kd.works
+          </a>
         </div>
         <p className="text-sm text-gray-500">
           © {new Date().getFullYear()} kd davis
