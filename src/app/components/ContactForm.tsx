@@ -55,7 +55,7 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
       alert("Failed to send note. Please try again.");
     }
 
-    setFormData({ name: "", email: "", message: "" });
+    setFormData({ name: "", email: "", message: "", title: "" });
     setIsSubmitting(false);
     onClose();
   };
