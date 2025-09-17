@@ -28,12 +28,15 @@ export default function EmojiSoundBoard({
         </button>
       </div>
 
-      <div className="grid grid-cols-6 gap-2" role="grid">
+      <div
+        className="flex flex-wrap flex-row w-110 m-auto justify-stretch items-stretch"
+        role="grid"
+      >
         {allEmojis.map((emoji) => (
           <button
             key={emoji}
             onClick={() => onEmojiClick(emoji)}
-            className="text-4xl p-2 bg-gray-100 rounded hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors aspect-square flex items-center justify-center"
+            className="text-4xl p-2 bg-gray-100 rounded hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors flex items-center justify-between text-nowrap w-fit h-16 m-1"
             aria-label={`Play sound for ${emoji}`}
             role="gridcell"
           >
