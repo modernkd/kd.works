@@ -274,6 +274,7 @@ export default function RoomPage() {
   };
 
   const closeModal = () => {
+    closeManageModal();
     setShowModal(false);
     setSelectedEmoji("");
     setSelectedFile(null);
