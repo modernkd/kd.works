@@ -4,7 +4,7 @@ export const soundMap: Record<string, string> = {
   "😢": "sad-trombone.mp3",
   "💥": "10-mario-died.mp3",
   "🔔": "boxing-bell.mp3",
-  "👋": "bye-bye-bye.mp3",
+  "👋👋👋": "bye-bye-bye.mp3",
   "🦗": "cricket.mp3",
   "🙋🏻‍♂️": "hello-there.mp3",
   "😞": "loser.mp3",
