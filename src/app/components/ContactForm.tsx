@@ -49,7 +49,7 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
         },
         publicKey
       );
-      alert("Note sent successfully to submission@kd.works!");
+      alert("Note sent successfully!");
     } catch (error) {
       console.error("Email send error:", error);
       alert("Failed to send note. Please try again.");
