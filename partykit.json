@@ -1,6 +1,6 @@
 {
   "$schema": "https://www.partykit.io/schema.json",
-  "name": "sound-room",
+  "name": "more-cowbell",
   "main": "src/partykit/server.ts",
   "compatibilityDate": "2025-09-12"
 }

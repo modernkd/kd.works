@@ -1,209 +1,91 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import PartySocket from "partysocket";
-import { Howl } from "howler";
-import { soundMap, emojis } from "@/lib/soundMap";
-
-interface User {
-  id: string;
-  name: string;
-}
-
-interface Message {
-  type: string;
-  user?: User;
-  emoji?: string;
-  sound?: string;
-}
+import Head from "next/head";
+import { useState } from "react";
+import FreezerSection from "./components/FreezerSection";
+import FridgeSection from "./components/FridgeSection";
+import FridgeHandles from "./components/FridgeHandles";
+import StickyNote from "./components/StickyNote";
+import ContactForm from "./components/ContactForm";
+import Footer from "./components/Footer";
+import { Locale } from "../../i18n";
 
 export default function Home() {
-  const [nickname, setNickname] = useState("");
-  const [room, setRoom] = useState("");
-  const [isSignedIn, setIsSignedIn] = useState(false);
-  const [isConnected, setIsConnected] = useState(false);
-  const [users, setUsers] = useState<User[]>([]);
-  const [lastMessage, setLastMessage] = useState<string>("");
-  const [customSounds, setCustomSounds] = useState<Record<string, string>>({});
-  const [selectedEmoji, setSelectedEmoji] = useState<string>("");
-  const [showUpload, setShowUpload] = useState<boolean>(false);
-  const socketRef = useRef<PartySocket | null>(null);
+  const [isLeavingNote, setIsLeavingNote] = useState(false);
+  const [locale, setLocale] = useState<Locale>("en");
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
-  useEffect(() => {
-    const savedNickname = localStorage.getItem("nickname");
-    if (savedNickname) {
-      setNickname(savedNickname);
-      setIsSignedIn(true);
-    }
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const roomParam = urlParams.get("room");
-    if (roomParam) {
-      setRoom(roomParam);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (lastMessage) {
-      const timer = setTimeout(() => {
-        setLastMessage("");
-      }, 4000);
-      return () => clearTimeout(timer);
-    }
-  }, [lastMessage]);
-
-  const handleSignIn = () => {
-    if (nickname.trim()) {
-      localStorage.setItem("nickname", nickname);
-      setIsSignedIn(true);
-    }
+  const handleNoteTaking = () => {
+    setIsLeavingNote(!isLeavingNote);
   };
 
-  const handleJoinRoom = () => {
-    if (room.trim()) {
-      connectToRoom(room);
-    }
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
   };
-
-  const connectToRoom = (roomName: string) => {
-    if (socketRef.current) {
-      socketRef.current.close();
-    }
-
-    const socket = new PartySocket({
-      host: "localhost:54300",
-      room: roomName,
-    });
-
-    socket.addEventListener("open", () => {
-      setIsConnected(true);
-      socket.send(JSON.stringify({ type: "join", name: nickname }));
-    });
-
-    socket.addEventListener("message", (event) => {
-      const message: Message = JSON.parse(event.data);
-      handleMessage(message);
-    });
-
-    socket.addEventListener("close", () => {
-      setIsConnected(false);
-    });
-
-    socketRef.current = socket;
-  };
-
-  const handleMessage = (message: Message) => {
-    if (message.type === "userJoined") {
-      setUsers((prev) => [...prev, message.user!]);
-      setLastMessage(`${message.user!.name} joined the room`);
-    } else if (message.type === "userLeft") {
-      setUsers((prev) => prev.filter((u) => u.id !== message.user!.id));
-      setLastMessage(`${message.user!.name} left the room`);
-    } else if (message.type === "soundPlayed") {
-      playSound(message.sound!);
-      setLastMessage(`${message.user!.name} played ${message.emoji}`);
-    }
-  };
-
-  const playSound = (soundFile: string) => {
-    const sound = new Howl({
-      src: [`/sounds/${soundFile}`],
-      volume: 0.5,
-    });
-    sound.play();
-  };
-
-  const handleEmojiClick = (emoji: string) => {
-    const sound = soundMap[emoji];
-    if (socketRef.current && sound) {
-      socketRef.current.send(
-        JSON.stringify({
-          type: "sound",
-          emoji,
-          sound,
-        })
-      );
-    }
-  };
-
-  if (!isSignedIn) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="bg-white p-8 rounded-lg shadow-md">
-          <h1 className="text-2xl font-bold mb-4">Sign In</h1>
-          <input
-            type="text"
-            placeholder="Enter your nickname"
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-            className="w-full p-2 border rounded mb-4"
-          />
-          <button
-            onClick={handleSignIn}
-            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-          >
-            Sign In
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  if (!isConnected) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="bg-white p-8 rounded-lg shadow-md">
-          <h1 className="text-2xl font-bold mb-4">Join Room</h1>
-          <input
-            type="text"
-            placeholder="Enter room name"
-            value={room}
-            onChange={(e) => setRoom(e.target.value)}
-            className="w-full p-2 border rounded mb-4"
-          />
-          <button
-            onClick={handleJoinRoom}
-            className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600"
-          >
-            Join Room
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
-      <div className="max-w-4xl mx-auto">
-        {lastMessage && (
-          <div className="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 mb-4 rounded">
-            {lastMessage}
-          </div>
-        )}
+    <>
+      <Head>
+        <title>kd davis</title>
+        <meta name="description" content="kd works" />
+      </Head>
+      <div
+        className={`fridge-container min-h-screen bg-gradient-radial flex flex-col items-center p-5 font-sans relative transition-all duration-500 ${
+          isDarkMode ? "dark" : ""
+        }`}
+        style={{
+          background: isDarkMode
+            ? "radial-gradient(circle at center, #1a1a1a 0%, #2a2a2a 200px, #1a1a1a 200px, #1a1a1a 80%, #0a0a0a 100%)"
+            : "radial-gradient(circle at center, #F0F2F4 0%, #F8AFAE 200px, #F0F2F4 200px, #F0F2F4 80%, #dcddde 100%)",
+          backgroundSize: "100%",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        {" "}
+        <div
+          className={`fridge-body ${
+            isLeavingNote ? "open" : ""
+          } w-[800px] h-[1200px] bg-[#def0f4] rounded-[40px] relative shadow-[0_15px_30px_rgba(0,0,0,0.3)] mb-5 border-[6px] border-[#afe0e9] transition-all duration-500`}
+          style={
+            isDarkMode
+              ? {
+                  boxShadow: `
+              0 15px 30px rgba(0,0,0,0.8),
+              inset -20px 0 40px rgba(255, 255, 0, 0.1),
+              inset -10px 0 20px rgba(255, 255, 0, 0.2),
+              inset -5px 0 10px rgba(255, 255, 0, 0.3)
+            `,
+                }
+              : undefined
+          }
+        >
+          {/* Shadow Left */}
+          <div className="absolute h-[96%] w-[20px] bg-[#afe0e9] rounded-[40px] left-[10px] top-[20px] z-[1]" />
 
-        <div className="bg-white rounded-lg shadow-md p-6 mb-4">
-          <h1 className="text-2xl font-bold mb-2">Sound Room: {room}</h1>
-          <p className="text-gray-600">Welcome, {nickname}!</p>
-          <p className="text-sm text-gray-500">
-            Users: {users.map((u) => u.name).join(", ")}
-          </p>
-        </div>
+          {/* Highlight Right */}
+          <div className="absolute h-[96%] w-[16px] bg-[#F0F2F4] rounded-[40px] right-[16px] top-[20px] z-[1]" />
+          <div className="absolute w-full h-[8px] bg-[#999] top-[35%] z-[1]" />
+          <FridgeHandles />
+          <StickyNote onClick={handleNoteTaking} />
 
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-bold mb-4">Emoji Sounds</h2>
-          <div className="grid grid-cols-5 gap-2">
-            {emojis.map((emoji) => (
-              <button
-                key={emoji}
-                onClick={() => handleEmojiClick(emoji)}
-                className="text-4xl p-2 bg-gray-100 rounded hover:bg-gray-200 transition-colors"
-              >
-                {emoji}
-              </button>
-            ))}
+          {/* Fridge Door Content */}
+          <div className="p-5 h-full flex flex-col">
+            <FreezerSection
+              setLocale={setLocale}
+              onDarkModeToggle={toggleDarkMode}
+              isDarkMode={isDarkMode}
+              locale={locale}
+            />
+            <FridgeSection locale={locale} isDarkMode={isDarkMode} />
           </div>
+
+          {/* Contact Form */}
+          <ContactForm
+            isVisible={isLeavingNote}
+            onClose={() => setIsLeavingNote(false)}
+          />
         </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 }
