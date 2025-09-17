@@ -2,12 +2,16 @@
 
 import { useRef, useEffect } from "react";
 
+import { Locale, messages } from "../../../i18n";
+
 interface FamilyWhiteboardProps {
   isDarkMode?: boolean;
+  locale: Locale;
 }
 
 export default function FamilyWhiteboard({
   isDarkMode = false,
+  locale,
 }: FamilyWhiteboardProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -174,7 +178,7 @@ export default function FamilyWhiteboard({
           isDarkMode ? "text-[#ccc]" : "text-[#666]"
         }`}
       >
-        Grocery List
+        {messages[locale].familyTitle}
       </h4>
       <canvas
         ref={canvasRef}

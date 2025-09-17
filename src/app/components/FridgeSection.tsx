@@ -7,7 +7,10 @@ interface FridgeSectionProps {
   isDarkMode: boolean;
 }
 
-export default function FridgeSection({ locale, isDarkMode }: FridgeSectionProps) {
+export default function FridgeSection({
+  locale,
+  isDarkMode,
+}: FridgeSectionProps) {
   const mainText = messages[locale].mainText;
 
   return (
@@ -19,7 +22,7 @@ export default function FridgeSection({ locale, isDarkMode }: FridgeSectionProps
 
         {/* Family Whiteboard */}
         <div className="mt-3">
-          <FamilyWhiteboard isDarkMode={isDarkMode} />
+          <FamilyWhiteboard isDarkMode={isDarkMode} locale={locale} />
         </div>
       </div>
     </div>

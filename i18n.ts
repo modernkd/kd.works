@@ -3,11 +3,13 @@ export type Locale = (typeof locales)[number];
 
 export const messages = {
   en: {
+    hiText: "HI I AM KD",
     mainText: "LIFE IS TOO SHORT TO BE SERIOUS",
-    hiText: "HI I AM KD"
+    familyTitle: "The Davis Family",
   },
   sv: {
+    hiText: "HEJ JAG ÄR KD",
     mainText: "LIVET ÄR FÖR KORT FÖR ATT VARA ALLVARLIG",
-    hiText: "HEJ JAG ÄR KD"
+    familyTitle: "Familjen Davis",
   },
 } as const;
