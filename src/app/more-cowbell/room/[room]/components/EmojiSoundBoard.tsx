@@ -29,7 +29,7 @@ export default function EmojiSoundBoard({
       </div>
 
       <div
-        className="flex flex-wrap flex-row w-110 m-auto justify-stretch items-stretch"
+        className="flex flex-wrap flex-row w-110 m-auto justify-stretch items-stretch max-w-full"
         role="grid"
       >
         {allEmojis.map((emoji) => (
