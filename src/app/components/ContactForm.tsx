@@ -11,6 +11,7 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
     name: "",
     email: "",
     message: "",
+    title: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -41,10 +42,10 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
         serviceId,
         templateId,
         {
-          from_name: formData.name,
-          from_email: formData.email,
+          name: formData.name,
+          email: formData.email,
           message: formData.message,
-          to_email: "submission@kd.works",
+          title: formData.title || "No Title",
         },
         publicKey
       );
@@ -70,6 +71,14 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
           name="name"
           placeholder="Your Name"
           value={formData.name}
+          onChange={handleInputChange}
+          required
+          className="p-[10px] border border-[#ccc] rounded-[5px]"
+        />
+        <input
+          name="title"
+          placeholder="Title"
+          value={formData.title}
           onChange={handleInputChange}
           required
           className="p-[10px] border border-[#ccc] rounded-[5px]"
