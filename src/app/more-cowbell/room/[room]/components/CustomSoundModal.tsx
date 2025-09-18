@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import Picker from "emoji-picker-react";
+import styles from "./CustomSoundModal.module.css";
 
 interface CustomSoundModalProps {
   isOpen: boolean;
@@ -33,77 +34,68 @@ export default function CustomSoundModal({
   };
 
   return (
-    <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
-      onClick={onClose}
-    >
+    <div className={styles.overlay} onClick={onClose}>
       <dialog
         open={isOpen}
-        className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[80vh] overflow-y-auto relative"
+        className={styles.modal}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="p-6">
-          <header className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-lg">
+        <div className={styles.modalContent}>
+          <header className={styles.modalHeader}>
+            <h3 className={styles.modalTitle}>
               {isEditing ? "Edit Custom Sound" : "Add Custom Sound"}
             </h3>
             <button
               onClick={onClose}
-              className="text-gray-500 hover:text-gray-700 text-2xl"
+              className={styles.closeButton}
               aria-label="Close modal"
             >
               ×
             </button>
           </header>
 
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Select Emoji
-            </label>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Select Emoji</label>
             <Picker onEmojiClick={onEmojiSelect} width="100%" height={350} />
             {selectedEmoji && (
-              <p className="text-center mt-2 text-lg">{selectedEmoji}</p>
+              <p className={styles.emojiDisplay}>{selectedEmoji}</p>
             )}
           </div>
 
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Choose Audio File
-            </label>
-            <div className="relative">
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Choose Audio File</label>
+            <div className={styles.fileInput}>
               <input
                 type="file"
                 ref={fileInputRef}
                 accept="audio/*"
                 onChange={(e) => onFileChange(e.target.files?.[0] || null)}
-                className="hidden"
+                className={styles.hiddenInput}
               />
               <button
                 type="button"
                 onClick={handleFileInputClick}
-                className="w-full bg-blue-500 text-white p-3 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors flex items-center justify-center"
+                className={styles.fileButton}
                 aria-label="Choose audio file"
               >
                 {selectedFile ? selectedFile.name : "Choose file..."}
               </button>
             </div>
-            {!selectedFile && (
-              <p className="text-xs text-gray-500 mt-1">No file chosen</p>
-            )}
+            {!selectedFile && <p className={styles.fileHint}>No file chosen</p>}
           </div>
 
-          <footer className="flex gap-2 pt-4">
+          <footer className={styles.modalFooter}>
             <button
               onClick={onSubmit}
               disabled={!selectedEmoji || !selectedFile}
-              className="flex-1 bg-green-500 text-white p-2 rounded hover:bg-green-600 disabled:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors"
+              className={styles.submitButton}
               aria-label="Upload sound"
             >
               Upload
             </button>
             <button
               onClick={onClose}
-              className="flex-1 bg-gray-300 text-gray-700 p-2 rounded hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors"
+              className={styles.cancelButton}
               aria-label="Cancel"
             >
               Cancel

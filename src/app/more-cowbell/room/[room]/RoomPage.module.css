@@ -1,0 +1,14 @@
+.main {
+  min-height: 100vh;
+  background-color: var(--surface);
+  padding: 1rem;
+}
+
+.container {
+  max-width: 56rem;
+  margin: 0 auto;
+}
+
+.messages {
+  margin-bottom: 1rem;
+}

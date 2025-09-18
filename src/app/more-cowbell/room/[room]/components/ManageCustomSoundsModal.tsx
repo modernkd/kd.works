@@ -1,5 +1,7 @@
 "use client";
 
+import styles from "./ManageCustomSoundsModal.module.css";
+
 interface CustomSound {
   emoji: string;
   sound: string;
@@ -32,21 +34,18 @@ export default function ManageCustomSoundsModal({
   );
 
   return (
-    <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
-      onClick={onClose}
-    >
+    <div className={styles.overlay} onClick={onClose}>
       <dialog
         open={isOpen}
-        className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[80vh] overflow-y-auto relative"
+        className={styles.modal}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="p-6">
-          <header className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-lg">Manage Custom Sounds</h3>
+        <div className={styles.modalContent}>
+          <header className={styles.modalHeader}>
+            <h3 className={styles.modalTitle}>Manage Custom Sounds</h3>
             <button
               onClick={onClose}
-              className="text-gray-500 hover:text-gray-700 text-2xl"
+              className={styles.closeButton}
               aria-label="Close modal"
             >
               ×
@@ -54,34 +53,25 @@ export default function ManageCustomSoundsModal({
           </header>
 
           {soundEntries.length === 0 ? (
-            <p className="text-gray-500 text-center py-8">
-              No custom sounds yet.
-            </p>
+            <p className={styles.emptyState}>No custom sounds yet.</p>
           ) : (
-            <ul className="space-y-3 mb-4" role="list">
+            <ul className={styles.soundList} role="list">
               {soundEntries.map(({ emoji, sound }) => (
-                <li
-                  key={emoji}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded"
-                  role="listitem"
-                >
-                  <span
-                    className="text-2xl mr-2"
-                    aria-label={`Emoji: ${emoji}`}
-                  >
+                <li key={emoji} className={styles.soundItem} role="listitem">
+                  <span className={styles.emoji} aria-label={`Emoji: ${emoji}`}>
                     {emoji}
                   </span>
-                  <div className="flex gap-2">
+                  <div className={styles.buttonGroup}>
                     <button
                       onClick={() => onEdit(emoji, sound)}
-                      className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-colors text-sm"
+                      className={styles.editButton}
                       aria-label={`Edit sound for ${emoji}`}
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => onDelete(emoji)}
-                      className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors text-sm"
+                      className={styles.deleteButton}
                       aria-label={`Delete sound for ${emoji}`}
                     >
                       Delete
@@ -92,10 +82,10 @@ export default function ManageCustomSoundsModal({
             </ul>
           )}
 
-          <footer className="pt-4">
+          <footer className={styles.modalFooter}>
             <button
               onClick={onAddClick}
-              className="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors"
+              className={styles.addButton}
               aria-label="Add new custom sound"
             >
               Add Custom Sound

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useEffect } from "react";
+import styles from "./FamilyWhiteboard.module.css";
 
 import { Locale, messages } from "../../../i18n";
 
@@ -166,17 +167,9 @@ export default function FamilyWhiteboard({
   };
 
   return (
-    <div
-      className={`whiteboard w-[500px] h-[350px] border-[3px] rounded-[12px] p-[15px] mx-auto my-5 relative transition-all duration-500 ${
-        isDarkMode
-          ? "bg-[#2a2a2a] border-[#4a4a4a]"
-          : "bg-[#f5f5f5] border-[#ddd]"
-      }`}
-    >
+    <div className={`${styles.whiteboard} ${isDarkMode ? styles.dark : ""}`}>
       <h4
-        className={`text-center mb-[15px] text-[18px] ${
-          isDarkMode ? "text-[#ccc]" : "text-[#666]"
-        }`}
+        className={`${styles.whiteboardTitle} ${isDarkMode ? styles.dark : ""}`}
       >
         {messages[locale].familyTitle}
       </h4>
@@ -184,8 +177,8 @@ export default function FamilyWhiteboard({
         ref={canvasRef}
         width={450}
         height={250}
-        className={`block mx-auto border-[2px] ${
-          isDarkMode ? "border-[#555]" : "border-[#ccc]"
+        className={`${styles.whiteboardCanvas} ${
+          isDarkMode ? styles.dark : ""
         }`}
       />
     </div>

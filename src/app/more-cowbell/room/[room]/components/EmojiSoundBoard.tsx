@@ -1,5 +1,7 @@
 "use client";
 
+import styles from "./EmojiSoundBoard.module.css";
+
 interface EmojiSoundBoardProps {
   emojis: string[];
   customSounds: Record<string, string>;
@@ -16,27 +18,24 @@ export default function EmojiSoundBoard({
   const allEmojis = [...emojis, ...Object.keys(customSounds)];
 
   return (
-    <section className="bg-white rounded-lg shadow-md p-6">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold">Emoji Sounds</h2>
+    <section className={styles.soundBoard}>
+      <div className={styles.header}>
+        <h2 className={styles.title}>Emoji Sounds</h2>
         <button
           onClick={onManageClick}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+          className={styles.manageButton}
           aria-label="Manage custom sounds"
         >
           Manage Custom Sounds
         </button>
       </div>
 
-      <div
-        className="flex flex-wrap flex-row w-110 m-auto justify-stretch items-stretch max-w-full"
-        role="grid"
-      >
+      <div className={styles.emojiGrid} role="grid">
         {allEmojis.map((emoji) => (
           <button
             key={emoji}
             onClick={() => onEmojiClick(emoji)}
-            className="text-4xl p-2 bg-gray-100 rounded hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors flex items-center justify-between text-nowrap w-fit h-16 m-1"
+            className={styles.emojiButton}
             aria-label={`Play sound for ${emoji}`}
             role="gridcell"
           >

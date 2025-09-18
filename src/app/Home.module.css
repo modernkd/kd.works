@@ -1,0 +1,73 @@
+.fridgeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.25rem;
+  font-family: Arial, Helvetica, sans-serif;
+  position: relative;
+  transition: all 0.5s ease-in-out;
+  background: radial-gradient(
+    circle at center,
+    var(--fridge-bg-primary) 0%,
+    var(--fridge-bg-primary) 200px,
+    var(--fridge-bg-primary) 80%,
+    var(--fridge-bg-tertiary) 100%
+  );
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+
+.fridgeBody {
+  min-width: 50dvw;
+  border-radius: 40px;
+  position: relative;
+  box-shadow: var(--fridge-shadow);
+  margin-bottom: 1.25rem;
+  transition: all 0.5s ease-in-out;
+  @media screen and (max-width: 768px) {
+    width: 90dvw;
+  }
+}
+
+.fridgeShadowLeft {
+  position: absolute;
+  height: 97.5%;
+  top: 1.5%;
+  left: 40px;
+  width: 15px;
+  background-color: var(--fridge-shadow);
+  border-radius: 40px;
+  z-index: 1;
+}
+
+.fridgeDoorContent {
+  padding-left: 1rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.fridgeGlow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 40px;
+  box-shadow: 0 0 20px 5px var(--fridge-shadow);
+  opacity: 0.6;
+  pointer-events: none;
+  animation: glowPulse 3s infinite;
+
+  @keyframes glowPulse {
+    0%,
+    100% {
+      box-shadow: 0 0 20px 5px var(--fridge-shadow);
+      opacity: 0.6;
+    }
+    50% {
+      box-shadow: 0 0 30px 10px var(--fridge-shadow);
+      opacity: 1;
+    }
+  }
+}
