@@ -1,15 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import styles from "./RoomNavigation.module.css";
 
 export default function RoomNavigation() {
   return (
-    <header className="bg-white border-b border-gray-200 px-4 py-3 mb-4">
-      <div className="max-w-4xl mx-auto flex items-center justify-start">
-        <Link
-          href="/"
-          className="text-blue-600 hover:text-blue-800 font-medium flex items-center gap-2"
-        >
+    <header className={styles.navigation}>
+      <div className={styles.navigationContainer}>
+        <Link href="/" className={styles.backLink}>
           ← Back to the fridge
         </Link>
       </div>

@@ -2,6 +2,8 @@ import MagnetText from "./MagnetText";
 import MooseMagnet from "./MooseMagnet";
 import EagleMagnet from "./EagleMagnet";
 import DarkModeMagnet from "./DarkModeMagnet";
+import FridgeHandle from "./FridgeHandle";
+import styles from "./FreezerSection.module.css";
 
 import { Locale, messages } from "../../../i18n";
 
@@ -19,34 +21,32 @@ export default function FreezerSection({
   locale,
 }: FreezerSectionProps) {
   return (
-    <div className="freezer-section h-[35%] pb-4 mb-4 relative">
-      {/* Cowbell Magnet Link */}
-      <a
-        href="/more-cowbell"
-        className="cowbell-magnet block bg-[#48A860] text-[#333] p-[10px_15px] rounded-[5px] text-[18px] font-bold text-center shadow-[2px_2px_5px_rgba(0,0,0,0.3)] no-underline border-[3px] border-[#ff8c00] w-max absolute top-[30%] left-[10%] transform rotate-12"
-      >
+    <div className={styles.freezerSection}>
+      <a href="/more-cowbell" className={styles.cowbellMagnet}>
         🐮🛎️
       </a>
 
-      {/* First MagnetText */}
-      <div className="absolute top-[5%] left-1/2 transform -translate-x-1/2 m-0 w-120">
+      <div className={styles.magnetTextContainer}>
         <MagnetText text={messages[locale].hiText} size="large" />
       </div>
 
       {/* Moose Magnet - Switches to Swedish */}
-      <div className="absolute top-[40%] left-[50%] transform -rotate-6">
+      <div className={styles.mooseMagnetContainer}>
         <MooseMagnet onClick={() => setLocale("sv")} />
       </div>
 
-      {/* Moose Magnet - Switches to English */}
-      <div className="absolute top-[40%] left-[70%] transform -rotate-6">
+      {/* Eagle Magnet - Switches to English */}
+      <div className={styles.eagleMagnetContainer}>
         <EagleMagnet onClick={() => setLocale("en")} />
       </div>
 
-      {/* Dark Mode Toggle Magnet */}
-      <div className="absolute top-[60%] left-[10%] transform rotate-12">
+      <div className={styles.darkModeMagnetContainer}>
         <DarkModeMagnet isDarkMode={isDarkMode} onClick={onDarkModeToggle} />
       </div>
+      <div className={styles.fridgeHandleContainer}>
+        <FridgeHandle />
+      </div>
+      <div className={styles.freezerHighlightRight} />
     </div>
   );
 }

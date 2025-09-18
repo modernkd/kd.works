@@ -1,4 +1,5 @@
 import MagnetLetter from "./MagnetLetter";
+import styles from "./MagnetText.module.css";
 
 interface MagnetHeadingProps {
   text: string;
@@ -25,15 +26,9 @@ export default function MagnetText({
   ];
 
   return (
-    <div
-      className="magnet-heading font-black tracking-[0.04em] leading-[1.4] uppercase text-center my-5 flex flex-wrap justify-center"
-      style={{
-        fontSize,
-        wordSpacing: "1rem",
-      }}
-    >
+    <div className={`${styles.magnetHeading} ${styles[size]}`}>
       {text.split(" ").map((word, wordIndex) => (
-        <span key={wordIndex} className="flex flex-row">
+        <span key={wordIndex} className={styles.word}>
           {word.split("").map((letter, index) => (
             <MagnetLetter
               key={index}

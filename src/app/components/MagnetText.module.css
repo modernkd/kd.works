@@ -1,0 +1,26 @@
+.magnetHeading {
+  font-weight: 900;
+  max-width: 90%;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 1.25rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  word-spacing: 1rem;
+}
+
+.magnetHeading.large {
+  font-size: 3rem;
+}
+
+.magnetHeading.medium {
+  font-size: 2rem;
+}
+
+.word {
+  display: flex;
+  flex-direction: row;
+}

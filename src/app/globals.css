@@ -1,26 +1,220 @@
-@import "tailwindcss";
-
+/* CSS Variables for Theme System */
 :root {
+  /* Light theme colors */
   --background: #ffffff;
   --foreground: #171717;
+  --surface: #f8f9fa;
+  --surface-hover: #e9ecef;
+  --border: #dee2e6;
+  --border-hover: #adb5bd;
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --text-muted: #868e96;
+  --accent: #007bff;
+  --accent-hover: #0056b3;
+  --success: #28a745;
+  --success-hover: #1e7e34;
+  --warning: #ffc107;
+  --warning-hover: #e0a800;
+  --error: #dc3545;
+  --error-hover: #c82333;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --shadow-hover: rgba(0, 0, 0, 0.15);
+
+  /* Component specific variables */
+  --magnet-bg-light: #ffd700;
+  --magnet-bg-dark: #4a4a4a;
+  --fridge-highlight: #f0f2f4;
+  --fridge-shadow: #afe0e9;
+  --fridge-body-bg: #def0f4;
+  --fridge-border: #afe0e9;
+  --fridge-bg-primary: #f0f2f4;
+  --fridge-bg-secondary: #f8afae;
+  --fridge-bg-tertiary: #dcddde;
+  --sticky-note: #ffeb3b;
+  --sticky-note-border: #f57c00;
+  --success-light: #d4edda;
+  --success-dark: #155724;
+  --accent-light: #cce5ff;
+  --accent-dark: #004085;
+
+  --fridge-outer-border-radius: 2rem;
+  --fridge-inner-border-radius: 1rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Dark theme */
+[data-theme="dark"] {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --surface: #1a1a1a;
+  --surface-hover: #2a2a2a;
+  --border: #404040;
+  --border-hover: #606060;
+  --text-primary: #ffffff;
+  --text-secondary: #cccccc;
+  --text-muted: #999999;
+  --accent: #4dabf7;
+  --accent-hover: #339af0;
+  --success: #51cf66;
+  --success-hover: #40c057;
+  --warning: #ffd43b;
+  --warning-hover: #fab005;
+  --error: #ff6b6b;
+  --error-hover: #fa5252;
+  --shadow: rgba(0, 0, 0, 0.3);
+  --shadow-hover: rgba(0, 0, 0, 0.4);
+
+  /* Component specific variables for dark mode */
+  --magnet-bg-light: #ffd700;
+  --magnet-bg-dark: #666666;
+  --fridge-highlight: #555555;
+  --fridge-shadow: #67c1d1;
+  --fridge-body-bg: #90d4e3;
+  --fridge-border: #67c1d1;
+  --fridge-bg-primary: #1a1a1a;
+  --fridge-bg-secondary: #2a2a2a;
+  --fridge-bg-tertiary: #0a0a0a;
+  --sticky-note: #ffeb3b;
+  --sticky-note-border: #f57c00;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Base styles */
+* {
+  box-sizing: border-box;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+}
+
+/* Utility classes */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.gap-6 {
+  gap: 1.5rem;
+}
+
+.p-4 {
+  padding: 1rem;
+}
+
+.p-6 {
+  padding: 1.5rem;
+}
+
+.m-0 {
+  margin: 0;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+}
+
+.rounded {
+  border-radius: 0.25rem;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.shadow {
+  box-shadow: 0 1px 3px var(--shadow);
+}
+
+.shadow-md {
+  box-shadow: 0 4px 6px var(--shadow);
+}
+
+.shadow-xl {
+  box-shadow: 0 10px 15px var(--shadow);
+}
+
+.transition {
+  transition: all 0.2s ease-in-out;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.border {
+  border: 1px solid var(--border);
+}
+
+.bg-white {
+  background-color: #ffffff;
+}
+
+.bg-gray-100 {
+  background-color: var(--surface);
+}
+
+.text-gray-600 {
+  color: var(--text-secondary);
+}
+
+.text-gray-700 {
+  color: var(--text-primary);
+}
+
+.text-gray-800 {
+  color: var(--text-primary);
 }

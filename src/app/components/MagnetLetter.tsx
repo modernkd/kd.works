@@ -1,14 +1,24 @@
+import { Bungee } from "next/font/google";
+import styles from "./MagnetLetter.module.css";
+
 interface MagnetLetterProps {
   letter: string;
   color: string;
   onClick?: () => void;
 }
 
+const alfaSlabOne = Bungee({
+  variable: "--font-alfa-slab-one",
+  subsets: ["latin"],
+  weight: "400",
+});
+
 export default function MagnetLetter({ letter, color }: MagnetLetterProps) {
   if (letter === " ") {
-    return <span className="inline-block w-[0.5em]">&nbsp;</span>;
+    return <span className={styles.space}>&nbsp;</span>;
   }
-  const baseShadow = `1px 1px`;
+
+  // Calculate shadow colors based on the letter color
   const shadowColor = color
     .replace("#", "")
     .replace(/^(.{2})(.{2})(.{2})$/, (match, r, g, b) => {
@@ -29,42 +39,38 @@ export default function MagnetLetter({ letter, color }: MagnetLetterProps) {
       return `#${lighten(r)}${lighten(g)}${lighten(b)}`;
     });
 
+  const evenDarker = color
+    .replace("#", "")
+    .replace(/^(.{2})(.{2})(.{2})$/, (match, r, g, b) => {
+      const darken = (hex: string) =>
+        Math.max(0, parseInt(hex, 16) - 16)
+          .toString(16)
+          .padStart(2, "0");
+      return `#${darken(r)}${darken(g)}${darken(b)}`;
+    });
+
+  const darkest = color
+    .replace("#", "")
+    .replace(/^(.{2})(.{2})(.{2})$/, (match, r, g, b) => {
+      const darken = (hex: string) =>
+        Math.max(0, parseInt(hex, 16) - 64)
+          .toString(16)
+          .padStart(2, "0");
+      return `#${darken(r)}${darken(g)}${darken(b)}`;
+    });
+
   return (
     <span
-      className="inline-block"
-      style={{
-        color,
-        textShadow: `
-          ${baseShadow} ${shadowColor},
-          -1px -1px ${lighterShadow},
-          -2px -2px 6px ${color
-            .replace("#", "")
-            .replace(/^(.{2})(.{2})(.{2})$/, (match, r, g, b) => {
-              const evenDarker = (hex: string) =>
-                Math.max(0, parseInt(hex, 16) - 16)
-                  .toString(16)
-                  .padStart(2, "0");
-              return `#${evenDarker(r)}${evenDarker(g)}${evenDarker(b)}`;
-            })},
-          -2px -2px ${lighterShadow},
-          -1px -2px ${lighterShadow},
-          -1px -3px ${lighterShadow},
-          -2px -4px ${lighterShadow},
-          -2px -5px ${lighterShadow},
-          -3px -6px ${lighterShadow},
-          -4px -7px ${color
-            .replace("#", "")
-            .replace(/^(.{2})(.{2})(.{2})$/, (match, r, g, b) => {
-              const darkest = (hex: string) =>
-                Math.max(0, parseInt(hex, 16) - 64)
-                  .toString(16)
-                  .padStart(2, "0");
-              return `#${darkest(r)}${darkest(g)}${darkest(b)}`;
-            })},
-          3px 4px 5px rgba(0,0,5,.4),
-          -3px -4px 5px rgba(0,0,5,.2)
-        `,
-      }}
+      className={`${styles.magnetLetter} ${alfaSlabOne.variable}`}
+      style={
+        {
+          "--magnet-letter-color": color,
+          "--shadow-dark": shadowColor,
+          "--shadow-light": lighterShadow,
+          "--shadow-darker": evenDarker,
+          "--shadow-darkest": darkest,
+        } as React.CSSProperties
+      }
     >
       {letter}
     </span>

@@ -1,0 +1,15 @@
+.fridgeHandle {
+  width: 4rem;
+  height: 1rem;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 5px;
+  clip-path: polygon(0 25%, 100% 10%, 100% 90%, 0 75%);
+  background: linear-gradient(
+    to right,
+    var(--fridge-highlight),
+    var(--fridge-highlight) 80%,
+    var(--fridge-bg-tertiary) 80%
+  );
+  box-shadow: inset -1px 0px 4px 0px #777777;
+}

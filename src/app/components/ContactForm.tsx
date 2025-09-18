@@ -1,5 +1,6 @@
 import { useState } from "react";
 import emailjs from "@emailjs/browser";
+import styles from "./ContactForm.module.css";
 
 interface ContactFormProps {
   isVisible: boolean;
@@ -63,9 +64,9 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
   if (!isVisible) return null;
 
   return (
-    <div className="contact-form absolute top-0 left-0 w-full h-full bg-[rgba(255,255,255,0.95)] p-5 z-[5] rounded-[5px]">
-      <h3 className="text-center text-[#333]">Leave a Note</h3>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-[10px]">
+    <div className={styles.contactForm}>
+      <h3 className={styles.contactTitle}>Leave a Note</h3>
+      <form onSubmit={handleSubmit} className={styles.contactFormElement}>
         <input
           type="text"
           name="name"
@@ -73,7 +74,7 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
           value={formData.name}
           onChange={handleInputChange}
           required
-          className="p-[10px] border border-[#ccc] rounded-[5px]"
+          className={styles.formInput}
         />
         <input
           name="title"
@@ -81,7 +82,7 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
           value={formData.title}
           onChange={handleInputChange}
           required
-          className="p-[10px] border border-[#ccc] rounded-[5px]"
+          className={styles.formInput}
         />
         <input
           type="email"
@@ -90,7 +91,7 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
           value={formData.email}
           onChange={handleInputChange}
           required
-          className="p-[10px] border border-[#ccc] rounded-[5px]"
+          className={styles.formInput}
         />
         <textarea
           name="message"
@@ -99,12 +100,12 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
           onChange={handleInputChange}
           required
           rows={4}
-          className="p-[10px] border border-[#ccc] rounded-[5px]"
+          className={styles.formTextarea}
         />
         <button
           type="submit"
           disabled={isSubmitting}
-          className="p-[10px] bg-[#4caf50] text-white border-none rounded-[5px] cursor-pointer"
+          className={styles.submitButton}
         >
           {isSubmitting ? "Sending..." : "Send Note"}
         </button>

@@ -15,6 +15,7 @@ import CustomSoundModal from "./components/CustomSoundModal";
 import ManageCustomSoundsModal from "./components/ManageCustomSoundsModal";
 import RoomNavigation from "./components/RoomNavigation";
 import Footer from "@/app/components/Footer";
+import styles from "./RoomPage.module.css";
 
 interface User {
   id: string;
@@ -331,14 +332,16 @@ export default function RoomPage() {
   return (
     <>
       <RoomNavigation />
-      <main className="min-h-screen bg-gray-100 p-4">
-        <div className="max-w-4xl mx-auto">
-          {messages
-            .slice(-5)
-            .reverse()
-            .map((msg) => (
-              <Message key={msg.id} text={msg.text} type={msg.type} />
-            ))}
+      <main className={styles.main}>
+        <div className={styles.container}>
+          <div className={styles.messages}>
+            {messages
+              .slice(-5)
+              .reverse()
+              .map((msg) => (
+                <Message key={msg.id} text={msg.text} type={msg.type} />
+              ))}
+          </div>
 
           <RoomHeader room={room} nickname={nickname} users={users} />
 

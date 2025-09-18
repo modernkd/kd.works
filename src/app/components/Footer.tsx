@@ -1,13 +1,15 @@
+import styles from "./Footer.module.css";
+
 export default function Footer() {
   return (
-    <footer className="bg-gray-100 border-t border-gray-200 mt-8 py-6">
-      <div className="max-w-4xl mx-auto px-4 text-center">
-        <div className="flex justify-center gap-6 mb-4">
+    <footer className={styles.footer}>
+      <div className={styles.footerContainer}>
+        <div className={styles.footerLinks}>
           <a
             href="https://github.com/modernkd"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gray-600 hover:text-gray-800 transition-colors"
+            className={styles.footerLink}
           >
             GitHub
           </a>
@@ -15,7 +17,7 @@ export default function Footer() {
             href="https://linkedin.com/in/kd-davis"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gray-600 hover:text-gray-800 transition-colors"
+            className={styles.footerLink}
           >
             LinkedIn
           </a>
@@ -23,12 +25,12 @@ export default function Footer() {
             href="https://kd.works"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gray-600 hover:text-gray-800 transition-colors"
+            className={styles.footerLink}
           >
             kd.works
           </a>
         </div>
-        <p className="text-sm text-gray-500">
+        <p className={styles.footerCopyright}>
           © {new Date().getFullYear()} kd davis
         </p>
       </div>
