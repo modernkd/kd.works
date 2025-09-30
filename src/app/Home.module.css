@@ -31,13 +31,13 @@
 
 .fridgeShadowLeft {
   position: absolute;
-  height: 97.5%;
-  top: 1.5%;
-  left: 40px;
+  height: 96%;
+  top: 2%;
+  left: 25px;
   width: 15px;
   background-color: var(--fridge-shadow);
-  border-radius: 40px;
-  z-index: 1;
+  border-radius: 2rem;
+  z-index: 0;
 }
 
 .fridgeDoorContent {

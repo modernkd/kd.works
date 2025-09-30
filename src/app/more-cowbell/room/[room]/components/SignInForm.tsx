@@ -1,10 +1,13 @@
 "use client";
 
+import { Locale, messages } from "../../../../../../i18n";
+
 interface SignInFormProps {
   room: string;
   nickname: string;
   setNickname: (name: string) => void;
   onSignIn: () => void;
+  locale: Locale;
 }
 
 export default function SignInForm({
@@ -12,39 +15,54 @@ export default function SignInForm({
   nickname,
   setNickname,
   onSignIn,
+  locale,
 }: SignInFormProps) {
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gray-100">
+    <section style={{ backgroundColor: "var(--surface)" }}>
       <form
-        className="bg-white p-8 rounded-lg shadow-md"
+        style={{
+          backgroundColor: "var(--background)",
+          border: "1px solid var(--border)",
+          color: "var(--text-primary)",
+        }}
         onSubmit={(e) => {
           e.preventDefault();
           onSignIn();
         }}
       >
-        <h1 className="text-2xl font-bold mb-4">Join Room: {room}</h1>
+        <h1 style={{ color: "var(--text-primary)" }}>
+          {messages[locale].roomJoinTitle.replace("{room}", room)}
+        </h1>
         <div className="mb-4">
-          <label
-            htmlFor="nickname"
-            className="block text-sm font-medium text-gray-700 mb-2"
-          >
-            Enter your nickname
+          <label htmlFor="nickname" style={{ color: "var(--text-primary)" }}>
+            {messages[locale].roomNicknameLabel}
           </label>
           <input
             id="nickname"
             type="text"
-            placeholder="Enter your nickname"
+            placeholder={messages[locale].roomNicknamePlaceholder}
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
-            className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 border rounded focus:outline-none focus:ring-2"
+            style={{
+              backgroundColor: "var(--background)",
+              borderColor: "var(--border)",
+              color: "var(--text-primary)",
+            }}
             required
           />
         </div>
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+          style={{ backgroundColor: "var(--accent)" }}
+          onMouseOver={(e) =>
+            (e.currentTarget.style.backgroundColor = "var(--accent-hover)")
+          }
+          onMouseOut={(e) =>
+            (e.currentTarget.style.backgroundColor = "var(--accent)")
+          }
         >
-          Join
+          {messages[locale].roomJoinButton}
         </button>
       </form>
     </section>

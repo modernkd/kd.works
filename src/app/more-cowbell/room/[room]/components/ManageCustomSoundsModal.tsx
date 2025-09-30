@@ -1,5 +1,7 @@
 "use client";
 
+import { useLocale } from "../../../LocaleProvider";
+import { messages } from "../../../../../../i18n";
 import styles from "./ManageCustomSoundsModal.module.css";
 
 interface CustomSound {
@@ -24,6 +26,8 @@ export default function ManageCustomSoundsModal({
   onEdit,
   onDelete,
 }: ManageCustomSoundsModalProps) {
+  const { locale } = useLocale();
+
   if (!isOpen) return null;
 
   const soundEntries: CustomSound[] = Object.entries(customSounds).map(
@@ -42,18 +46,22 @@ export default function ManageCustomSoundsModal({
       >
         <div className={styles.modalContent}>
           <header className={styles.modalHeader}>
-            <h3 className={styles.modalTitle}>Manage Custom Sounds</h3>
+            <h3 className={styles.modalTitle}>
+              {messages[locale].manageCustomSoundsTitle}
+            </h3>
             <button
               onClick={onClose}
               className={styles.closeButton}
-              aria-label="Close modal"
+              aria-label={messages[locale].closeModal}
             >
               ×
             </button>
           </header>
 
           {soundEntries.length === 0 ? (
-            <p className={styles.emptyState}>No custom sounds yet.</p>
+            <p className={styles.emptyState}>
+              {messages[locale].noCustomSounds}
+            </p>
           ) : (
             <ul className={styles.soundList} role="list">
               {soundEntries.map(({ emoji, sound }) => (
@@ -67,14 +75,14 @@ export default function ManageCustomSoundsModal({
                       className={styles.editButton}
                       aria-label={`Edit sound for ${emoji}`}
                     >
-                      Edit
+                      {messages[locale].editSound}
                     </button>
                     <button
                       onClick={() => onDelete(emoji)}
                       className={styles.deleteButton}
                       aria-label={`Delete sound for ${emoji}`}
                     >
-                      Delete
+                      {messages[locale].deleteSound}
                     </button>
                   </div>
                 </li>
@@ -86,9 +94,9 @@ export default function ManageCustomSoundsModal({
             <button
               onClick={onAddClick}
               className={styles.addButton}
-              aria-label="Add new custom sound"
+              aria-label={`Add new custom sound`}
             >
-              Add Custom Sound
+              {messages[locale].addCustomSound}
             </button>
           </footer>
         </div>

@@ -1,5 +1,7 @@
 "use client";
 
+import { useLocale } from "../../../LocaleProvider";
+import { messages } from "../../../../../../i18n";
 import styles from "./EmojiSoundBoard.module.css";
 
 interface EmojiSoundBoardProps {
@@ -16,17 +18,18 @@ export default function EmojiSoundBoard({
   onManageClick,
 }: EmojiSoundBoardProps) {
   const allEmojis = [...emojis, ...Object.keys(customSounds)];
+  const { locale } = useLocale();
 
   return (
     <section className={styles.soundBoard}>
       <div className={styles.header}>
-        <h2 className={styles.title}>Emoji Sounds</h2>
+        <h2 className={styles.title}>{messages[locale].emojiSoundsTitle}</h2>
         <button
           onClick={onManageClick}
           className={styles.manageButton}
-          aria-label="Manage custom sounds"
+          aria-label={`Manage custom sounds`}
         >
-          Manage Custom Sounds
+          {messages[locale].manageCustomSoundsButton}
         </button>
       </div>
 
@@ -36,7 +39,7 @@ export default function EmojiSoundBoard({
             key={emoji}
             onClick={() => onEmojiClick(emoji)}
             className={styles.emojiButton}
-            aria-label={`Play sound for ${emoji}`}
+            aria-label={`${messages[locale].playSoundFor} ${emoji}`}
             role="gridcell"
           >
             {emoji}

@@ -43,7 +43,8 @@
 }
 
 /* Dark theme */
-[data-theme="dark"] {
+[data-theme="dark"],
+[data-cowbell-theme="dark"] {
   --background: #0a0a0a;
   --foreground: #ededed;
   --surface: #1a1a1a;

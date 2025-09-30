@@ -1,11 +1,13 @@
 "use client";
 
+import { Locale, messages } from "../../../../../../i18n";
 import styles from "./RoomHeader.module.css";
 
 interface RoomHeaderProps {
   room: string;
   nickname: string;
   users: { id: string; name: string }[];
+  locale: Locale;
 }
 
 function getDisplayNames(users: { id: string; name: string }[]) {
@@ -26,13 +28,13 @@ function getDisplayNames(users: { id: string; name: string }[]) {
   });
 }
 
-export default function RoomHeader({ room, nickname, users }: RoomHeaderProps) {
+export default function RoomHeader({ room, nickname, users, locale }: RoomHeaderProps) {
   return (
     <header className={styles.header}>
-      <h1 className={styles.title}>More Cowbell: {room}</h1>
-      <p className={styles.welcomeText}>Welcome, {nickname}!</p>
+      <h1 className={styles.title}>{messages[locale].roomTitle.replace("{room}", room)}</h1>
+      <p className={styles.welcomeText}>{messages[locale].roomWelcome.replace("{nickname}", nickname)}</p>
       <p className={styles.usersText}>
-        Users: {getDisplayNames(users).join(", ")}
+        {messages[locale].roomUsers.replace("{users}", getDisplayNames(users).join(", "))}
       </p>
     </header>
   );

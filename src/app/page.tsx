@@ -14,6 +14,26 @@ export default function Home() {
   const [locale, setLocale] = useState<Locale>("en");
   const [isDarkMode, setIsDarkMode] = useState(false);
 
+  // Load locale from cookie on mount
+  useEffect(() => {
+    const getCookieValue = (name: string) => {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop()?.split(";").shift();
+      return null;
+    };
+
+    const savedLocale = getCookieValue("locale");
+    if (savedLocale === "sv" || savedLocale === "en") {
+      setLocale(savedLocale);
+    }
+  }, []);
+
+  // Save locale to cookie when it changes
+  useEffect(() => {
+    document.cookie = `locale=${locale}; path=/; max-age=31536000`; // 1 year
+  }, [locale]);
+
   const handleNoteTaking = () => {
     setIsLeavingNote(!isLeavingNote);
   };
@@ -66,11 +86,12 @@ export default function Home() {
           <ContactForm
             isVisible={isLeavingNote}
             onClose={() => setIsLeavingNote(false)}
+            locale={locale}
           />
           <div className={styles.fridgeGlow} />
         </div>
       </div>
-      <Footer />
+      <Footer locale={locale} onLocaleChange={setLocale} />
     </>
   );
 }
