@@ -12,7 +12,7 @@ function MoreCowbellLayoutContent({ children }: { children: React.ReactNode }) {
 
   // Load dark mode preference on mount
   useEffect(() => {
-    const savedTheme = localStorage.getItem("cowbell-theme");
+    const savedTheme = localStorage.getItem("theme");
     if (savedTheme === "dark") {
       setIsDarkMode(true);
     }
@@ -21,11 +21,11 @@ function MoreCowbellLayoutContent({ children }: { children: React.ReactNode }) {
   // Apply dark mode to document when it changes
   useEffect(() => {
     if (isDarkMode) {
-      document.documentElement.setAttribute("data-cowbell-theme", "dark");
-      localStorage.setItem("cowbell-theme", "dark");
+      document.documentElement.setAttribute("data-theme", "dark");
+      localStorage.setItem("theme", "dark");
     } else {
-      document.documentElement.removeAttribute("data-cowbell-theme");
-      localStorage.setItem("cowbell-theme", "light");
+      document.documentElement.removeAttribute("data-theme");
+      localStorage.setItem("theme", "light");
     }
   }, [isDarkMode]);
 

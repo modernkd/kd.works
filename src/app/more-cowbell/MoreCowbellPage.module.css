@@ -9,30 +9,13 @@
 }
 
 .pageContainer.darkTheme {
-  background-color: #121212;
-  color: #e0e0e0;
+  background-color: var(--surface-dark);
+  color: var(--text-dark);
 }
 
 .pageContainer.lightTheme {
   background-color: var(--surface);
   color: var(--text-primary);
-}
-
-.card {
-  background-color: var(--background);
-  padding: 2rem;
-  border-radius: 0.5rem;
-  box-shadow: var(--shadow);
-  max-width: 28rem;
-  width: 100%;
-  margin-top: 80px;
-  transition: all 0.3s ease;
-}
-
-.card.darkTheme {
-   background-color: #1e1e1e;
-   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-   border: 1px solid #333;
 }
 
 .title {
@@ -71,13 +54,13 @@
 }
 
 .input.darkTheme {
-   background-color: #2a2a2a;
-   border-color: #555;
-   color: #e0e0e0;
+  background-color: var(--surface-dark-hover);
+  border-color: var(--border-dark-secondary);
+  color: var(--text-dark);
 }
 
 .input.darkTheme:focus {
-  box-shadow: 0 0 0 2px #0070f3;
+  box-shadow: 0 0 0 2px var(--accent-blue);
 }
 
 .button {
@@ -97,11 +80,11 @@
 }
 
 .button.darkTheme {
-  background-color: #0070f3;
+  background-color: var(--accent-blue);
 }
 
 .button.darkTheme:hover {
-  background-color: #0051cc;
+  background-color: var(--accent-blue-hover);
 }
 
 .hint {
@@ -113,5 +96,5 @@
 }
 
 .hint.darkTheme {
-  color: #999;
+  color: var(--text-dark-secondary);
 }

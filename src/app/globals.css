@@ -43,8 +43,7 @@
 }
 
 /* Dark theme */
-[data-theme="dark"],
-[data-cowbell-theme="dark"] {
+[data-theme="dark"] {
   --background: #0a0a0a;
   --foreground: #ededed;
   --surface: #1a1a1a;
@@ -64,6 +63,17 @@
   --error-hover: #fa5252;
   --shadow: rgba(0, 0, 0, 0.3);
   --shadow-hover: rgba(0, 0, 0, 0.4);
+
+  /* Dark theme specific colors */
+  --surface-dark: #121212;
+  --surface-dark-elevated: #1e1e1e;
+  --surface-dark-hover: #2a2a2a;
+  --border-dark: #333333;
+  --border-dark-secondary: #555555;
+  --text-dark: #e0e0e0;
+  --text-dark-secondary: #999999;
+  --accent-blue: #0070f3;
+  --accent-blue-hover: #0051cc;
 
   /* Component specific variables for dark mode */
   --magnet-bg-light: #ffd700;

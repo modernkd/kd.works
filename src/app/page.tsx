@@ -1,12 +1,12 @@
 "use client";
 
-import Head from "next/head";
 import { useState, useEffect } from "react";
 import FreezerSection from "./components/FreezerSection";
 import FridgeSection from "./components/FridgeSection";
 import ContactForm from "./components/ContactForm";
 import Footer from "./components/Footer";
 import { Locale } from "../../i18n";
+import { getCookieValue, setCookie } from "../lib/cookieUtils";
 import styles from "./Home.module.css";
 
 export default function Home() {
@@ -16,13 +16,6 @@ export default function Home() {
 
   // Load locale from cookie on mount
   useEffect(() => {
-    const getCookieValue = (name: string) => {
-      const value = `; ${document.cookie}`;
-      const parts = value.split(`; ${name}=`);
-      if (parts.length === 2) return parts.pop()?.split(";").shift();
-      return null;
-    };
-
     const savedLocale = getCookieValue("locale");
     if (savedLocale === "sv" || savedLocale === "en") {
       setLocale(savedLocale);
@@ -31,7 +24,7 @@ export default function Home() {
 
   // Save locale to cookie when it changes
   useEffect(() => {
-    document.cookie = `locale=${locale}; path=/; max-age=31536000`; // 1 year
+    setCookie("locale", locale, 365, "/");
   }, [locale]);
 
   const handleNoteTaking = () => {
@@ -52,10 +45,6 @@ export default function Home() {
   }, [isDarkMode]);
   return (
     <>
-      <Head>
-        <title>kd davis</title>
-        <meta name="description" content="kd works" />
-      </Head>
       <div className={styles.fridgeContainer}>
         <div
           className={`${styles.fridgeBody} ${isLeavingNote ? styles.open : ""}`}

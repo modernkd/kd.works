@@ -1,7 +1,7 @@
 "use client";
 
 import { messages } from "../../../../../../i18n";
-import styles from "./ConnectingScreen.module.css";
+import Card from "../../../../components/Card";
 
 interface ConnectingScreenProps {
   room: string;
@@ -17,15 +17,13 @@ export default function ConnectingScreen({
   const connectingTo = messages[locale].connectingTo;
   const welcome = messages[locale].welcome;
   return (
-    <section className={styles.connectingScreen}>
-      <div className={styles.connectingCard}>
-        <h1 className={styles.connectingTitle}>
-          {connectingTo} {room}...
-        </h1>
-        <p className={styles.connectingMessage}>
-          {welcome}, {nickname}!
-        </p>
-      </div>
-    </section>
+    <Card variant="overlay" centered>
+      <h1 style={{ fontSize: "1.5rem", fontWeight: "bold", marginBottom: "1rem" }}>
+        {connectingTo} {room}...
+      </h1>
+      <p style={{ color: "var(--text-secondary)" }}>
+        {welcome}, {nickname}!
+      </p>
+    </Card>
   );
 }

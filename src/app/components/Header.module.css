@@ -12,7 +12,7 @@
 }
 
 /* Dark theme background */
-[data-cowbell-theme="dark"] .header {
+[data-theme="dark"] .header {
   background: rgba(26, 26, 26, 0.95);
 }
 
@@ -93,19 +93,19 @@
   margin-left: 1rem;
 }
 /* Dark theme styles - consolidated */
-[data-cowbell-theme="dark"] .siteTitle {
+[data-theme="dark"] .siteTitle {
   color: #fff;
 }
 
-[data-cowbell-theme="dark"] .langButton {
+[data-theme="dark"] .langButton {
   color: #ccc;
 }
 
-[data-cowbell-theme="dark"] .langButton:hover {
+[data-theme="dark"] .langButton:hover {
   background: #333;
   color: #fff;
 }
 
-[data-cowbell-theme="dark"] .separator {
+[data-theme="dark"] .separator {
   color: #666;
 }

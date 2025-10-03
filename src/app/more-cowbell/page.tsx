@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { messages } from "../../../i18n";
 import { useLocale } from "./LocaleProvider";
+import Card from "../components/Card";
 import styles from "./MoreCowbellPage.module.css";
 
 export default function MoreCowbellPage() {
@@ -20,7 +21,7 @@ export default function MoreCowbellPage() {
 
   return (
     <div className={styles.pageContainer}>
-      <div className={styles.card}>
+      <Card>
         <h1 className={styles.title}>{messages[locale].moreCowbellTitle}</h1>
         <p className={styles.description}>
           {messages[locale].moreCowbellDescription}
@@ -39,7 +40,7 @@ export default function MoreCowbellPage() {
           </button>
         </form>
         <p className={styles.hint}>{messages[locale].moreCowbellHint}</p>
-      </div>
+      </Card>
     </div>
   );
 }
