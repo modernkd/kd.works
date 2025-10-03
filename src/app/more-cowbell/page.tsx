@@ -2,10 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { messages } from "../../../i18n";
+import { useLocale } from "./LocaleProvider";
+import Card from "../components/Card";
 import styles from "./MoreCowbellPage.module.css";
 
 export default function MoreCowbellPage() {
   const [roomName, setRoomName] = useState("");
+  const { locale } = useLocale();
   const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -17,26 +21,26 @@ export default function MoreCowbellPage() {
 
   return (
     <div className={styles.pageContainer}>
-      <div className={styles.card}>
-        <h1 className={styles.title}>More Cowbell</h1>
+      <Card>
+        <h1 className={styles.title}>{messages[locale].moreCowbellTitle}</h1>
         <p className={styles.description}>
-          Enter a room name to start the party
+          {messages[locale].moreCowbellDescription}
         </p>
         <form onSubmit={handleSubmit} className={styles.form}>
           <input
             type="text"
-            placeholder="Room name (e.g., party-room)"
+            placeholder={messages[locale].moreCowbellPlaceholder}
             value={roomName}
             onChange={(e) => setRoomName(e.target.value)}
             className={styles.input}
             required
           />
           <button type="submit" className={styles.button}>
-            Join Room
+            {messages[locale].moreCowbellButton}
           </button>
         </form>
-        <p className={styles.hint}>Share the room link with friends!</p>
-      </div>
+        <p className={styles.hint}>{messages[locale].moreCowbellHint}</p>
+      </Card>
     </div>
   );
 }

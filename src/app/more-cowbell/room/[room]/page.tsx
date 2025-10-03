@@ -5,6 +5,7 @@ import PartySocket from "partysocket";
 import { Howl } from "howler";
 import { soundMap, emojis } from "@/lib/soundMap";
 import { useParams } from "next/navigation";
+import { useLocale } from "../../LocaleProvider";
 
 import SignInForm from "./components/SignInForm";
 import ConnectingScreen from "./components/ConnectingScreen";
@@ -13,8 +14,6 @@ import RoomHeader from "./components/RoomHeader";
 import EmojiSoundBoard from "./components/EmojiSoundBoard";
 import CustomSoundModal from "./components/CustomSoundModal";
 import ManageCustomSoundsModal from "./components/ManageCustomSoundsModal";
-import RoomNavigation from "./components/RoomNavigation";
-import Footer from "@/app/components/Footer";
 import styles from "./RoomPage.module.css";
 
 interface User {
@@ -39,6 +38,7 @@ interface AppMessage {
 export default function RoomPage() {
   const params = useParams();
   const room = params.room as string;
+  const { locale } = useLocale();
 
   const [nickname, setNickname] = useState("");
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -321,17 +321,17 @@ export default function RoomPage() {
         nickname={nickname}
         setNickname={setNickname}
         onSignIn={handleSignIn}
+        locale={locale}
       />
     );
   }
 
   if (!isConnected) {
-    return <ConnectingScreen room={room} nickname={nickname} />;
+    return <ConnectingScreen room={room} nickname={nickname} locale={locale} />;
   }
 
   return (
     <>
-      <RoomNavigation />
       <main className={styles.main}>
         <div className={styles.container}>
           <div className={styles.messages}>
@@ -343,7 +343,12 @@ export default function RoomPage() {
               ))}
           </div>
 
-          <RoomHeader room={room} nickname={nickname} users={users} />
+          <RoomHeader
+            room={room}
+            nickname={nickname}
+            users={users}
+            locale={locale}
+          />
 
           <EmojiSoundBoard
             emojis={emojis}
@@ -353,7 +358,6 @@ export default function RoomPage() {
           />
         </div>
       </main>
-      <Footer />
 
       <CustomSoundModal
         isOpen={showModal}

@@ -1,18 +1,21 @@
 .pageContainer {
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: var(--surface);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.card {
-  background-color: var(--background);
-  padding: 2rem;
-  border-radius: 0.5rem;
-  box-shadow: var(--shadow);
-  max-width: 28rem;
-  width: 100%;
+.pageContainer.darkTheme {
+  background-color: var(--surface-dark);
+  color: var(--text-dark);
+}
+
+.pageContainer.lightTheme {
+  background-color: var(--surface);
+  color: var(--text-primary);
 }
 
 .title {
@@ -42,11 +45,22 @@
   border-radius: 0.25rem;
   color: var(--text-primary);
   background-color: var(--background);
+  transition: all 0.3s ease;
 }
 
 .input:focus {
   outline: none;
   box-shadow: 0 0 0 2px var(--accent);
+}
+
+.input.darkTheme {
+  background-color: var(--surface-dark-hover);
+  border-color: var(--border-dark-secondary);
+  color: var(--text-dark);
+}
+
+.input.darkTheme:focus {
+  box-shadow: 0 0 0 2px var(--accent-blue);
 }
 
 .button {
@@ -57,11 +71,20 @@
   border-radius: 0.25rem;
   border: none;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 
 .button:hover {
   background-color: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.button.darkTheme {
+  background-color: var(--accent-blue);
+}
+
+.button.darkTheme:hover {
+  background-color: var(--accent-blue-hover);
 }
 
 .hint {
@@ -69,4 +92,9 @@
   color: var(--text-muted);
   margin-top: 1rem;
   text-align: center;
+  transition: color 0.3s ease;
+}
+
+.hint.darkTheme {
+  color: var(--text-dark-secondary);
 }

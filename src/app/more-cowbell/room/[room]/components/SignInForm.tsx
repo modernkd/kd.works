@@ -1,10 +1,15 @@
 "use client";
 
+import { Locale, messages } from "../../../../../../i18n";
+import Card from "../../../../components/Card";
+import styles from "./SignInForm.module.css";
+
 interface SignInFormProps {
   room: string;
   nickname: string;
   setNickname: (name: string) => void;
   onSignIn: () => void;
+  locale: Locale;
 }
 
 export default function SignInForm({
@@ -12,41 +17,35 @@ export default function SignInForm({
   nickname,
   setNickname,
   onSignIn,
+  locale,
 }: SignInFormProps) {
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gray-100">
-      <form
-        className="bg-white p-8 rounded-lg shadow-md"
-        onSubmit={(e) => {
-          e.preventDefault();
-          onSignIn();
-        }}
-      >
-        <h1 className="text-2xl font-bold mb-4">Join Room: {room}</h1>
-        <div className="mb-4">
-          <label
-            htmlFor="nickname"
-            className="block text-sm font-medium text-gray-700 mb-2"
-          >
-            Enter your nickname
-          </label>
+    <section className={styles.formSection}>
+      <Card>
+        <h1 className={styles.title}>
+          {messages[locale].roomJoinTitle.replace("{room}", room)}
+        </h1>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            onSignIn();
+          }}
+          className={styles.form}
+        >
           <input
             id="nickname"
             type="text"
-            placeholder="Enter your nickname"
+            placeholder={messages[locale].roomNicknamePlaceholder}
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
-            className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={styles.input}
             required
           />
-        </div>
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
-        >
-          Join
-        </button>
-      </form>
+          <button type="submit" className={styles.button}>
+            {messages[locale].roomJoinButton}
+          </button>
+        </form>
+      </Card>
     </section>
   );
 }

@@ -1,7 +1,7 @@
 import MagnetText from "./MagnetText";
 import MooseMagnet from "./MooseMagnet";
 import EagleMagnet from "./EagleMagnet";
-import DarkModeMagnet from "./DarkModeMagnet";
+import DarkModeToggle from "./DarkModeToggle";
 import FridgeHandle from "./FridgeHandle";
 import styles from "./FreezerSection.module.css";
 
@@ -41,7 +41,7 @@ export default function FreezerSection({
       </div>
 
       <div className={styles.darkModeMagnetContainer}>
-        <DarkModeMagnet isDarkMode={isDarkMode} onClick={onDarkModeToggle} />
+        <DarkModeToggle isDarkMode={isDarkMode} onToggle={onDarkModeToggle} />
       </div>
       <div className={styles.fridgeHandleContainer}>
         <FridgeHandle />

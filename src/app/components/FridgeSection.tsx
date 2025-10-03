@@ -28,7 +28,7 @@ export default function FridgeSection({
           <MagnetText text={mainText} size="medium" />
         </div>
         <div className={styles.stickyNoteContainer}>
-          <StickyNote onClick={handleNoteTaking} />
+          <StickyNote onClick={handleNoteTaking} locale={locale} />
         </div>
 
         {/* Family Whiteboard */}

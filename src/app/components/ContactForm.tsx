@@ -1,13 +1,19 @@
 import { useState } from "react";
 import emailjs from "@emailjs/browser";
+import { Locale, messages } from "../../../i18n";
 import styles from "./ContactForm.module.css";
 
 interface ContactFormProps {
   isVisible: boolean;
   onClose: () => void;
+  locale: Locale;
 }
 
-export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
+export default function ContactForm({
+  isVisible,
+  onClose,
+  locale,
+}: ContactFormProps) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -31,9 +37,7 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
     const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
     if (!serviceId || !templateId || !publicKey) {
-      alert(
-        "Email configuration missing. Please set up EmailJS environment variables."
-      );
+      alert(messages[locale].contactConfigErrorMessage);
       setIsSubmitting(false);
       return;
     }
@@ -50,10 +54,10 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
         },
         publicKey
       );
-      alert("Note sent successfully!");
+      alert(messages[locale].contactSuccessMessage);
     } catch (error) {
       console.error("Email send error:", error);
-      alert("Failed to send note. Please try again.");
+      alert(messages[locale].contactErrorMessage);
     }
 
     setFormData({ name: "", email: "", message: "", title: "" });
@@ -65,12 +69,12 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
 
   return (
     <div className={styles.contactForm}>
-      <h3 className={styles.contactTitle}>Leave a Note</h3>
+      <h3 className={styles.contactTitle}>{messages[locale].contactTitle}</h3>
       <form onSubmit={handleSubmit} className={styles.contactFormElement}>
         <input
           type="text"
           name="name"
-          placeholder="Your Name"
+          placeholder={messages[locale].contactNamePlaceholder}
           value={formData.name}
           onChange={handleInputChange}
           required
@@ -78,7 +82,7 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
         />
         <input
           name="title"
-          placeholder="Title"
+          placeholder={messages[locale].contactTitlePlaceholder}
           value={formData.title}
           onChange={handleInputChange}
           required
@@ -87,7 +91,7 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
         <input
           type="email"
           name="email"
-          placeholder="Your Email"
+          placeholder={messages[locale].contactEmailPlaceholder}
           value={formData.email}
           onChange={handleInputChange}
           required
@@ -95,7 +99,7 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
         />
         <textarea
           name="message"
-          placeholder="Your Message"
+          placeholder={messages[locale].contactMessagePlaceholder}
           value={formData.message}
           onChange={handleInputChange}
           required
@@ -107,7 +111,9 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
           disabled={isSubmitting}
           className={styles.submitButton}
         >
-          {isSubmitting ? "Sending..." : "Send Note"}
+          {isSubmitting
+            ? messages[locale].contactSendingButton
+            : messages[locale].contactSendButton}
         </button>
       </form>
     </div>

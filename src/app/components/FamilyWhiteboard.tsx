@@ -27,12 +27,12 @@ export default function FamilyWhiteboard({
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Draw family stick figures
-    drawStickFigure(ctx, 60, 120, 1, "pappa"); // Adult size
-    drawStickFigure(ctx, 150, 120, 1, "mamma"); // Adult size
-    drawStickFigure(ctx, 250, 135, 0.7, "atlas"); // Teen size
-    drawStickFigure(ctx, 340, 150, 0.4, "oliver"); // Toddler size
+    drawStickFigure(ctx, 60, 120, 1, messages[locale].familyDad); // Adult size
+    drawStickFigure(ctx, 150, 120, 1, messages[locale].familyMom); // Adult size
+    drawStickFigure(ctx, 250, 135, 0.7, messages[locale].familyAtlas); // Teen size
+    drawStickFigure(ctx, 340, 150, 0.4, messages[locale].familyOliver); // Toddler size
     drawSun(ctx, 420, 60); // Sun
-  }, [isDarkMode]);
+  }, [isDarkMode, locale || "en"]);
 
   const drawStickFigure = (
     ctx: CanvasRenderingContext2D,
