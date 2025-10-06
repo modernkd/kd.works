@@ -1,0 +1,23 @@
+.darkModeMagnet {
+  display: block;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  border: none;
+  cursor: pointer;
+  width: max-content;
+  transition: transform 0.2s ease-in-out;
+  background-color: var(--magnet-bg-light);
+}
+
+.darkModeMagnet:hover {
+  transform: scale(1.05);
+}
+
+.darkModeMagnet.dark {
+  background-color: var(--magnet-bg-dark);
+}

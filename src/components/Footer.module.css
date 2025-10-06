@@ -1,0 +1,183 @@
+.footer {
+  background-color: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 2.5rem 0;
+}
+
+.footerContainer {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+  text-align: center;
+}
+
+.footerTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.footerLinks {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.footerLink {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+.footerLink:hover {
+  color: var(--text-primary);
+}
+
+.languageDropdown {
+  position: relative;
+}
+
+.languageButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  outline: none;
+  color: var(--text-primary);
+  background-color: var(--surface);
+  font-weight: 500;
+}
+
+.languageButton:hover {
+  background-color: var(--surface-hover);
+  border-color: var(--text-secondary);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.languageButton:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.15);
+}
+
+.globeIcon {
+  font-size: 1rem;
+  opacity: 0.8;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.languageText {
+  font-weight: 500;
+}
+
+.caret {
+  font-size: 0.75rem;
+  opacity: 0.6;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.languageButton:hover .globeIcon,
+.languageButton:hover .caret {
+  opacity: 1;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 120px;
+  z-index: 1000;
+  margin-top: 4px;
+  overflow: hidden;
+}
+
+.dropdownOption {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  transition: background-color 0.2s ease-in-out;
+  outline: none;
+}
+
+.dropdownOption:hover {
+  background-color: var(--surface-hover);
+}
+
+.dropdownOption.active {
+  background-color: var(--accent);
+  color: white;
+}
+
+.dropdownOption:first-child {
+  border-radius: 6px 6px 0 0;
+}
+
+.dropdownOption:last-child {
+  border-radius: 0 0 6px 6px;
+}
+
+.footerCopyright {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+/* Dark theme styles */
+[data-theme='dark'] .languageButton {
+  background-color: var(--surface);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] .languageButton:hover {
+  background-color: var(--surface-hover);
+  border-color: var(--border-hover);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme='dark'] .globeIcon {
+  opacity: 0.6;
+}
+
+[data-theme='dark'] .caret {
+  opacity: 0.5;
+}
+
+[data-theme='dark'] .languageButton:hover .globeIcon,
+[data-theme='dark'] .languageButton:hover .caret {
+  opacity: 0.9;
+}
+
+[data-theme='dark'] .dropdownMenu {
+  background-color: var(--surface);
+  border-color: var(--border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme='dark'] .dropdownOption {
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] .dropdownOption:hover {
+  background-color: var(--surface-hover);
+}
+
+[data-theme='dark'] .dropdownOption.active {
+  background-color: var(--accent);
+  color: white;
+}
