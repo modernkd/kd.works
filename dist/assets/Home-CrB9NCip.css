@@ -1,0 +1,88 @@
+._container_1fshu_1 {
+  padding: 5rem 1.5rem 0 13.5rem;
+}
+._intro_1fshu_6 {
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--text-secondary, #666);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+._section_1fshu_14 {
+  margin-bottom: 2rem;
+}
+._codeBlock_1fshu_18 {
+  background-color: var(--surface);
+  color: var(--text-primary);
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  overflow: auto;
+  margin: 1rem 0;
+  font-family: monospace;
+  border: 1px solid var(--border);
+}
+._profileImage_1fshu_30 {
+  display: block;
+  margin: 0 auto;
+  height: 700px;
+  width: 500px;
+}
+._skillsList_1fshu_37 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+._skillItem_1fshu_44 {
+  padding: 0.5rem;
+  background-color: var(--bg-secondary, #f5f5f5);
+  border-radius: 4px;
+  border-left: 4px solid var(--accent, #007bff);
+}
+._introSection_1fshu_51 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+._profileImage_1fshu_30 {
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 6px #0000001a;
+}
+._fridgeLink_1fshu_65 {
+  margin-top: 1rem;
+}
+._fridgeLink_1fshu_65 a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+._fridgeLink_1fshu_65 a:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}
+@media (max-width: 768px) {
+  ._container_1fshu_1 {
+    padding: 2rem 1rem 0;
+  }
+  ._profileImage_1fshu_30 {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    max-height: 400px;
+  }
+  ._intro_1fshu_6 {
+    font-size: 1rem;
+  }
+  ._codeBlock_1fshu_18 {
+    font-size: 0.75rem;
+    padding: 0.75rem;
+  }
+  ._section_1fshu_14 {
+    margin-bottom: 1.5rem;
+  }
+}
