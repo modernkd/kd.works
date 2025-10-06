@@ -34,6 +34,7 @@
   margin: 0;
   transition: color 0.3s ease;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .siteTitle h1 {

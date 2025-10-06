@@ -114,11 +114,6 @@ developerLife();`}
                   </code>
                 </pre>
               </div>
-
-              <div className={styles.section}>
-                <h2>{t('homeLifeBeyondCodeTitle')}</h2>
-                <p>{t('homeLifeBeyondCodeText')}</p>
-              </div>
             </div>
           </div>
         </div>
