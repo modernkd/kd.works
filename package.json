@@ -1,12 +1,15 @@
 {
-  "name": "kdworks",
+  "name": "thefridge",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
-    "start": "next start",
-    "lint": "eslint",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "build:ssr": "tsc && vite build --ssr src/entry-server.tsx",
+    "serve:ssr": "node server.js",
+    "preview": "vite preview",
+    "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "partykit": "npx partykit dev --port 54300",
     "prepare": "husky"
   },
@@ -14,14 +17,17 @@
     "@emailjs/browser": "^4.4.1",
     "@types/howler": "^2.2.12",
     "emoji-picker-react": "^4.13.3",
+    "express": "^5.1.0",
     "howler": "^2.2.4",
-    "next": "15.5.3",
-    "next-intl": "^4.3.9",
+    "i18next": "^23.7.6",
+    "i18next-browser-languagedetector": "^7.2.0",
     "partykit": "^0.0.115",
     "partysocket": "^1.1.5",
     "puppeteer": "^24.20.0",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "react-i18next": "^13.5.0",
+    "react-router-dom": "^7.0.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -29,12 +35,17 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "15.5.3",
+    "@typescript-eslint/eslint-plugin": "^8.45.0",
+    "@typescript-eslint/parser": "^8.45.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "eslint": "^8.57.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.3",
     "prettier": "^3.6.2",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vite": "^5.0.8"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,css,md}": "prettier --write"
