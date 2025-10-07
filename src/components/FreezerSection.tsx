@@ -15,11 +15,7 @@ interface FreezerSectionProps {
   isDarkMode: boolean;
 }
 
-export default function FreezerSection({
-  setLocale,
-  onDarkModeToggle,
-  isDarkMode,
-}: FreezerSectionProps) {
+export default function FreezerSection({ setLocale, onDarkModeToggle, isDarkMode }: FreezerSectionProps) {
   const { t } = useTranslation();
   return (
     <div className={styles.freezerSection}>

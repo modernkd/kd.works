@@ -9,12 +9,7 @@ interface SignInFormProps {
   onSignIn: () => void;
 }
 
-export default function SignInForm({
-  room,
-  nickname,
-  setNickname,
-  onSignIn,
-}: SignInFormProps) {
+export default function SignInForm({ room, nickname, setNickname, onSignIn }: SignInFormProps) {
   const { t } = useTranslation();
 
   return (

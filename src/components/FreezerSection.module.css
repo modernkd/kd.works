@@ -69,19 +69,11 @@
   right: 0;
   width: 30px;
   height: 100%;
-  background: linear-gradient(
-    to left,
-    rgba(255, 255, 255, 0.8),
-    rgba(255, 255, 255, 0)
-  );
+  background: linear-gradient(to left, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
   border-top-right-radius: var(--fridge-outer-border-radius);
   border-bottom-right-radius: var(--fridge-inner-border-radius);
 
   [data-theme='dark'] & {
-    background: linear-gradient(
-      to left,
-      rgba(239, 236, 213, 0.8),
-      rgba(239, 236, 213, 0)
-    );
+    background: linear-gradient(to left, rgba(239, 236, 213, 0.8), rgba(239, 236, 213, 0));
   }
 }

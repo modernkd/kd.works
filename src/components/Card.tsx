@@ -16,13 +16,7 @@ export default function Card({
   size = 'md',
   centered = false,
 }: CardProps) {
-  const cardClass = [
-    styles.card,
-    styles[variant],
-    styles[size],
-    centered ? styles.centered : '',
-    className,
-  ]
+  const cardClass = [styles.card, styles[variant], styles[size], centered ? styles.centered : '', className]
     .filter(Boolean)
     .join(' ');
 

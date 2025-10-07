@@ -7,10 +7,7 @@ interface ConnectingScreenProps {
   nickname: string;
 }
 
-export default function ConnectingScreen({
-  room,
-  nickname,
-}: ConnectingScreenProps) {
+export default function ConnectingScreen({ room, nickname }: ConnectingScreenProps) {
   const { t } = useTranslation();
 
   return (

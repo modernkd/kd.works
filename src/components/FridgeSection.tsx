@@ -11,11 +11,7 @@ interface FridgeSectionProps {
   isFormOpen: boolean;
 }
 
-export default function FridgeSection({
-  isDarkMode,
-  handleNoteTaking,
-  isFormOpen,
-}: FridgeSectionProps) {
+export default function FridgeSection({ isDarkMode, handleNoteTaking, isFormOpen }: FridgeSectionProps) {
   const { t } = useTranslation();
 
   return (
@@ -27,9 +23,7 @@ export default function FridgeSection({
         <div className={styles.magnetTextContainer}>
           <MagnetText text={t('fridgeMainText')} size="medium" />
         </div>
-        <div
-          className={`${styles.stickyNoteContainer} ${isFormOpen ? styles.hidden : ''}`}
-        >
+        <div className={`${styles.stickyNoteContainer} ${isFormOpen ? styles.hidden : ''}`}>
           <StickyNote onClick={handleNoteTaking} />
         </div>
 

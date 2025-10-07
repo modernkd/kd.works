@@ -64,18 +64,10 @@ export default function RoomPage() {
       setUsers(message.users || []);
     } else if (message.type === 'userJoined') {
       setUsers((prev) => [...prev, message.user!]);
-      addMessage(
-        setMessages,
-        t('userJoinedRoom', { name: message.user?.name || 'Someone' }),
-        'join'
-      );
+      addMessage(setMessages, t('userJoinedRoom', { name: message.user?.name || 'Someone' }), 'join');
     } else if (message.type === 'userLeft') {
       setUsers((prev) => prev.filter((u) => u.id !== message.user!.id));
-      addMessage(
-        setMessages,
-        t('userLeftRoom', { name: message.user?.name || 'Someone' }),
-        'leave'
-      );
+      addMessage(setMessages, t('userLeftRoom', { name: message.user?.name || 'Someone' }), 'leave');
     } else if (message.type === 'soundPlayed') {
       playSound(message.sound!);
       addMessage(
@@ -128,9 +120,7 @@ export default function RoomPage() {
   }, []);
 
   const playSound = (soundFile: string) => {
-    const src = soundFile.startsWith('data:')
-      ? [soundFile]
-      : [`/sounds/${soundFile}`];
+    const src = soundFile.startsWith('data:') ? [soundFile] : [`/sounds/${soundFile}`];
     const sound = new Howl({
       src,
       volume: 0.5,
@@ -152,13 +142,9 @@ export default function RoomPage() {
         socketRef.current.close();
       }
 
-      const isLocalhost =
-        window.location.hostname === 'localhost' ||
-        window.location.hostname === '127.0.0.1';
+      const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
       const socket = new PartySocket({
-        host: isLocalhost
-          ? `${window.location.hostname}:54300`
-          : 'more-cowbell.modernkd.partykit.dev',
+        host: isLocalhost ? `${window.location.hostname}:54300` : 'more-cowbell.modernkd.partykit.dev',
         room: room,
       });
 
@@ -295,14 +281,7 @@ export default function RoomPage() {
   }
 
   if (!isSignedIn) {
-    return (
-      <SignInForm
-        room={room}
-        nickname={nickname}
-        setNickname={setNickname}
-        onSignIn={handleSignIn}
-      />
-    );
+    return <SignInForm room={room} nickname={nickname} setNickname={setNickname} onSignIn={handleSignIn} />;
   }
 
   if (!isConnected) {

@@ -8,12 +8,7 @@ interface FooterProps {
 }
 
 export default function Footer({ locale = 'en', onLocaleChange }: FooterProps) {
-  return (
-    <FooterContent
-      locale={locale}
-      onLocaleChange={onLocaleChange || (() => {})}
-    />
-  );
+  return <FooterContent locale={locale} onLocaleChange={onLocaleChange || (() => {})} />;
 }
 
 function FooterContent({
@@ -30,10 +25,7 @@ function FooterContent({
   // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsDropdownOpen(false);
       }
     }
@@ -71,12 +63,7 @@ function FooterContent({
             >
               LinkedIn
             </a>
-            <a
-              href="https://kd.works"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.footerLink}
-            >
+            <a href="https://kd.works" target="_blank" rel="noopener noreferrer" className={styles.footerLink}>
               kd.works
             </a>
           </div>
@@ -84,33 +71,25 @@ function FooterContent({
             <button
               className={styles.languageButton}
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              aria-label={`Switch language (currently ${
-                locale === 'en' ? 'English' : 'Svenska'
-              })`}
+              aria-label={`Switch language (currently ${locale === 'en' ? 'English' : 'Svenska'})`}
               aria-expanded={isDropdownOpen}
               aria-haspopup="true"
             >
               <span className={styles.globeIcon}>🌐</span>
-              <span className={styles.languageText}>
-                {locale === 'en' ? 'English' : 'Svenska'}
-              </span>
+              <span className={styles.languageText}>{locale === 'en' ? 'English' : 'Svenska'}</span>
               <span className={styles.caret}>▾</span>
             </button>
 
             {isDropdownOpen && (
               <div className={styles.dropdownMenu}>
                 <button
-                  className={`${styles.dropdownOption} ${
-                    locale === 'en' ? styles.active : ''
-                  }`}
+                  className={`${styles.dropdownOption} ${locale === 'en' ? styles.active : ''}`}
                   onClick={() => handleLanguageChange('en')}
                 >
                   English
                 </button>
                 <button
-                  className={`${styles.dropdownOption} ${
-                    locale === 'sv' ? styles.active : ''
-                  }`}
+                  className={`${styles.dropdownOption} ${locale === 'sv' ? styles.active : ''}`}
                   onClick={() => handleLanguageChange('sv')}
                 >
                   Svenska
@@ -119,9 +98,7 @@ function FooterContent({
             )}
           </div>
         </div>
-        <p className={styles.footerCopyright}>
-          © {new Date().getFullYear()} kd davis
-        </p>
+        <p className={styles.footerCopyright}>© {new Date().getFullYear()} kd davis</p>
       </div>
     </footer>
   );

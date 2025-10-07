@@ -38,10 +38,7 @@ export default function Header({
         </span>
         {showDarkModeToggle && onDarkModeToggle && (
           <div className={styles.darkModeToggleContainer}>
-            <DarkModeToggle
-              isDarkMode={isDarkMode}
-              onToggle={onDarkModeToggle}
-            />
+            <DarkModeToggle isDarkMode={isDarkMode} onToggle={onDarkModeToggle} />
           </div>
         )}
       </div>

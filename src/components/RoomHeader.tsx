@@ -31,9 +31,7 @@ export default function RoomHeader({ room, nickname, users }: RoomHeaderProps) {
     <header className={styles.header}>
       <h1 className={styles.title}>{t('roomTitle', { room })}</h1>
       <p className={styles.welcomeText}>{t('roomWelcome', { nickname })}</p>
-      <p className={styles.usersText}>
-        {t('roomUsers', { users: getDisplayNames(users).join(', ') })}
-      </p>
+      <p className={styles.usersText}>{t('roomUsers', { users: getDisplayNames(users).join(', ') })}</p>
     </header>
   );
 }

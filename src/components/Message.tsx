@@ -8,7 +8,5 @@ interface MessageProps {
 export default function Message({ text, type }: MessageProps) {
   const messageClass = type === 'custom' ? styles.custom : styles.default;
 
-  return (
-    <article className={`${styles.message} ${messageClass}`}>{text}</article>
-  );
+  return <article className={`${styles.message} ${messageClass}`}>{text}</article>;
 }

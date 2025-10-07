@@ -26,30 +26,19 @@ export default function ManageCustomSoundsModal({
 }: ManageCustomSoundsModalProps) {
   const { t } = useTranslation();
 
-  const soundEntries: CustomSound[] = Object.entries(customSounds).map(
-    ([emoji, sound]) => ({
-      emoji,
-      sound,
-    })
-  );
+  const soundEntries: CustomSound[] = Object.entries(customSounds).map(([emoji, sound]) => ({
+    emoji,
+    sound,
+  }));
 
   const footer = (
-    <button
-      onClick={onAddClick}
-      className={styles.addButton}
-      aria-label={`Add new custom sound`}
-    >
+    <button onClick={onAddClick} className={styles.addButton} aria-label={`Add new custom sound`}>
       {t('addCustomSound')}
     </button>
   );
 
   return (
-    <BaseModal
-      isOpen={isOpen}
-      title={t('manageCustomSoundsTitle')}
-      onClose={onClose}
-      footer={footer}
-    >
+    <BaseModal isOpen={isOpen} title={t('manageCustomSoundsTitle')} onClose={onClose} footer={footer}>
       {soundEntries.length === 0 ? (
         <p className={styles.emptyState}>{t('noCustomSounds')}</p>
       ) : (

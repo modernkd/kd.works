@@ -18,9 +18,7 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { t } = useTranslation();
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -113,11 +111,7 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
           rows={4}
           className={styles.formTextarea}
         />
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className={styles.submitButton}
-        >
+        <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
           {isSubmitting ? t('contactSendingButton') : t('contactSendButton')}
         </button>
       </form>

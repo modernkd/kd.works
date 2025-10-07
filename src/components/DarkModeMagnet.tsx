@@ -5,15 +5,9 @@ interface DarkModeMagnetProps {
   onClick: () => void;
 }
 
-export default function DarkModeMagnet({
-  isDarkMode,
-  onClick,
-}: DarkModeMagnetProps) {
+export default function DarkModeMagnet({ isDarkMode, onClick }: DarkModeMagnetProps) {
   return (
-    <button
-      onClick={onClick}
-      className={`${styles.darkModeMagnet} ${isDarkMode ? styles.dark : ''}`}
-    >
+    <button onClick={onClick} className={`${styles.darkModeMagnet} ${isDarkMode ? styles.dark : ''}`}>
       {isDarkMode ? '🌙' : '☀️'}
     </button>
   );

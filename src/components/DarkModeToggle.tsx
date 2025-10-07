@@ -6,10 +6,7 @@ interface DarkModeToggleProps {
   onToggle: () => void;
 }
 
-export default function DarkModeToggle({
-  isDarkMode,
-  onToggle,
-}: DarkModeToggleProps) {
+export default function DarkModeToggle({ isDarkMode, onToggle }: DarkModeToggleProps) {
   const [mounted, setMounted] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -26,12 +23,7 @@ export default function DarkModeToggle({
   if (!mounted) {
     return (
       <button className={styles.toggleButton} onClick={handleToggle}>
-        <svg
-          width="32"
-          height="32"
-          viewBox="0 0 32 32"
-          className={styles.toggleIcon}
-        >
+        <svg width="32" height="32" viewBox="0 0 32 32" className={styles.toggleIcon}>
           <circle cx="16" cy="16" r="8.4" fill="currentColor" />
         </svg>
       </button>
@@ -40,24 +32,13 @@ export default function DarkModeToggle({
 
   return (
     <button
-      className={`${styles.toggleButton} ${
-        isAnimating ? styles.animating : ''
-      }`}
+      className={`${styles.toggleButton} ${isAnimating ? styles.animating : ''}`}
       onClick={handleToggle}
       aria-label={`Switch to ${isDarkMode ? 'light' : 'dark'} mode`}
       title="Toggle theme"
     >
-      <div
-        className={`${styles.toggleContainer} ${
-          isDarkMode ? styles.dark : styles.light
-        }`}
-      >
-        <svg
-          width="32"
-          height="32"
-          viewBox="0 0 32 32"
-          className={`${styles.toggleIcon} ${styles.expandIcon}`}
-        >
+      <div className={`${styles.toggleContainer} ${isDarkMode ? styles.dark : styles.light}`}>
+        <svg width="32" height="32" viewBox="0 0 32 32" className={`${styles.toggleIcon} ${styles.expandIcon}`}>
           <defs>
             <clipPath id={`moon-cutout-${isDarkMode ? 'dark' : 'light'}`}>
               <path d="M0-11h25a1 1 0 0017 13v30H0Z" />
@@ -65,15 +46,7 @@ export default function DarkModeToggle({
           </defs>
           <g clipPath={`url(#moon-cutout-${isDarkMode ? 'dark' : 'light'})`}>
             {/* Sun for light mode */}
-            {!isDarkMode && (
-              <circle
-                cx="16"
-                cy="16"
-                r="8.4"
-                fill="#ffd700"
-                className={styles.celestialBody}
-              />
-            )}
+            {!isDarkMode && <circle cx="16" cy="16" r="8.4" fill="#ffd700" className={styles.celestialBody} />}
             {/* Crescent moon for dark mode */}
             {isDarkMode && (
               <g className={styles.crescentMoon}>
@@ -84,12 +57,7 @@ export default function DarkModeToggle({
                     <stop offset="100%" stopColor="#d0d0d0" />
                   </radialGradient>
                   <filter id="moonShadow">
-                    <feDropShadow
-                      dx="0"
-                      dy="1"
-                      stdDeviation="0.5"
-                      floodColor="#00000020"
-                    />
+                    <feDropShadow dx="0" dy="1" stdDeviation="0.5" floodColor="#00000020" />
                   </filter>
                 </defs>
                 {/* Crescent moon shape using path */}
@@ -107,12 +75,7 @@ export default function DarkModeToggle({
             {/* Sun rays for light mode */}
             {!isDarkMode && (
               <>
-                <g
-                  stroke="#ff8c00"
-                  strokeWidth="1.5"
-                  fill="none"
-                  className={styles.sunRays}
-                >
+                <g stroke="#ff8c00" strokeWidth="1.5" fill="none" className={styles.sunRays}>
                   <line x1="16" y1="4" x2="16" y2="8" />
                   <line x1="16" y1="24" x2="16" y2="28" />
                   <line x1="4" y1="16" x2="8" y2="16" />

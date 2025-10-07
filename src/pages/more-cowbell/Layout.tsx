@@ -7,10 +7,7 @@ import { useCookieState } from '../../hooks/useCookieState';
 
 export default function MoreCowbellLayout() {
   const [locale, setLocale] = useLocale();
-  const [isDarkMode, setIsDarkMode] = useCookieState<boolean>(
-    'darkMode',
-    false
-  );
+  const [isDarkMode, setIsDarkMode] = useCookieState<boolean>('darkMode', false);
 
   // Apply dark mode to document when it changes
   useEffect(() => {
@@ -37,10 +34,7 @@ export default function MoreCowbellLayout() {
       <main>
         <Outlet />
       </main>
-      <Footer
-        locale={locale}
-        onLocaleChange={(newLocale) => setLocale(newLocale)}
-      />
+      <Footer locale={locale} onLocaleChange={(newLocale) => setLocale(newLocale)} />
     </>
   );
 }

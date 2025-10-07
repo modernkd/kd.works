@@ -9,10 +9,7 @@ import styles from './Home.module.css';
 export default function Portfolio() {
   const { t } = useTranslation();
   const [locale, setLocale] = useLocale();
-  const [isDarkMode, setIsDarkMode] = useCookieState<boolean>(
-    'darkMode',
-    false
-  );
+  const [isDarkMode, setIsDarkMode] = useCookieState<boolean>('darkMode', false);
 
   // Update theme attribute on document element
   useEffect(() => {

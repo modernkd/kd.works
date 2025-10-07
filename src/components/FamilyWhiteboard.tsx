@@ -68,12 +68,7 @@ const drawStickFigure = (
   if (name) {
     if (isDarkMode) {
       // Rainbow gradient for text in dark mode
-      const textGradient = ctx.createLinearGradient(
-        x - 30,
-        y + 35,
-        x + 30,
-        y + 45
-      );
+      const textGradient = ctx.createLinearGradient(x - 30, y + 35, x + 30, y + 45);
       textGradient.addColorStop(0, '#ff0000'); // Red
       textGradient.addColorStop(0.17, '#ff8000'); // Orange
       textGradient.addColorStop(0.33, '#ffff00'); // Yellow
@@ -91,12 +86,7 @@ const drawStickFigure = (
   }
 };
 
-const drawSun = (
-  ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  isDarkMode: boolean = false
-) => {
+const drawSun = (ctx: CanvasRenderingContext2D, x: number, y: number, isDarkMode: boolean = false) => {
   if (isDarkMode) {
     // Rainbow gradient for sun in dark mode
     const sunGradient = ctx.createRadialGradient(x, y, 0, x, y, 20);
@@ -139,9 +129,7 @@ const drawSun = (
   }
 };
 
-export default function FamilyWhiteboard({
-  isDarkMode = false,
-}: FamilyWhiteboardProps) {
+export default function FamilyWhiteboard({ isDarkMode = false }: FamilyWhiteboardProps) {
   const { t } = useTranslation();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -168,18 +156,12 @@ export default function FamilyWhiteboard({
 
   return (
     <div className={`${styles.whiteboard} ${isDarkMode ? styles.dark : ''}`}>
-      <h4
-        className={`${styles.whiteboardTitle} ${isDarkMode ? styles.dark : ''}`}
-      >
-        {t('familyTitle')}
-      </h4>
+      <h4 className={`${styles.whiteboardTitle} ${isDarkMode ? styles.dark : ''}`}>{t('familyTitle')}</h4>
       <canvas
         ref={canvasRef}
         width={450}
         height={250}
-        className={`${styles.whiteboardCanvas} ${
-          isDarkMode ? styles.dark : ''
-        }`}
+        className={`${styles.whiteboardCanvas} ${isDarkMode ? styles.dark : ''}`}
       />
     </div>
   );

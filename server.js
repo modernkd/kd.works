@@ -16,21 +16,12 @@ app.get('/', async (req, res) => {
 
     if (html) {
       // SSR the home page
-      const template = fs.readFileSync(
-        path.resolve('dist/index.html'),
-        'utf-8'
-      );
-      const renderedHtml = template.replace(
-        '<div id="root"></div>',
-        `<div id="root">${html}</div>`
-      );
+      const template = fs.readFileSync(path.resolve('dist/index.html'), 'utf-8');
+      const renderedHtml = template.replace('<div id="root"></div>', `<div id="root">${html}</div>`);
       res.status(200).set({ 'Content-Type': 'text/html' }).send(renderedHtml);
     } else {
       // Client-side routing for more-cowbell routes
-      const template = fs.readFileSync(
-        path.resolve('dist/index.html'),
-        'utf-8'
-      );
+      const template = fs.readFileSync(path.resolve('dist/index.html'), 'utf-8');
       res.status(200).set({ 'Content-Type': 'text/html' }).send(template);
     }
   } catch (error) {

@@ -42,11 +42,7 @@ export default function CustomSoundModal({
       >
         {t('uploadSound')}
       </button>
-      <button
-        onClick={onClose}
-        className={styles.cancelButton}
-        aria-label={t('cancel')}
-      >
+      <button onClick={onClose} className={styles.cancelButton} aria-label={t('cancel')}>
         {t('cancel')}
       </button>
     </>
@@ -62,9 +58,7 @@ export default function CustomSoundModal({
       <div className={styles.formGroup}>
         <label className={styles.label}>{t('selectEmoji')}</label>
         <Picker onEmojiClick={onEmojiSelect} width="100%" height={350} />
-        {selectedEmoji && (
-          <p className={styles.emojiDisplay}>{selectedEmoji}</p>
-        )}
+        {selectedEmoji && <p className={styles.emojiDisplay}>{selectedEmoji}</p>}
       </div>
 
       <div className={styles.formGroup}>
@@ -86,9 +80,7 @@ export default function CustomSoundModal({
             {selectedFile ? selectedFile.name : t('chooseFile')}
           </button>
         </div>
-        {!selectedFile && (
-          <p className={styles.fileHint}>{t('noFileChosen')}</p>
-        )}
+        {!selectedFile && <p className={styles.fileHint}>{t('noFileChosen')}</p>}
       </div>
     </BaseModal>
   );

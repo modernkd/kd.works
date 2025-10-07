@@ -11,10 +11,7 @@ import styles from './Fridge.module.css';
 export default function Fridge() {
   const [isLeavingNote, setIsLeavingNote] = useState(false);
   const [locale, setLocale] = useLocale();
-  const [isDarkMode, setIsDarkMode] = useCookieState<boolean>(
-    'darkMode',
-    false
-  );
+  const [isDarkMode, setIsDarkMode] = useCookieState<boolean>('darkMode', false);
 
   // Update theme attribute on document element
   useEffect(() => {
@@ -50,17 +47,9 @@ export default function Fridge() {
         linkTo="/"
         linkText="Home"
       />
-      {isLeavingNote && (
-        <div
-          className={styles.backdrop}
-          onClick={() => setIsLeavingNote(false)}
-        />
-      )}
+      {isLeavingNote && <div className={styles.backdrop} onClick={() => setIsLeavingNote(false)} />}
       <div className={styles.fridgeContainer}>
-        <div
-          className={`${styles.fridgeBody} ${isLeavingNote ? styles.open : ''}`}
-          onClick={handleFridgeClick}
-        >
+        <div className={`${styles.fridgeBody} ${isLeavingNote ? styles.open : ''}`} onClick={handleFridgeClick}>
           {/* Shadow Left */}
           <div className={styles.fridgeShadowLeft} />
 
@@ -70,23 +59,12 @@ export default function Fridge() {
 
           {/* Fridge Door Content */}
           <div className={styles.fridgeDoorContent}>
-            <FreezerSection
-              setLocale={setLocale}
-              onDarkModeToggle={toggleDarkMode}
-              isDarkMode={isDarkMode}
-            />
-            <FridgeSection
-              isDarkMode={isDarkMode}
-              handleNoteTaking={handleNoteTaking}
-              isFormOpen={isLeavingNote}
-            />
+            <FreezerSection setLocale={setLocale} onDarkModeToggle={toggleDarkMode} isDarkMode={isDarkMode} />
+            <FridgeSection isDarkMode={isDarkMode} handleNoteTaking={handleNoteTaking} isFormOpen={isLeavingNote} />
           </div>
 
           {/* Contact Form */}
-          <ContactForm
-            isVisible={isLeavingNote}
-            onClose={() => setIsLeavingNote(false)}
-          />
+          <ContactForm isVisible={isLeavingNote} onClose={() => setIsLeavingNote(false)} />
           <div className={styles.fridgeGlow} />
         </div>
       </div>

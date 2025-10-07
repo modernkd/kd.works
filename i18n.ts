@@ -35,8 +35,7 @@ export const messages = {
     contactSendingButton: 'Sending...',
     contactSuccessMessage: 'Note sent successfully!',
     contactErrorMessage: 'Failed to send note. Please try again.',
-    contactConfigErrorMessage:
-      'Email configuration missing. Please set up EmailJS environment variables.',
+    contactConfigErrorMessage: 'Email configuration missing. Please set up EmailJS environment variables.',
     // Sound management
     manageCustomSoundsTitle: 'Manage Custom Sounds',
     noCustomSounds: 'No custom sounds yet.',
@@ -90,8 +89,7 @@ export const messages = {
     contactSendingButton: 'Skickar...',
     contactSuccessMessage: 'Lappen skickades framgångsrikt!',
     contactErrorMessage: 'Misslyckades att skicka lappen. Försök igen.',
-    contactConfigErrorMessage:
-      'E-postkonfiguration saknas. Konfigurera EmailJS-miljövariabler.',
+    contactConfigErrorMessage: 'E-postkonfiguration saknas. Konfigurera EmailJS-miljövariabler.',
     // Sound management
     manageCustomSoundsTitle: 'Hantera anpassade ljud',
     noCustomSounds: 'Inga anpassade ljud än.',

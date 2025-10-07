@@ -8,12 +8,7 @@ interface EmojiSoundBoardProps {
   onManageClick: () => void;
 }
 
-export default function EmojiSoundBoard({
-  emojis,
-  customSounds,
-  onEmojiClick,
-  onManageClick,
-}: EmojiSoundBoardProps) {
+export default function EmojiSoundBoard({ emojis, customSounds, onEmojiClick, onManageClick }: EmojiSoundBoardProps) {
   const allEmojis = [...emojis, ...Object.keys(customSounds)];
   const { t } = useTranslation();
 
@@ -21,11 +16,7 @@ export default function EmojiSoundBoard({
     <section className={styles.soundBoard}>
       <div className={styles.header}>
         <h2 className={styles.title}>{t('emojiSoundsTitle')}</h2>
-        <button
-          onClick={onManageClick}
-          className={styles.manageButton}
-          aria-label={`Manage custom sounds`}
-        >
+        <button onClick={onManageClick} className={styles.manageButton} aria-label={`Manage custom sounds`}>
           {t('manageCustomSoundsButton')}
         </button>
       </div>
