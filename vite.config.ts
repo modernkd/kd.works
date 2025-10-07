@@ -23,8 +23,8 @@ export default defineConfig({
         manualChunks: (id) => {
           // Only apply manual chunks for client builds, not SSR
           if (id.includes('node_modules')) {
-            if (id.includes('react-dom')) return 'react-dom';
-            if (id.includes('react')) return 'react';
+            // Keep react and react-dom together to avoid dependency issues
+            if (id.includes('react-dom') || id.includes('react/')) return 'react-vendor';
             if (id.includes('react-router')) return 'router';
             if (id.includes('i18next')) return 'i18n';
             if (id.includes('howler')) return 'sounds';
