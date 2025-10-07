@@ -1,10 +1,10 @@
-# the-fridge
+# kd.works
 
-A creative portfolio website featuring a fridge-themed design with interactive elements, built with Next.js and TypeScript. Includes a real-time collaborative sound board app powered by PartyKit.
+A creative portfolio website featuring a fridge-themed design with interactive elements, built with Vite and TypeScript. Includes a real-time collaborative sound board app powered by PartyKit.
 
 ## Features
 
-- **Fridge Portfolio**: Interactive fridge-themed portfolio with contact form and sticky notes
+- **Fridge Portfolio**: Interactive fridge-themed portfolio with little easter eggs
 - **More Cowbell App**: Real-time collaborative sound board for rooms
 - **Dark Mode**: Toggle between light and dark themes
 - **Internationalization**: Support for multiple languages
@@ -12,10 +12,9 @@ A creative portfolio website featuring a fridge-themed design with interactive e
 
 ## Tech Stack
 
-- **Frontend**: Next.js 15, React, TypeScript
-- **Styling**: Tailwind CSS
+- **Frontend**: Vite, React, TypeScript, React Router
+- **Styling**: CSS modules
 - **Real-time**: PartyKit
-- **Deployment**: Vercel
 
 ## Getting Started
 
@@ -35,20 +34,16 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## PartyKit Setup
 
-For the real-time features, start the PartyKit server alongside the Next.js dev server:
+For the real-time features, start the PartyKit server alongside the Vite dev server:
 
 ```bash
 npm run partykit
 ```
 
-This runs the PartyKit development server on port 1999.
+This runs the PartyKit development server on port 54300.
 
 ## Learn More
 
-- [Next.js Documentation](https://nextjs.org/docs)
+- [Vite Documentation](https://vitejs.dev/)
 - [PartyKit Documentation](https://docs.partykit.io)
-- [Tailwind CSS](https://tailwindcss.com)
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new).
+- [React Router Documentation](https://reactrouter.com/home)

@@ -1,0 +1,56 @@
+.fridgeSection {
+  flex: 1;
+  padding-top: 1rem;
+  padding-left: 1rem;
+  background-color: var(--fridge-body-bg);
+  border: 6px solid var(--fridge-border);
+  border-top-right-radius: var(--fridge-inner-border-radius);
+  border-bottom-right-radius: var(--fridge-outer-border-radius);
+  border-bottom-left-radius: var(--fridge-inner-border-radius);
+  position: relative;
+}
+
+.fridgeContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.magnetTextContainer {
+  max-width: 26rem;
+}
+
+.whiteboardContainer {
+  margin-top: 0.75rem;
+}
+
+.fridgeHandleContainer {
+  position: absolute;
+  top: 5%;
+  right: 2%;
+}
+
+.stickyNoteContainer {
+  display: flex;
+  margin-right: -60%;
+}
+
+.stickyNoteContainer.hidden {
+  visibility: hidden;
+}
+
+.fridgeHighlightRight {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30px;
+  height: 100%;
+  background: linear-gradient(to left, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
+  border-bottom-right-radius: var(--fridge-outer-border-radius);
+  border-top-right-radius: var(--fridge-inner-border-radius);
+
+  [data-theme='dark'] & {
+    background: linear-gradient(to left, rgba(239, 236, 213, 0.8), rgba(239, 236, 213, 0));
+  }
+}
