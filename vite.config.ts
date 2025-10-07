@@ -21,21 +21,21 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // Only apply manual chunks for client builds, not SSR
+          // Simplified chunking strategy to avoid loading order issues
           if (id.includes('node_modules')) {
-            // Critical React core bundle (loaded first) - includes helmet to avoid circular deps
-            if (id.includes('react/') || id.includes('react-dom/') || id.includes('react-helmet-async')) {
-              return 'react-core';
+            // Single vendor bundle with all React-related dependencies
+            // This ensures proper loading order and avoids circular dependency issues
+            if (
+              id.includes('react') ||
+              id.includes('react-dom') ||
+              id.includes('react-router') ||
+              id.includes('react-helmet-async') ||
+              id.includes('i18next') ||
+              id.includes('react-i18next')
+            ) {
+              return 'vendor';
             }
-            // Router bundle (loaded after initial render)
-            if (id.includes('react-router')) {
-              return 'router';
-            }
-            // i18n bundle (can be deferred)
-            if (id.includes('i18next') || id.includes('react-i18next')) {
-              return 'i18n';
-            }
-            // Separate chunks for other libraries (lazy loaded)
+            // Separate chunks for heavy, lazy-loaded libraries
             if (id.includes('howler')) return 'sounds';
             if (id.includes('partysocket')) return 'partykit';
             if (id.includes('@emailjs')) return 'email';
