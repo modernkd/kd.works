@@ -13,7 +13,7 @@ const pageMeta = {
   '/': {
     title: 'Home | kd davis',
     description:
-      'A creative portfolio website featuring a fridge-themed design with interactive elements, built with Vite and TypeScript. Includes a real-time collaborative sound board app powered by PartyKit.',
+      'A creative portfolio website built with React, TypeScript, and running with Vite. Includes a fun little fridge with some easter eggs and a real-time collaborative sound board',
     image: '/home-screenshot.png',
   },
   '/fridge': {
@@ -49,7 +49,7 @@ function handleMetaPage(req, res, meta) {
       `<meta property="twitter:title" content="${meta.title}" />`
     )
     .replace(
-      /A creative portfolio website featuring a fridge-themed design with interactive elements, built with Vite and TypeScript\. Includes a real-time collaborative sound board app powered by PartyKit\./g,
+      /A creative portfolio website built with React, TypeScript, and running with Vite\. Includes a fun little fridge with some easter eggs and a real-time collaborative sound board/g,
       meta.description
     );
 

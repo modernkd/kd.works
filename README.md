@@ -1,6 +1,6 @@
 # kd.works
 
-A creative portfolio website featuring a fridge-themed design with interactive elements, built with Vite and TypeScript. Includes a real-time collaborative sound board app powered by PartyKit.
+A creative portfolio website built with React, TypeScript, and running with Vite. Includes a fun little fridge with some easter eggs and a real-time collaborative sound board
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/a2cb806d-c8c9-457b-9e32-52d6a64f9373/deploy-status)](https://app.netlify.com/projects/kds-fridge/deploys)
 
