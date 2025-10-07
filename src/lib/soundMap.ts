@@ -17,7 +17,7 @@ export const soundMap: Record<string, string> = {
   '😮': 'wow.mp3',
   '🎊': 'yahoo.mp3',
   '🎶': 'yodel.mp3',
-  '🎵': 'technologia.m4a',
+  '🤖': 'technologia.m4a',
 };
 
 export const emojis = Object.keys(soundMap);

@@ -3,31 +3,67 @@ import fs from 'fs';
 import path from 'path';
 
 const app = express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 
 // Serve static files
 app.use(express.static(path.resolve('dist')));
 
-// SSR handler for home page only
-app.get('/', async (req, res) => {
-  try {
-    const { render } = await import('./dist/entry-server.js');
-    const { html } = render(req.url);
+// Static meta tag injection for different pages
+const pageMeta = {
+  '/': {
+    title: 'Home | kd davis',
+    description:
+      'A creative portfolio website featuring a fridge-themed design with interactive elements, built with Vite and TypeScript. Includes a real-time collaborative sound board app powered by PartyKit.',
+    image: '/home-screenshot.png',
+  },
+  '/fridge': {
+    title: 'Fridge | kd davis',
+    description:
+      "Interactive fridge-themed contact page with magnetic notes and contact form. Part of kd davis's creative portfolio website.",
+    image: '/fridge-screenshot.png',
+  },
+  '/more-cowbell': {
+    title: 'More Cowbell | kd davis',
+    description:
+      'Real-time collaborative emoji sound board app. Join a room and play sounds together with others in real-time using PartyKit.',
+    image: '/room-screenshot.png',
+  },
+};
 
-    if (html) {
-      // SSR the home page
-      const template = fs.readFileSync(path.resolve('dist/index.html'), 'utf-8');
-      const renderedHtml = template.replace('<div id="root"></div>', `<div id="root">${html}</div>`);
-      res.status(200).set({ 'Content-Type': 'text/html' }).send(renderedHtml);
-    } else {
-      // Client-side routing for more-cowbell routes
-      const template = fs.readFileSync(path.resolve('dist/index.html'), 'utf-8');
-      res.status(200).set({ 'Content-Type': 'text/html' }).send(template);
-    }
-  } catch (error) {
-    console.error('SSR Error:', error);
-    res.status(500).send('Internal Server Error');
-  }
+function handleMetaPage(req, res, meta) {
+  const template = fs.readFileSync(path.resolve('dist/index.html'), 'utf-8');
+
+  let html = template
+    .replace(/<title>.*?<\/title>/, `<title>${meta.title}</title>`)
+    .replace(
+      '<meta property="og:image" content="/og-image.png" />',
+      `<meta property="og:image" content="${meta.image}" />`
+    )
+    .replace(
+      '<meta property="twitter:image" content="/og-image.png" />',
+      `<meta property="twitter:image" content="${meta.image}" />`
+    )
+    .replace('<meta property="og:title" content="kd davis" />', `<meta property="og:title" content="${meta.title}" />`)
+    .replace(
+      '<meta property="twitter:title" content="kd davis" />',
+      `<meta property="twitter:title" content="${meta.title}" />`
+    )
+    .replace(
+      /A creative portfolio website featuring a fridge-themed design with interactive elements, built with Vite and TypeScript\. Includes a real-time collaborative sound board app powered by PartyKit\./g,
+      meta.description
+    );
+
+  res.status(200).set({ 'Content-Type': 'text/html' }).send(html);
+}
+
+app.get('/', (req, res) => {
+  handleMetaPage(req, res, pageMeta['/']);
+});
+app.get('/fridge', (req, res) => {
+  handleMetaPage(req, res, pageMeta['/fridge']);
+});
+app.get('/more-cowbell', (req, res) => {
+  handleMetaPage(req, res, pageMeta['/more-cowbell']);
 });
 
 // Catch-all handler for client-side routing

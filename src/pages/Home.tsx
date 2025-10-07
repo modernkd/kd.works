@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '../hooks/useLocale';
 import { useCookieState } from '../hooks/useCookieState';
+import { MetaTags } from '../hooks/useMetaTags';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import styles from './Home.module.css';
@@ -26,6 +27,12 @@ export default function Portfolio() {
 
   return (
     <>
+      <MetaTags
+        title="Home"
+        description="A creative portfolio website with interactive elements, built with React and TypeScript. Includes a real-time collaborative sound board app powered by PartyKit."
+        image="/home-screenshot.png"
+        url="/"
+      />
       <Header
         showDarkModeToggle={true}
         isDarkMode={isDarkMode}
