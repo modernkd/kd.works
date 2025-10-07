@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
+import PWAInstallPrompt from './components/PWAInstallPrompt';
 
 // Layouts
 const Layout = lazy(() => import('./pages/Layout'));
@@ -28,6 +29,7 @@ function App() {
           <Route path="room/:room" element={<RoomPage />} />
         </Route>
       </Routes>
+      <PWAInstallPrompt />
     </Suspense>
   );
 }

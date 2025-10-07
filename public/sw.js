@@ -1,10 +1,15 @@
-const CACHE_NAME = 'kd-works-v1';
+const CACHE_NAME = 'kd-works-v2';
 const STATIC_CACHE_URLS = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/og-image.png',
-  '/profile.jpeg',
+  '/robots.txt',
+  '/og-image.webp',
+  '/og-image.png', // Fallback for PWA compatibility
+  '/profile.webp',
+  '/home-screenshot.webp',
+  '/fridge-screenshot.webp',
+  '/room-screenshot.webp',
   '/window.svg',
   '/globe.svg',
   '/favicon.svg',
@@ -52,33 +57,106 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Fetch event - serve from cache if available, otherwise network
+// Fetch event - serve from cache with different strategies
 self.addEventListener('fetch', (event) => {
   // Only cache GET requests
   if (event.request.method !== 'GET') return;
 
-  event.respondWith(
-    caches
-      .match(event.request)
-      .then((response) => {
-        // Return cached version or fetch from network
-        return (
-          response ||
-          fetch(event.request).then((networkResponse) => {
-            // Cache successful responses
-            if (networkResponse.status === 200) {
-              const responseClone = networkResponse.clone();
-              caches.open(CACHE_NAME).then((cache) => {
-                cache.put(event.request, responseClone);
-              });
-            }
-            return networkResponse;
-          })
-        );
-      })
-      .catch(() => {
-        // Offline fallback - could return a custom offline page
-        return new Response('Offline', { status: 503, statusText: 'Service Unavailable' });
-      })
-  );
+  const url = new URL(event.request.url);
+
+  // Different caching strategies for different types of resources
+  if (isStaticAsset(event.request)) {
+    // Cache-first strategy for static assets
+    event.respondWith(cacheFirst(event.request));
+  } else if (isImageRequest(event.request)) {
+    // Stale-while-revalidate for images
+    event.respondWith(staleWhileRevalidate(event.request));
+  } else if (isNavigationRequest(event.request)) {
+    // Network-first with fallback for navigation
+    event.respondWith(networkFirstWithFallback(event.request));
+  } else {
+    // Default network-first strategy
+    event.respondWith(networkFirst(event.request));
+  }
 });
+
+// Helper functions for different caching strategies
+async function cacheFirst(request) {
+  const cached = await caches.match(request);
+  return cached || fetch(request);
+}
+
+async function networkFirst(request) {
+  try {
+    const networkResponse = await fetch(request);
+    if (networkResponse.status === 200) {
+      const cache = await caches.open(CACHE_NAME);
+      cache.put(request, networkResponse.clone());
+    }
+    return networkResponse;
+  } catch (error) {
+    const cached = await caches.match(request);
+    return cached || new Response('Offline', { status: 503, statusText: 'Service Unavailable' });
+  }
+}
+
+async function staleWhileRevalidate(request) {
+  const cached = await caches.match(request);
+  const networkFetch = fetch(request)
+    .then((networkResponse) => {
+      if (networkResponse.status === 200) {
+        const cache = caches.open(CACHE_NAME);
+        cache.then((c) => c.put(request, networkResponse.clone()));
+      }
+      return networkResponse;
+    })
+    .catch(() => null);
+
+  return cached || networkFetch;
+}
+
+async function networkFirstWithFallback(request) {
+  try {
+    const networkResponse = await fetch(request);
+    if (networkResponse.status === 200) {
+      const cache = await caches.open(CACHE_NAME);
+      cache.put(request, networkResponse.clone());
+    }
+    return networkResponse;
+  } catch (error) {
+    // Try cache first, then fallback to offline page
+    const cached = await caches.match(request);
+    if (cached) return cached;
+
+    // Return cached index.html as fallback for SPA routing
+    const indexCached = await caches.match('/index.html');
+    return indexCached || new Response('Offline', { status: 503, statusText: 'Service Unavailable' });
+  }
+}
+
+// Helper functions to identify request types
+function isStaticAsset(request) {
+  return (
+    request.url.includes('/assets/') ||
+    request.url.includes('.js') ||
+    request.url.includes('.css') ||
+    request.url.includes('.svg') ||
+    request.url.includes('.ico')
+  );
+}
+
+function isImageRequest(request) {
+  return (
+    request.url.includes('.webp') ||
+    request.url.includes('.avif') ||
+    request.url.includes('.png') ||
+    request.url.includes('.jpg') ||
+    request.url.includes('.jpeg')
+  );
+}
+
+function isNavigationRequest(request) {
+  return (
+    request.mode === 'navigate' || (request.method === 'GET' && request.headers.get('accept').includes('text/html'))
+  );
+}

@@ -30,7 +30,7 @@ export default function Portfolio() {
       <MetaTags
         title="Home"
         description="A creative portfolio website with interactive elements, built with React and TypeScript. Includes a real-time collaborative sound board app powered by PartyKit."
-        image="/home-screenshot.png"
+        image="/home-screenshot.webp"
         url="/"
       />
       <Header
@@ -45,7 +45,7 @@ export default function Portfolio() {
           <div className="markdown">
             <div className={styles.introSection}>
               <img
-                src="/profile.jpeg"
+                src="/profile.webp"
                 width="500"
                 height="700"
                 alt="kd holding some freshly acquired baguettes in Dublin"

@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Sitemap location (if you have one)
+# Sitemap: https://kd.works/sitemap.xml
+
+# Crawl delay for polite crawling
+Crawl-delay: 1

@@ -69,13 +69,21 @@
 .fridgeLink a {
   color: var(--accent);
   text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s ease;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.2s ease;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: 2px solid transparent;
 }
 
 .fridgeLink a:hover {
   color: var(--accent-hover);
-  text-decoration: underline;
+  text-decoration: none;
+  background-color: var(--accent);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(241, 136, 41, 0.3);
 }
 
 /* Mobile responsiveness */
@@ -104,4 +112,20 @@
   .section {
     margin-bottom: 1.5rem;
   }
+
+  .fridgeLink a {
+    font-size: 1rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+
+/* Dark theme support for enhanced psst link */
+[data-theme='dark'] .fridgeLink a {
+  background-color: rgba(77, 171, 247, 0.15);
+  border-color: rgba(77, 171, 247, 0.3);
+}
+
+[data-theme='dark'] .fridgeLink a:hover {
+  background-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(77, 171, 247, 0.4);
 }
