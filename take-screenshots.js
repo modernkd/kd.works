@@ -1,5 +1,5 @@
 import puppeteer from 'puppeteer';
-import { spawn } from 'child_process';
+import sharp from 'sharp';
 
 async function takeScreenshots() {
   console.log('Using existing dev server on port 3000');
@@ -18,10 +18,10 @@ async function takeScreenshots() {
 
   // Pages to screenshot
   const pages = [
-    { path: '/', filename: 'home-screenshot.png' },
-    { path: '/fridge', filename: 'fridge-screenshot.png' },
-    { path: '/more-cowbell', filename: 'more-cowbell-screenshot.png' },
-    { path: '/more-cowbell/room/los-pollos-hermanos', filename: 'room-screenshot.png', nickname: 'walter white' },
+    { path: '/', filename: 'home-screenshot' },
+    { path: '/fridge', filename: 'fridge-screenshot' },
+    { path: '/more-cowbell', filename: 'more-cowbell-screenshot' },
+    { path: '/more-cowbell/room/los-pollos-hermanos', filename: 'room-screenshot', nickname: 'walter white' },
   ];
 
   for (const { path, filename, nickname } of pages) {
@@ -51,20 +51,26 @@ async function takeScreenshots() {
     console.log(`Body preview: "${bodyText}..."`);
     console.log('Taking screenshots...');
 
-    // Take full page screenshot for debugging
-    await page.screenshot({
-      path: `public/${filename.replace('.png', '-full.png')}`,
+    // Take full page screenshot as buffer
+    const fullScreenshotBuffer = await page.screenshot({
       fullPage: true,
+      type: 'png',
     });
 
-    // Take the cropped version for social media
-    await page.screenshot({
-      path: `public/${filename}`,
+    // Convert full screenshot to webp
+    await sharp(fullScreenshotBuffer).webp({ quality: 90 }).toFile(`public/${filename}-full.webp`);
+
+    // Take the cropped version for social media as buffer
+    const croppedScreenshotBuffer = await page.screenshot({
       fullPage: false,
       clip: { x: 0, y: 0, width: 1200, height: 630 },
+      type: 'png',
     });
 
-    console.log(`Saved ${filename}`);
+    // Convert cropped screenshot to webp
+    await sharp(croppedScreenshotBuffer).webp({ quality: 90 }).toFile(`public/${filename}.webp`);
+
+    console.log(`Saved ${filename}.webp (both full and cropped)`);
   }
 
   await browser.close();
