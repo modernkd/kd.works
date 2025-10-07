@@ -23,10 +23,23 @@ export default defineConfig({
         manualChunks: (id) => {
           // Only apply manual chunks for client builds, not SSR
           if (id.includes('node_modules')) {
-            // Keep react and react-dom together to avoid dependency issues
-            if (id.includes('react-dom') || id.includes('react/')) return 'react-vendor';
-            if (id.includes('react-router')) return 'router';
-            if (id.includes('i18next')) return 'i18n';
+            // Critical React core bundle (loaded first)
+            if (id.includes('react/') || id.includes('react-dom/')) {
+              return 'react-core';
+            }
+            // Router bundle (loaded after initial render)
+            if (id.includes('react-router')) {
+              return 'router';
+            }
+            // i18n bundle (can be deferred)
+            if (id.includes('i18next') || id.includes('react-i18next')) {
+              return 'i18n';
+            }
+            // Helmet for meta tags
+            if (id.includes('react-helmet-async')) {
+              return 'helmet';
+            }
+            // Separate chunks for other libraries (lazy loaded)
             if (id.includes('howler')) return 'sounds';
             if (id.includes('partysocket')) return 'partykit';
             if (id.includes('@emailjs')) return 'email';
