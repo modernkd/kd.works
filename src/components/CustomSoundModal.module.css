@@ -161,4 +161,13 @@
 .cancelButton:focus {
   outline: none;
   box-shadow: 0 0 0 2px var(--border);
+
+  .pickerLoading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 350px;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+  }
 }

@@ -1,8 +1,10 @@
-import { useRef } from 'react';
-import Picker from 'emoji-picker-react';
+import { useRef, lazy, Suspense } from 'react';
 import BaseModal from './BaseModal';
 import styles from './CustomSoundModal.module.css';
 import { useTranslation } from 'react-i18next';
+
+// Lazy load the emoji picker to reduce initial bundle size
+const Picker = lazy(() => import('emoji-picker-react'));
 
 interface CustomSoundModalProps {
   isOpen: boolean;
@@ -57,7 +59,9 @@ export default function CustomSoundModal({
     >
       <div className={styles.formGroup}>
         <label className={styles.label}>{t('selectEmoji')}</label>
-        <Picker onEmojiClick={onEmojiSelect} width="100%" height={350} />
+        <Suspense fallback={<div className={styles.pickerLoading}>Loading emoji picker...</div>}>
+          <Picker onEmojiClick={onEmojiSelect} width="100%" height={350} />
+        </Suspense>
         {selectedEmoji && <p className={styles.emojiDisplay}>{selectedEmoji}</p>}
       </div>
 

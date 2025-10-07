@@ -10,12 +10,20 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: true,
+    sourcemap: false, // Disable sourcemaps in production for smaller bundle
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true, // Remove console.logs in production
+        drop_debugger: true,
+      },
+    },
     rollupOptions: {
       output: {
         manualChunks: (id) => {
           // Only apply manual chunks for client builds, not SSR
           if (id.includes('node_modules')) {
+            if (id.includes('react-dom')) return 'react-dom';
             if (id.includes('react')) return 'react';
             if (id.includes('react-router')) return 'router';
             if (id.includes('i18next')) return 'i18n';

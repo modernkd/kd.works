@@ -3,7 +3,7 @@
 :root {
   --font-geist-sans: 'Geist', sans-serif;
   --font-geist-mono: 'Geist Mono', monospace;
-  --font-bungee: 'Bungee', cursive;
+  --font-bungee: 'Bungee', 'Arial Black', sans-serif;
   font-family: var(--font-geist-sans);
   line-height: 1.5;
   font-weight: 400;
