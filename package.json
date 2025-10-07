@@ -11,6 +11,7 @@
     "preview": "vite preview",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "partykit": "npx partykit dev --port 54300",
+    "screenshots": "node take-screenshots.js",
     "prepare": "husky"
   },
   "dependencies": {
@@ -26,6 +27,7 @@
     "puppeteer": "^24.20.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "react-helmet-async": "^2.0.5",
     "react-i18next": "^13.5.0",
     "react-router-dom": "^7.0.2"
   },

@@ -2,6 +2,8 @@
 
 A creative portfolio website featuring a fridge-themed design with interactive elements, built with Vite and TypeScript. Includes a real-time collaborative sound board app powered by PartyKit.
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/a2cb806d-c8c9-457b-9e32-52d6a64f9373/deploy-status)](https://app.netlify.com/projects/kds-fridge/deploys)
+
 ## Features
 
 - **Fridge Portfolio**: Interactive fridge-themed portfolio with little easter eggs
@@ -9,6 +11,23 @@ A creative portfolio website featuring a fridge-themed design with interactive e
 - **Dark Mode**: Toggle between light and dark themes
 - **Internationalization**: Support for multiple languages
 - **Responsive Design**: Works on desktop and mobile devices
+
+## Screenshots
+
+### Homepage
+
+![Homepage](public/home-screenshot-full.png)
+The main portfolio page featuring an introduction, developer journey, and navigation to other sections.
+
+### Fridge Portfolio
+
+![Fridge Portfolio](public/fridge-screenshot-full.png)
+Interactive fridge-themed contact page with magnetic notes, contact form, and family whiteboard.
+
+### More Cowbell Sound Board
+
+![More Cowbell](public/room-screenshot-full.png)
+Real-time collaborative emoji sound board where users can join rooms and play sounds together.
 
 ## Tech Stack
 
@@ -30,7 +49,17 @@ Then, run the development server:
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3001](http://localhost:3001) with your browser to see the result.
+
+## Screenshots
+
+To update screenshots for social media sharing:
+
+```bash
+npm run screenshots
+```
+
+This will start the dev server if needed, capture screenshots of all pages, and update the social media preview images.
 
 ## PartyKit Setup
 

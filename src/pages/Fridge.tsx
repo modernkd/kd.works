@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import Header from '../components/Header';
 import { useLocale } from '../hooks/useLocale';
 import { useCookieState } from '../hooks/useCookieState';
+import { MetaTags } from '../hooks/useMetaTags';
 import styles from './Fridge.module.css';
 
 export default function Fridge() {
@@ -38,6 +39,12 @@ export default function Fridge() {
 
   return (
     <>
+      <MetaTags
+        title="Fridge"
+        description="Interactive fridge-themed contact page with little easter eggs. Part of kd davis's creative portfolio website."
+        image="/fridge-screenshot.png"
+        url="/fridge"
+      />
       <Header
         showDarkModeToggle={true}
         isDarkMode={isDarkMode}
