@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "generate:favicons": "node src/scripts/generateFavicons.js",
+    "build": "npm run generate:favicons && tsc && vite build",
     "build:ssr": "tsc && vite build --ssr src/entry-server.tsx",
     "serve:ssr": "node server.js",
     "preview": "vite preview",
