@@ -30,53 +30,43 @@ const pageMeta = {
   },
 };
 
-app.get(['/', '/fridge', '/more-cowbell'], (req, res) => {
+function handleMetaPage(req, res, meta) {
   const template = fs.readFileSync(path.resolve('dist/index.html'), 'utf-8');
-  const meta = pageMeta[req.path] || pageMeta['/'];
 
-  // Replace title
-  let renderedHtml = template.replace(/<title>.*?<\/title>/, `<title>${meta.title}</title>`);
+  let html = template
+    .replace(/<title>.*?<\/title>/, `<title>${meta.title}</title>`)
+    .replace(
+      '<meta property="og:image" content="/og-image.png" />',
+      `<meta property="og:image" content="${meta.image}" />`
+    )
+    .replace(
+      '<meta property="twitter:image" content="/og-image.png" />',
+      `<meta property="twitter:image" content="${meta.image}" />`
+    )
+    .replace('<meta property="og:title" content="kd davis" />', `<meta property="og:title" content="${meta.title}" />`)
+    .replace(
+      '<meta property="twitter:title" content="kd davis" />',
+      `<meta property="twitter:title" content="${meta.title}" />`
+    )
+    .replace(
+      /A creative portfolio website featuring a fridge-themed design with interactive elements, built with Vite and TypeScript\. Includes a real-time collaborative sound board app powered by PartyKit\./g,
+      meta.description
+    );
 
-  // Replace og:image
-  renderedHtml = renderedHtml.replace(
-    /<meta property="og:image" content="[^"]*" \/>/,
-    `<meta property="og:image" content="${meta.image}" />`
-  );
+  res.status(200).set({ 'Content-Type': 'text/html' }).send(html);
+}
 
-  // Replace twitter:image
-  renderedHtml = renderedHtml.replace(
-    /<meta property="twitter:image" content="[^"]*" \/>/,
-    `<meta property="twitter:image" content="${meta.image}" />`
-  );
-
-  // Replace og:title
-  renderedHtml = renderedHtml.replace(
-    /<meta property="og:title" content="[^"]*" \/>/,
-    `<meta property="og:title" content="${meta.title}" />`
-  );
-
-  // Replace twitter:title
-  renderedHtml = renderedHtml.replace(
-    /<meta property="twitter:title" content="[^"]*" \/>/,
-    `<meta property="twitter:title" content="${meta.title}" />`
-  );
-
-  // Replace og:description
-  renderedHtml = renderedHtml.replace(
-    /<meta property="og:description" content="[^"]*" \/>/,
-    `<meta property="og:description" content="${meta.description}" />`
-  );
-
-  // Replace twitter:description
-  renderedHtml = renderedHtml.replace(
-    /<meta property="twitter:description" content="[^"]*" \/>/,
-    `<meta property="twitter:description" content="${meta.description}" />`
-  );
-
-  res.status(200).set({ 'Content-Type': 'text/html' }).send(renderedHtml);
+app.get('/', (req, res) => {
+  handleMetaPage(req, res, pageMeta['/']);
+});
+app.get('/fridge', (req, res) => {
+  handleMetaPage(req, res, pageMeta['/fridge']);
+});
+app.get('/more-cowbell', (req, res) => {
+  handleMetaPage(req, res, pageMeta['/more-cowbell']);
 });
 
-// Catch-all handler for client-side routing (more-cowbell rooms, etc.)
+// Catch-all handler for client-side routing
 app.use((req, res) => {
   const template = fs.readFileSync(path.resolve('dist/index.html'), 'utf-8');
   res.status(200).set({ 'Content-Type': 'text/html' }).send(template);
