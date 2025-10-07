@@ -1,10 +1,10 @@
-# the-fridge
+# kd.works
 
 A creative portfolio website featuring a fridge-themed design with interactive elements, built with Vite and TypeScript. Includes a real-time collaborative sound board app powered by PartyKit.
 
 ## Features
 
-- **Fridge Portfolio**: Interactive fridge-themed portfolio with contact form and sticky notes
+- **Fridge Portfolio**: Interactive fridge-themed portfolio with little easter eggs
 - **More Cowbell App**: Real-time collaborative sound board for rooms
 - **Dark Mode**: Toggle between light and dark themes
 - **Internationalization**: Support for multiple languages
