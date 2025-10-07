@@ -49,6 +49,7 @@
     "lint-staged": "^16.2.3",
     "prettier": "^3.6.2",
     "sharp": "^0.34.4",
+    "terser": "^5.44.0",
     "typescript": "^5",
     "vite": "^5.0.8"
   },
