@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styles from './Footer.module.css';
 
@@ -63,9 +64,9 @@ function FooterContent({
             >
               LinkedIn
             </a>
-            <a href="https://kd.works" target="_blank" rel="noopener noreferrer" className={styles.footerLink}>
+            <Link to="/" className={styles.footerLink}>
               kd.works
-            </a>
+            </Link>
           </div>
           <div className={styles.languageDropdown} ref={dropdownRef}>
             <button
