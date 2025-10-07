@@ -23,8 +23,8 @@ export default defineConfig({
         manualChunks: (id) => {
           // Only apply manual chunks for client builds, not SSR
           if (id.includes('node_modules')) {
-            // Critical React core bundle (loaded first)
-            if (id.includes('react/') || id.includes('react-dom/')) {
+            // Critical React core bundle (loaded first) - includes helmet to avoid circular deps
+            if (id.includes('react/') || id.includes('react-dom/') || id.includes('react-helmet-async')) {
               return 'react-core';
             }
             // Router bundle (loaded after initial render)
@@ -34,10 +34,6 @@ export default defineConfig({
             // i18n bundle (can be deferred)
             if (id.includes('i18next') || id.includes('react-i18next')) {
               return 'i18n';
-            }
-            // Helmet for meta tags
-            if (id.includes('react-helmet-async')) {
-              return 'helmet';
             }
             // Separate chunks for other libraries (lazy loaded)
             if (id.includes('howler')) return 'sounds';
