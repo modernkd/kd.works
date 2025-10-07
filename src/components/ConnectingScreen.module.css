@@ -2,8 +2,11 @@
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 1rem;
+  text-align: center;
+  color: var(--text-secondary);
 }
 
 .welcomeText {
   color: var(--text-secondary);
+  text-align: center;
 }

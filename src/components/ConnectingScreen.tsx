@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import Card from './Card';
+import PageContainer from './PageContainer';
 import styles from './ConnectingScreen.module.css';
 
 interface ConnectingScreenProps {
@@ -11,13 +12,15 @@ export default function ConnectingScreen({ room, nickname }: ConnectingScreenPro
   const { t } = useTranslation();
 
   return (
-    <Card variant="overlay" centered>
-      <h1 className={styles.title}>
-        {t('connectingTo')} {room}...
-      </h1>
-      <p className={styles.welcomeText}>
-        {t('welcome')}, {nickname}!
-      </p>
-    </Card>
+    <PageContainer>
+      <Card>
+        <h1 className={styles.title}>
+          {t('connectingTo')} {room}...
+        </h1>
+        <p className={styles.welcomeText}>
+          {t('welcome')}, {nickname}!
+        </p>
+      </Card>
+    </PageContainer>
   );
 }

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Card from '../../components/Card';
+import PageContainer from '../../components/PageContainer';
 import { MetaTags } from '../../hooks/useMetaTags';
 import styles from './MoreCowbellPage.module.css';
 
@@ -22,10 +23,10 @@ export default function MoreCowbellHome() {
       <MetaTags
         title="More Cowbell"
         description="Real-time collaborative emoji sound board app. Join a room and play sounds together with others in real-time using PartyKit."
-        image="/room-screenshot.webp"
+        image="/fridge-screenshot.webp"
         url="/more-cowbell"
       />
-      <main className={styles.pageContainer}>
+      <PageContainer>
         <Card>
           <h1 className={styles.title}>{t('moreCowbellTitle')}</h1>
           <p className={styles.description}>{t('moreCowbellDescription')}</p>
@@ -44,7 +45,7 @@ export default function MoreCowbellHome() {
           </form>
           <p className={styles.hint}>{t('moreCowbellHint')}</p>
         </Card>
-      </main>
+      </PageContainer>
     </>
   );
 }
