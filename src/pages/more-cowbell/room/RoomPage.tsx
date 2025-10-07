@@ -220,7 +220,10 @@ export default function RoomPage() {
   const handleEmojiClick = (emoji: string) => {
     const sound = soundMap[emoji] || customSounds[emoji];
     if (sound) {
-      playSound(sound);
+      if (!isOnline || !socketRef.current) {
+        // Play locally only when offline
+        playSound(sound);
+      }
       if (isOnline && socketRef.current) {
         // Send to server if online
         socketRef.current.send(
