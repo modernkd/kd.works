@@ -1,6 +1,3 @@
 [build]
-  command = "npm install && npm run build"
+  command = "npm config set legacy-peer-deps true && npm install && npm run build"
   publish = "dist"
-
-[build.environment]
-  NPM_FLAGS = "--legacy-peer-deps"
