@@ -21,9 +21,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   </React.StrictMode>
 );
 
-// Register service worker for PWA
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
+// Defer service worker registration to avoid blocking initial load
+// Use requestIdleCallback for better performance
+const registerServiceWorker = () => {
+  if ('serviceWorker' in navigator) {
     navigator.serviceWorker
       .register('/sw.js')
       .then((registration) => {
@@ -47,5 +48,15 @@ if ('serviceWorker' in navigator) {
       .catch((registrationError) => {
         console.log('SW registration failed: ', registrationError);
       });
+  }
+};
+
+// Register SW after page load and when browser is idle
+if (window.requestIdleCallback) {
+  window.requestIdleCallback(registerServiceWorker);
+} else {
+  // Fallback for browsers that don't support requestIdleCallback
+  window.addEventListener('load', () => {
+    setTimeout(registerServiceWorker, 1);
   });
 }

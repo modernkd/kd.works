@@ -15,17 +15,23 @@ const resources = {
   },
 };
 
-i18n
-  .use(LanguageDetector)
-  .use(initReactI18next)
-  .init({
-    resources,
-    fallbackLng: 'en',
-    debug: false,
-    detection: {
-      order: ['localStorage', 'cookie', 'htmlTag', 'path', 'subdomain'],
-      caches: ['localStorage', 'cookie'],
-    },
-  });
+// Only initialize i18n in browser environment
+if (typeof window !== 'undefined') {
+  i18n
+    .use(LanguageDetector)
+    .use(initReactI18next)
+    .init({
+      resources,
+      fallbackLng: 'en',
+      debug: false,
+      interpolation: {
+        escapeValue: false, // React already escapes values
+      },
+      detection: {
+        order: ['localStorage', 'cookie', 'htmlTag', 'path', 'subdomain'],
+        caches: ['localStorage', 'cookie'],
+      },
+    });
+}
 
 export default i18n;
