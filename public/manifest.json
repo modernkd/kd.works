@@ -1,16 +1,27 @@
 {
   "name": "kd.works - Portfolio",
   "short_name": "kd.works",
-  "description": "A creative portfolio website featuring a fridge-themed design",
+  "description": "A creative portfolio website featuring a fridge-themed design with interactive elements and real-time sound board",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#F18829",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["portfolio", "creative", "interactive"],
   "icons": [
+    {
+      "src": "/og-image.webp",
+      "sizes": "1200x630",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    },
     {
       "src": "/og-image.png",
       "sizes": "1200x630",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }
