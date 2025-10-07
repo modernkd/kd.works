@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import Card from './Card';
+import PageContainer from './PageContainer';
 import styles from './SignInForm.module.css';
 
 interface SignInFormProps {
@@ -13,7 +14,7 @@ export default function SignInForm({ room, nickname, setNickname, onSignIn }: Si
   const { t } = useTranslation();
 
   return (
-    <section className={styles.formSection}>
+    <PageContainer>
       <Card>
         <h1 className={styles.title}>{t('roomJoinTitle', { room })}</h1>
         <form
@@ -37,6 +38,6 @@ export default function SignInForm({ room, nickname, setNickname, onSignIn }: Si
           </button>
         </form>
       </Card>
-    </section>
+    </PageContainer>
   );
 }

@@ -4,6 +4,7 @@ import { StaticRouter } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
+import LoadingScreen from './components/LoadingScreen';
 import './index.css';
 import './globals.css';
 // Note: i18n is not imported in SSR to avoid issues
@@ -22,7 +23,7 @@ export function render(url: string) {
     <React.StrictMode>
       <HelmetProvider context={helmetContext}>
         <StaticRouter location={url}>
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<LoadingScreen />}>
             <Routes>
               <Route path="/" element={<Layout />}>
                 <Route index element={<Home />} />

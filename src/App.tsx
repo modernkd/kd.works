@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import PWAInstallPrompt from './components/PWAInstallPrompt';
+import LoadingScreen from './components/LoadingScreen';
 
 // Layouts
 const Layout = lazy(() => import('./pages/Layout'));
@@ -14,7 +15,7 @@ const RoomPage = lazy(() => import('./pages/more-cowbell/room/RoomPage'));
 
 function App() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LoadingScreen />}>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
