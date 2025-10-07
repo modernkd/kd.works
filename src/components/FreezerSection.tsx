@@ -7,10 +7,8 @@ import DarkModeToggle from './DarkModeToggle';
 import FridgeHandle from './FridgeHandle';
 import styles from './FreezerSection.module.css';
 
-import { Locale } from '../../i18n';
-
 interface FreezerSectionProps {
-  setLocale: (lang: Locale) => void;
+  setLocale: (lang: 'en' | 'sv') => void;
   onDarkModeToggle: () => void;
   isDarkMode: boolean;
 }
