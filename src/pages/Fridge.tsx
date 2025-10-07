@@ -48,7 +48,7 @@ export default function Fridge() {
         linkText="Home"
       />
       {isLeavingNote && <div className={styles.backdrop} onClick={() => setIsLeavingNote(false)} />}
-      <div className={styles.fridgeContainer}>
+      <main className={styles.fridgeContainer}>
         <div className={`${styles.fridgeBody} ${isLeavingNote ? styles.open : ''}`} onClick={handleFridgeClick}>
           {/* Shadow Left */}
           <div className={styles.fridgeShadowLeft} />
@@ -67,7 +67,7 @@ export default function Fridge() {
           <ContactForm isVisible={isLeavingNote} onClose={() => setIsLeavingNote(false)} />
           <div className={styles.fridgeGlow} />
         </div>
-      </div>
+      </main>
       <Footer locale={locale} onLocaleChange={setLocale} />
     </>
   );

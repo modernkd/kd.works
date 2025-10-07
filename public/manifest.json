@@ -1,0 +1,16 @@
+{
+  "name": "kd.works - Portfolio",
+  "short_name": "kd.works",
+  "description": "A creative portfolio website featuring a fridge-themed design",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#F18829",
+  "icons": [
+    {
+      "src": "/og-image.png",
+      "sizes": "1200x630",
+      "type": "image/png"
+    }
+  ]
+}

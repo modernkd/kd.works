@@ -15,7 +15,7 @@ export default function FridgeSection({ isDarkMode, handleNoteTaking, isFormOpen
   const { t } = useTranslation();
 
   return (
-    <div className={styles.fridgeSection}>
+    <section className={styles.fridgeSection}>
       <div className={styles.fridgeContent}>
         <div className={styles.fridgeHandleContainer}>
           <FridgeHandle />
@@ -33,6 +33,6 @@ export default function FridgeSection({ isDarkMode, handleNoteTaking, isFormOpen
         </div>
         <div className={styles.fridgeHighlightRight} />
       </div>
-    </div>
+    </section>
   );
 }

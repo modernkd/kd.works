@@ -20,4 +20,16 @@
 .usersText {
   font-size: 0.875rem;
   color: var(--text-secondary);
+  .status {
+    margin-left: 0.5rem;
+    font-size: 1rem;
+  }
+
+  .online {
+    color: #10b981;
+  }
+
+  .offline {
+    color: #ef4444;
+  }
 }

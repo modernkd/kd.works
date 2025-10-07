@@ -12,6 +12,8 @@
   "contactErrorMessage": "Failed to send note. Please try again.",
   "contactMessagePlaceholder": "Your Message",
   "contactNamePlaceholder": "Your Name",
+  "contactQueuedMessage": "You're offline. Note queued and will be sent when you're back online.",
+  "contactQueuedSentMessage": "Queued notes have been sent!",
   "contactSendButton": "Send Note",
   "contactSendingButton": "Sending...",
   "contactSuccessMessage": "Note sent successfully!",
@@ -59,5 +61,11 @@
   "userLeftRoom": "{{name}} left the room",
   "userPlayedSound": "{{name}} played {{emoji}}",
   "userUpdatedCustomSound": "{{name}} updated custom sound: {{emoji}}",
+  "offlineMode": "Offline Mode",
+  "offlineModeMessage": "Offline mode - sounds play locally",
+  "playedSoundOffline": "Played {{emoji}} locally",
+  "customSoundAddedOffline": "Added custom sound {{emoji}} locally",
+  "customSoundUpdatedOffline": "Updated custom sound {{emoji}} locally",
+  "customSoundDeletedOffline": "Deleted custom sound {{emoji}} locally",
   "welcome": "Welcome"
 }
