@@ -5,6 +5,7 @@ interface RoomHeaderProps {
   room: string;
   nickname: string;
   users: { id: string; name: string }[];
+  isOnline?: boolean;
 }
 
 function getDisplayNames(users: { id: string; name: string }[]) {
@@ -25,13 +26,22 @@ function getDisplayNames(users: { id: string; name: string }[]) {
   });
 }
 
-export default function RoomHeader({ room, nickname, users }: RoomHeaderProps) {
+export default function RoomHeader({ room, nickname, users, isOnline = true }: RoomHeaderProps) {
   const { t } = useTranslation();
   return (
     <header className={styles.header}>
-      <h1 className={styles.title}>{t('roomTitle', { room })}</h1>
+      <h1 className={styles.title}>
+        {t('roomTitle', { room })}
+        <span className={`${styles.status} ${isOnline ? styles.online : styles.offline}`}>
+          {isOnline ? '🟢' : '🔴'}
+        </span>
+      </h1>
       <p className={styles.welcomeText}>{t('roomWelcome', { nickname })}</p>
-      <p className={styles.usersText}>{t('roomUsers', { users: getDisplayNames(users).join(', ') })}</p>
+      {isOnline ? (
+        <p className={styles.usersText}>{t('roomUsers', { users: getDisplayNames(users).join(', ') })}</p>
+      ) : (
+        <p className={styles.usersText}>{t('offlineMode')}</p>
+      )}
     </header>
   );
 }

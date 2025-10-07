@@ -16,7 +16,7 @@ interface FreezerSectionProps {
 export default function FreezerSection({ setLocale, onDarkModeToggle, isDarkMode }: FreezerSectionProps) {
   const { t } = useTranslation();
   return (
-    <div className={styles.freezerSection}>
+    <section className={styles.freezerSection}>
       <a href="/more-cowbell" className={styles.cowbellMagnet}>
         🐮🛎️
       </a>
@@ -42,6 +42,6 @@ export default function FreezerSection({ setLocale, onDarkModeToggle, isDarkMode
         <FridgeHandle />
       </div>
       <div className={styles.freezerHighlightRight} />
-    </div>
+    </section>
   );
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import emailjs from '@emailjs/browser';
 import styles from './ContactForm.module.css';
@@ -8,6 +8,8 @@ interface ContactFormProps {
   onClose: () => void;
 }
 
+const QUEUED_SUBMISSIONS_KEY = 'queuedContactSubmissions';
+
 export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
   const [formData, setFormData] = useState({
     name: '',
@@ -16,7 +18,56 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
     title: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
   const { t } = useTranslation();
+
+  // Update online status
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
+  // Process queued submissions when coming online
+  useEffect(() => {
+    if (isOnline) {
+      processQueuedSubmissions();
+    }
+  }, [isOnline]);
+
+  const processQueuedSubmissions = async () => {
+    const queued = JSON.parse(localStorage.getItem(QUEUED_SUBMISSIONS_KEY) || '[]');
+    if (queued.length === 0) return;
+
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    if (!serviceId || !templateId || !publicKey) return;
+
+    const remaining = [];
+    for (const submission of queued) {
+      try {
+        await emailjs.send(serviceId, templateId, submission, publicKey);
+        // Success, don't add to remaining
+      } catch (error) {
+        console.error('Failed to send queued submission:', error);
+        remaining.push(submission);
+      }
+    }
+
+    localStorage.setItem(QUEUED_SUBMISSIONS_KEY, JSON.stringify(remaining));
+    if (remaining.length === 0) {
+      alert(t('contactQueuedSentMessage'));
+    }
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -43,18 +94,27 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
       return;
     }
 
+    const submissionData = {
+      name: formData.name,
+      email: formData.email,
+      message: formData.message,
+      title: formData.title || 'No Title',
+    };
+
+    if (!isOnline) {
+      // Queue for later
+      const queued = JSON.parse(localStorage.getItem(QUEUED_SUBMISSIONS_KEY) || '[]');
+      queued.push(submissionData);
+      localStorage.setItem(QUEUED_SUBMISSIONS_KEY, JSON.stringify(queued));
+      alert(t('contactQueuedMessage'));
+      setFormData({ name: '', email: '', message: '', title: '' });
+      setIsSubmitting(false);
+      onClose();
+      return;
+    }
+
     try {
-      await emailjs.send(
-        serviceId,
-        templateId,
-        {
-          name: formData.name,
-          email: formData.email,
-          message: formData.message,
-          title: formData.title || 'No Title',
-        },
-        publicKey
-      );
+      await emailjs.send(serviceId, templateId, submissionData, publicKey);
       alert(t('contactSuccessMessage'));
     } catch (error) {
       console.error('Email send error:', error);
@@ -73,7 +133,7 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
   };
 
   return (
-    <div className={styles.contactForm} onClick={handleFormClick}>
+    <aside className={styles.contactForm} onClick={handleFormClick}>
       <h3 className={styles.contactTitle}>{t('contactTitle')}</h3>
       <form onSubmit={handleSubmit} className={styles.contactFormElement}>
         <input
@@ -115,6 +175,6 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
           {isSubmitting ? t('contactSendingButton') : t('contactSendButton')}
         </button>
       </form>
-    </div>
+    </aside>
   );
 }

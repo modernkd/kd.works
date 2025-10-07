@@ -17,7 +17,7 @@ export default function MoreCowbellHome() {
   };
 
   return (
-    <div className={styles.pageContainer}>
+    <main className={styles.pageContainer}>
       <Card>
         <h1 className={styles.title}>{t('moreCowbellTitle')}</h1>
         <p className={styles.description}>{t('moreCowbellDescription')}</p>
@@ -36,6 +36,6 @@ export default function MoreCowbellHome() {
         </form>
         <p className={styles.hint}>{t('moreCowbellHint')}</p>
       </Card>
-    </div>
+    </main>
   );
 }

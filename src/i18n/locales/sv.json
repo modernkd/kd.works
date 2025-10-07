@@ -12,6 +12,8 @@
   "contactErrorMessage": "Misslyckades att skicka lappen. Försök igen.",
   "contactMessagePlaceholder": "Ditt meddelande",
   "contactNamePlaceholder": "Ditt namn",
+  "contactQueuedMessage": "Du är offline. Lappen köas och skickas när du är tillbaka online.",
+  "contactQueuedSentMessage": "Köade lappar har skickats!",
   "contactSendButton": "Skicka lapp",
   "contactSendingButton": "Skickar...",
   "contactSuccessMessage": "Lappen skickades framgångsrikt!",
@@ -59,5 +61,11 @@
   "userLeftRoom": "{{name}} lämnade rummet",
   "userPlayedSound": "{{name}} spelade {{emoji}}",
   "userUpdatedCustomSound": "{{name}} uppdaterade anpassat ljud: {{emoji}}",
+  "offlineMode": "Offline-läge",
+  "offlineModeMessage": "Offline-läge - ljud spelas lokalt",
+  "playedSoundOffline": "Spelade {{emoji}} lokalt",
+  "customSoundAddedOffline": "Lade till anpassat ljud {{emoji}} lokalt",
+  "customSoundUpdatedOffline": "Uppdaterade anpassat ljud {{emoji}} lokalt",
+  "customSoundDeletedOffline": "Tog bort anpassat ljud {{emoji}} lokalt",
   "welcome": "Välkommen"
 }

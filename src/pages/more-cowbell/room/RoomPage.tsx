@@ -48,6 +48,7 @@ export default function RoomPage() {
   const [nickname, setNickname] = useState('');
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [users, setUsers] = useState<User[]>([]);
   const [messages, setMessages] = useState<AppMessage[]>([]);
   const [customSounds, setCustomSounds] = useState<Record<string, string>>({});
@@ -136,35 +137,68 @@ export default function RoomPage() {
     }
   }, []);
 
+  // Online/offline detection
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
+  // Load custom sounds from localStorage
+  useEffect(() => {
+    const savedCustomSounds = localStorage.getItem(`customSounds_${room}`);
+    if (savedCustomSounds) {
+      try {
+        setCustomSounds(JSON.parse(savedCustomSounds));
+      } catch (error) {
+        console.error('Failed to parse saved custom sounds:', error);
+      }
+    }
+  }, [room]);
+
   useEffect(() => {
     if (isSignedIn && room && nickname.trim()) {
-      if (socketRef.current) {
-        socketRef.current.close();
-      }
+      if (isOnline) {
+        // Online: connect to PartyKit
+        if (socketRef.current) {
+          socketRef.current.close();
+        }
 
-      const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-      const socket = new PartySocket({
-        host: isLocalhost ? `${window.location.hostname}:54300` : 'more-cowbell.modernkd.partykit.dev',
-        room: room,
-      });
+        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const socket = new PartySocket({
+          host: isLocalhost ? `${window.location.hostname}:54300` : 'more-cowbell.modernkd.partykit.dev',
+          room: room,
+        });
 
-      socket.addEventListener('open', () => {
+        socket.addEventListener('open', () => {
+          setIsConnected(true);
+          socket.send(JSON.stringify({ type: 'join', name: nickname }));
+        });
+
+        socket.addEventListener('message', (event) => {
+          const message: Message = JSON.parse(event.data);
+          handleMessage(message);
+        });
+
+        socket.addEventListener('close', () => {
+          setIsConnected(false);
+        });
+
+        socketRef.current = socket;
+      } else {
+        // Offline: simulate connection
         setIsConnected(true);
-        socket.send(JSON.stringify({ type: 'join', name: nickname }));
-      });
-
-      socket.addEventListener('message', (event) => {
-        const message: Message = JSON.parse(event.data);
-        handleMessage(message);
-      });
-
-      socket.addEventListener('close', () => {
-        setIsConnected(false);
-      });
-
-      socketRef.current = socket;
+        addMessage(setMessages, t('offlineModeMessage'), 'join');
+      }
     }
-  }, [isSignedIn, room, nickname, handleMessage]);
+  }, [isSignedIn, room, nickname, handleMessage, isOnline, t]);
 
   useEffect(() => {
     const timers = messages.map((msg) => {
@@ -185,14 +219,24 @@ export default function RoomPage() {
 
   const handleEmojiClick = (emoji: string) => {
     const sound = soundMap[emoji] || customSounds[emoji];
-    if (socketRef.current && sound) {
-      socketRef.current.send(
-        JSON.stringify({
-          type: 'sound',
-          emoji,
-          sound,
-        })
-      );
+    if (sound) {
+      if (!isOnline || !socketRef.current) {
+        // Play locally only when offline
+        playSound(sound);
+      }
+      if (isOnline && socketRef.current) {
+        // Send to server if online
+        socketRef.current.send(
+          JSON.stringify({
+            type: 'sound',
+            emoji,
+            sound,
+          })
+        );
+      } else {
+        // Offline: show local message
+        addMessage(setMessages, t('playedSoundOffline', { emoji }), 'sound');
+      }
     }
   };
 
@@ -201,25 +245,30 @@ export default function RoomPage() {
   };
 
   const handleUploadSubmit = () => {
-    if (selectedEmoji && selectedFile && socketRef.current) {
+    if (selectedEmoji && selectedFile) {
       const reader = new FileReader();
       reader.onload = (e) => {
         const dataUrl = e.target?.result as string;
-        if (isEditing) {
-          socketRef.current!.send(
+        setCustomSounds((prev) => {
+          const newSounds = { ...prev, [selectedEmoji]: dataUrl };
+          localStorage.setItem(`customSounds_${room}`, JSON.stringify(newSounds));
+          return newSounds;
+        });
+        if (isOnline && socketRef.current) {
+          // Send to server if online
+          socketRef.current.send(
             JSON.stringify({
-              type: 'editCustomSound',
+              type: isEditing ? 'editCustomSound' : 'addCustomSound',
               emoji: selectedEmoji,
               sound: dataUrl,
             })
           );
         } else {
-          socketRef.current!.send(
-            JSON.stringify({
-              type: 'addCustomSound',
-              emoji: selectedEmoji,
-              sound: dataUrl,
-            })
+          // Offline: show local message
+          addMessage(
+            setMessages,
+            t(isEditing ? 'customSoundUpdatedOffline' : 'customSoundAddedOffline', { emoji: selectedEmoji }),
+            'custom'
           );
         }
         closeModal();
@@ -259,13 +308,23 @@ export default function RoomPage() {
   };
 
   const handleDelete = (emoji: string) => {
-    if (socketRef.current) {
+    setCustomSounds((prev) => {
+      const newSounds = { ...prev };
+      delete newSounds[emoji];
+      localStorage.setItem(`customSounds_${room}`, JSON.stringify(newSounds));
+      return newSounds;
+    });
+    if (isOnline && socketRef.current) {
+      // Send to server if online
       socketRef.current.send(
         JSON.stringify({
           type: 'deleteCustomSound',
           emoji,
         })
       );
+    } else {
+      // Offline: show local message
+      addMessage(setMessages, t('customSoundDeletedOffline', { emoji }), 'custom');
     }
     closeManageModal();
   };
@@ -301,7 +360,7 @@ export default function RoomPage() {
               ))}
           </div>
 
-          <RoomHeader room={room || ''} nickname={nickname} users={users} />
+          <RoomHeader room={room || ''} nickname={nickname} users={users} isOnline={isOnline} />
 
           <EmojiSoundBoard
             emojis={emojis}
