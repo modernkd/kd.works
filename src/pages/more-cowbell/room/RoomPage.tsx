@@ -5,6 +5,7 @@ import PartySocket from 'partysocket';
 import { Howl } from 'howler';
 import { soundMap, emojis } from '../../../lib/soundMap';
 import { addMessage } from '../../../utils/messageUtils';
+import { MetaTags } from '../../../hooks/useMetaTags';
 
 import SignInForm from '../../../components/SignInForm';
 import ConnectingScreen from '../../../components/ConnectingScreen';
@@ -349,6 +350,12 @@ export default function RoomPage() {
 
   return (
     <>
+      <MetaTags
+        title={`Room: ${room}`}
+        description="Real-time collaborative emoji sound board. Play sounds together with others in this room using PartyKit."
+        image="/room-screenshot.webp"
+        url={`/more-cowbell/room/${room}`}
+      />
       <main className={styles.main}>
         <div className={styles.container}>
           <div className={styles.messages}>

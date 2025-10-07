@@ -36,12 +36,12 @@ function handleMetaPage(req, res, meta) {
   let html = template
     .replace(/<title>.*?<\/title>/, `<title>${meta.title}</title>`)
     .replace(
-      '<meta property="og:image" content="/og-image.webp" />',
-      `<meta property="og:image" content="${meta.image}" />`
+      '<meta property="og:image" content="https://kd.works/og-image.webp" />',
+      `<meta property="og:image" content="https://kd.works${meta.image}" />`
     )
     .replace(
-      '<meta property="twitter:image" content="/og-image.webp" />',
-      `<meta property="twitter:image" content="${meta.image}" />`
+      '<meta property="twitter:image" content="https://kd.works/og-image.webp" />',
+      `<meta property="twitter:image" content="https://kd.works${meta.image}" />`
     )
     .replace('<meta property="og:title" content="kd davis" />', `<meta property="og:title" content="${meta.title}" />`)
     .replace(
