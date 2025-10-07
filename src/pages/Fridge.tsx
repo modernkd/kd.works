@@ -42,7 +42,7 @@ export default function Fridge() {
       <MetaTags
         title="Fridge"
         description="Interactive fridge-themed contact page with little easter eggs. Part of kd davis's creative portfolio website."
-        image="/fridge-screenshot.png"
+        image="/fridge-screenshot.webp"
         url="/fridge"
       />
       <Header

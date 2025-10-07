@@ -14,19 +14,19 @@ const pageMeta = {
     title: 'Home | kd davis',
     description:
       'A creative portfolio website built with React, TypeScript, and running with Vite. Includes a fun little fridge with some easter eggs and a real-time collaborative sound board',
-    image: '/home-screenshot.png',
+    image: '/home-screenshot.webp',
   },
   '/fridge': {
     title: 'Fridge | kd davis',
     description:
       "Interactive fridge-themed contact page with magnetic notes and contact form. Part of kd davis's creative portfolio website.",
-    image: '/fridge-screenshot.png',
+    image: '/fridge-screenshot.webp',
   },
   '/more-cowbell': {
     title: 'More Cowbell | kd davis',
     description:
       'Real-time collaborative emoji sound board app. Join a room and play sounds together with others in real-time using PartyKit.',
-    image: '/room-screenshot.png',
+    image: '/room-screenshot.webp',
   },
 };
 
@@ -36,11 +36,11 @@ function handleMetaPage(req, res, meta) {
   let html = template
     .replace(/<title>.*?<\/title>/, `<title>${meta.title}</title>`)
     .replace(
-      '<meta property="og:image" content="/og-image.png" />',
+      '<meta property="og:image" content="/og-image.webp" />',
       `<meta property="og:image" content="${meta.image}" />`
     )
     .replace(
-      '<meta property="twitter:image" content="/og-image.png" />',
+      '<meta property="twitter:image" content="/og-image.webp" />',
       `<meta property="twitter:image" content="${meta.image}" />`
     )
     .replace('<meta property="og:title" content="kd davis" />', `<meta property="og:title" content="${meta.title}" />`)

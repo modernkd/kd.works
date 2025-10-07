@@ -17,6 +17,7 @@
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@types/howler": "^2.2.12",
+    "dotenv": "^17.2.3",
     "emoji-picker-react": "^4.13.3",
     "express": "^5.1.0",
     "howler": "^2.2.4",
@@ -46,6 +47,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.2.3",
     "prettier": "^3.6.2",
+    "sharp": "^0.34.4",
     "typescript": "^5",
     "vite": "^5.0.8"
   },

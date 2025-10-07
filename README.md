@@ -16,17 +16,17 @@ A creative portfolio website built with React, TypeScript, and running with Vite
 
 ### Homepage
 
-![Homepage](public/home-screenshot-full.png)
+![Homepage](public/home-screenshot-full.webp)
 The main portfolio page featuring an introduction, developer journey, and navigation to other sections.
 
 ### Fridge Portfolio
 
-![Fridge Portfolio](public/fridge-screenshot-full.png)
+![Fridge Portfolio](public/fridge-screenshot-full.webp)
 Interactive fridge-themed contact page with magnetic notes, contact form, and family whiteboard.
 
 ### More Cowbell Sound Board
 
-![More Cowbell](public/room-screenshot-full.png)
+![More Cowbell](public/room-screenshot-full.webp)
 Real-time collaborative emoji sound board where users can join rooms and play sounds together.
 
 ## Tech Stack
