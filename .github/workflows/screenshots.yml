@@ -1,0 +1,164 @@
+name: Take Screenshots
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  screenshots:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Start development server
+        run: |
+          npm run dev &
+          sleep 10
+
+      - name: Start partykit server
+        run: |
+          npm run partykit &
+          sleep 10
+
+      - name: Take screenshots
+        run: node src/scripts/take-screenshots.js
+
+      - name: Compare screenshots with base branch
+        id: compare_screenshots
+        run: |
+          # Fetch the base branch to ensure we have it
+          git fetch origin ${{ github.event.pull_request.base.ref }} --depth=1
+
+          # Get the base branch commit
+          BASE_SHA=$(git rev-parse origin/${{ github.event.pull_request.base.ref }})
+
+          # Create a directory for comparison
+          mkdir -p screenshot_comparison
+
+          # Compare each screenshot
+          CHANGED_SCREENSHOTS=""
+          for screenshot in public/*-screenshot-full.webp; do
+            filename=$(basename "$screenshot")
+            base_file="screenshot_comparison/${filename}"
+
+            # Try to get the base version of the screenshot
+            if git show "${BASE_SHA}:${screenshot}" > "$base_file" 2>/dev/null; then
+              # Use pixelmatch for accurate visual comparison
+              if command -v pixelmatch >/dev/null 2>&1; then
+                # Create diff image
+                pixelmatch "$screenshot" "$base_file" "diff_${filename}.png" 0.1 0 0
+                # Check if diff image has any non-transparent pixels
+                if [ -f "diff_${filename}.png" ]; then
+                  # Use ImageMagick to check if diff has changes
+                  has_changes=$(convert "diff_${filename}.png" -format "%[fx:mean>0?1:0]" info:)
+                  if [ "$has_changes" = "1" ]; then
+                    CHANGED_SCREENSHOTS="${CHANGED_SCREENSHOTS} ${filename}"
+                  fi
+                fi
+              else
+                # Fallback: compare file sizes
+                if [ "$(stat -f%z "$screenshot")" != "$(stat -f%z "$base_file")" ]; then
+                  CHANGED_SCREENSHOTS="${CHANGED_SCREENSHOTS} ${filename}"
+                fi
+              fi
+            else
+              # New screenshot (doesn't exist in base)
+              CHANGED_SCREENSHOTS="${CHANGED_SCREENSHOTS} ${filename}"
+            fi
+          done
+
+          # Set output for next step
+          echo "changed_screenshots=${CHANGED_SCREENSHOTS}" >> $GITHUB_OUTPUT
+
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: public/*-screenshot*.webp
+
+      - name: Generate PR Description
+        run: |
+          CHANGED_SCREENSHOTS="${{ steps.compare_screenshots.outputs.changed_screenshots }}"
+
+          if [ -n "$CHANGED_SCREENSHOTS" ]; then
+            {
+              echo "<!-- SCREENSHOTS_START -->"
+              echo "## Screenshots"
+              echo ""
+              echo "### Changed Screenshots"
+            } > pr_description.md
+
+            for screenshot in $CHANGED_SCREENSHOTS; do
+              case $screenshot in
+                "home-screenshot-full.webp")
+                  {
+                    echo ""
+                    echo "### Home Page"
+                    echo "![Home Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/home-screenshot-full.webp)"
+                  } >> pr_description.md
+                  ;;
+                "fridge-screenshot-full.webp")
+                  {
+                    echo ""
+                    echo "### Fridge Page"
+                    echo "![Fridge Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/fridge-screenshot-full.webp)"
+                  } >> pr_description.md
+                  ;;
+                "more-cowbell-screenshot-full.webp")
+                  {
+                    echo ""
+                    echo "### More Cowbell Page"
+                    echo "![More Cowbell Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/more-cowbell-screenshot-full.webp)"
+                  } >> pr_description.md
+                  ;;
+                "room-screenshot-full.webp")
+                  {
+                    echo ""
+                    echo "### Room Page"
+                    echo "![Room Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/room-screenshot-full.webp)"
+                  } >> pr_description.md
+                  ;;
+              esac
+            done
+
+            {
+              echo ""
+              echo "*Screenshots are also available as [workflow artifacts](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for download.*"
+              echo "<!-- SCREENSHOTS_END -->"
+            } >> pr_description.md
+          else
+            {
+              echo "<!-- SCREENSHOTS_START -->"
+              echo "No visual changes detected in screenshots."
+              echo "<!-- SCREENSHOTS_END -->"
+            } > pr_description.md
+          fi
+
+      - name: Update PR Description
+        uses: nefrob/pr-description@v1.2.0
+        with:
+          content: pr_description.md
+          contentIsFilePath: true
+          regex: '<!-- SCREENSHOTS_START -->.*?<!-- SCREENSHOTS_END -->'
+          regexFlags: ims
+          token: ${{ secrets.GITHUB_TOKEN }}
