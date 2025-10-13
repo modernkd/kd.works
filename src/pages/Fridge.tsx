@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
-import FreezerSection from '../components/FreezerSection';
-import FridgeSection from '../components/FridgeSection';
-import ContactForm from '../components/ContactForm';
-import Footer from '../components/Footer';
-import Header from '../components/Header';
+import FridgeDoor from '../components/fridge/FridgeDoor';
+import ContactForm from '../components/modals/ContactForm';
+import Footer from '../components/ui/Footer';
+import Header from '../components/ui/Header';
 import { useLocale } from '../hooks/useLocale';
 import { useCookieState } from '../hooks/useCookieState';
 import { MetaTags } from '../hooks/useMetaTags';
@@ -13,6 +12,8 @@ export default function Fridge() {
   const [isLeavingNote, setIsLeavingNote] = useState(false);
   const [locale, setLocale] = useLocale();
   const [isDarkMode, setIsDarkMode] = useCookieState<boolean>('darkMode', false);
+  const [isFreezerOpen, setIsFreezerOpen] = useState(false);
+  const [isFridgeOpen, setIsFridgeOpen] = useState(false);
 
   // Update theme attribute on document element
   useEffect(() => {
@@ -23,12 +24,65 @@ export default function Fridge() {
     }
   }, [isDarkMode]);
 
+  // Handle theme changes from fridge items
+  const handleThemeChange = (theme: string) => {
+    // Apply theme-specific CSS variables
+    const root = document.documentElement;
+    switch (theme) {
+      case 'red':
+        root.style.setProperty('--fridge-body-bg', '#ff4444');
+        root.style.setProperty('--fridge-border', '#cc0000');
+        root.style.setProperty('--fridge-bg-primary', '#ffe6e6');
+        root.style.setProperty('--fridge-shadow', '#cc0000');
+        break;
+      case 'orange':
+        root.style.setProperty('--fridge-body-bg', '#f57b34');
+        root.style.setProperty('--fridge-border', '#ff8c00');
+        root.style.setProperty('--fridge-bg-primary', '#fff4e6');
+        root.style.setProperty('--fridge-shadow', '#ff8c00');
+        break;
+      case 'blue':
+        root.style.setProperty('--fridge-body-bg', '#4444ff');
+        root.style.setProperty('--fridge-border', '#0000cc');
+        root.style.setProperty('--fridge-bg-primary', '#e6e6ff');
+        root.style.setProperty('--fridge-shadow', '#0000cc');
+        break;
+      case 'yellow':
+        root.style.setProperty('--fridge-body-bg', '#ffff44');
+        root.style.setProperty('--fridge-border', '#cccc00');
+        root.style.setProperty('--fridge-bg-primary', '#ffffe6');
+        root.style.setProperty('--fridge-shadow', '#cccc00');
+        break;
+      default:
+        // Reset to default orange theme
+        root.style.setProperty('--fridge-body-bg', '#f57b34');
+        root.style.setProperty('--fridge-border', '#ff8c00');
+        root.style.setProperty('--fridge-bg-primary', '#fff4e6');
+        root.style.setProperty('--fridge-shadow', '#ff8c00');
+        break;
+    }
+  };
+
   const handleNoteTaking = () => {
     setIsLeavingNote(!isLeavingNote);
   };
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
+  };
+
+  const handleFreezerToggle = () => {
+    setIsFreezerOpen(!isFreezerOpen);
+    if (isFridgeOpen) {
+      setIsFridgeOpen(false);
+    }
+  };
+
+  const handleFridgeToggle = () => {
+    setIsFridgeOpen(!isFridgeOpen);
+    if (isFreezerOpen) {
+      setIsFreezerOpen(false);
+    }
   };
 
   const handleFridgeClick = () => {
@@ -65,10 +119,18 @@ export default function Fridge() {
           <div className={styles.fridgeTopShadow} />
 
           {/* Fridge Door Content */}
-          <div className={styles.fridgeDoorContent}>
-            <FreezerSection setLocale={setLocale} onDarkModeToggle={toggleDarkMode} isDarkMode={isDarkMode} />
-            <FridgeSection isDarkMode={isDarkMode} handleNoteTaking={handleNoteTaking} isFormOpen={isLeavingNote} />
-          </div>
+          <FridgeDoor
+            setLocale={setLocale}
+            onDarkModeToggle={toggleDarkMode}
+            isDarkMode={isDarkMode}
+            isFreezerOpen={isFreezerOpen}
+            onFreezerToggle={handleFreezerToggle}
+            handleNoteTaking={handleNoteTaking}
+            isFormOpen={isLeavingNote}
+            isFridgeOpen={isFridgeOpen}
+            onFridgeToggle={handleFridgeToggle}
+            onThemeChange={handleThemeChange}
+          />
 
           {/* Contact Form */}
           <ContactForm isVisible={isLeavingNote} onClose={() => setIsLeavingNote(false)} />

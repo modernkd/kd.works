@@ -14,11 +14,11 @@ export default class Server implements Party.Server {
 
   users: Map<string, User> = new Map();
 
-  onConnect(conn: Party.Connection) {
+  onConnect() {
     try {
-      // console.log(`Connected: id: ${conn.id}, room: ${this.room.id}`);
-    } catch (error) {
-      // console.error(`Error in onConnect:`, error);
+      // console.log(`Connected: room: ${this.room.id}`);
+    } catch {
+      // console.error(`Error in onConnect`);
     }
   }
 
@@ -108,8 +108,8 @@ export default class Server implements Party.Server {
           );
         }
       }
-    } catch (e) {
-      // console.error("Error in onMessage:", e);
+    } catch {
+      // console.error("Error in onMessage");
       // console.error("Invalid message:", message);
     }
   }

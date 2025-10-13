@@ -33,16 +33,6 @@
   box-shadow: 0 0 0 2px var(--accent);
 }
 
-.input.darkTheme {
-  background-color: var(--surface-dark-hover);
-  border-color: var(--border-dark-secondary);
-  color: var(--text-dark);
-}
-
-.input.darkTheme:focus {
-  box-shadow: 0 0 0 2px var(--accent-blue);
-}
-
 .button {
   width: 100%;
   background-color: var(--accent);
@@ -59,22 +49,10 @@
   transform: translateY(-1px);
 }
 
-.button.darkTheme {
-  background-color: var(--accent-blue);
-}
-
-.button.darkTheme:hover {
-  background-color: var(--accent-blue-hover);
-}
-
 .hint {
   font-size: 0.875rem;
   color: var(--text-muted);
   margin-top: 1rem;
   text-align: center;
   transition: color 0.3s ease;
-}
-
-.hint.darkTheme {
-  color: var(--text-dark-secondary);
 }

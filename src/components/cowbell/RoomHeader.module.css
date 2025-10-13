@@ -1,0 +1,43 @@
+.header {
+  background-color: var(--background);
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.titleRow {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.welcomeText {
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.usersText {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  .status {
+    margin-left: 0.5rem;
+    font-size: 1rem;
+  }
+
+  .online {
+    color: #10b981;
+  }
+
+  .offline {
+    color: #ef4444;
+  }
+}

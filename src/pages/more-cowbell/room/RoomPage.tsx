@@ -7,13 +7,22 @@ import { soundMap, emojis } from '../../../lib/soundMap';
 import { addMessage } from '../../../utils/messageUtils';
 import { MetaTags } from '../../../hooks/useMetaTags';
 
-import SignInForm from '../../../components/SignInForm';
-import ConnectingScreen from '../../../components/ConnectingScreen';
-import Message from '../../../components/Message';
-import RoomHeader from '../../../components/RoomHeader';
-import EmojiSoundBoard from '../../../components/EmojiSoundBoard';
-import CustomSoundModal from '../../../components/CustomSoundModal';
-import ManageCustomSoundsModal from '../../../components/ManageCustomSoundsModal';
+// Play cowbell sound when entering the room
+const playCowbellSound = () => {
+  const sound = new Howl({
+    src: ['/sounds/gotta-have-more-cowbell.mp3'],
+    volume: 0.7,
+  });
+  sound.play();
+};
+
+import SignInForm from '../../../components/modals/SignInForm';
+import ConnectingScreen from '../../../components/modals/ConnectingScreen';
+import Message from '../../../components/cowbell/Message';
+import RoomHeader from '../../../components/cowbell/RoomHeader';
+import EmojiSoundBoard from '../../../components/cowbell/EmojiSoundBoard';
+import CustomSoundModal from '../../../components/modals/CustomSoundModal';
+import ManageCustomSoundsModal from '../../../components/modals/ManageCustomSoundsModal';
 import styles from './RoomPage.module.css';
 
 interface User {
@@ -46,6 +55,13 @@ export default function RoomPage() {
     }
   }, [room, navigate]);
 
+  // Play cowbell sound when component mounts (user enters room)
+  useEffect(() => {
+    if (room) {
+      playCowbellSound();
+    }
+  }, [room]);
+
   const [nickname, setNickname] = useState('');
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
@@ -61,65 +77,68 @@ export default function RoomPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const socketRef = useRef<PartySocket | null>(null);
 
-  const handleMessage = useCallback((message: Message) => {
-    if (message.type === 'usersList') {
-      setUsers(message.users || []);
-    } else if (message.type === 'userJoined') {
-      setUsers((prev) => [...prev, message.user!]);
-      addMessage(setMessages, t('userJoinedRoom', { name: message.user?.name || 'Someone' }), 'join');
-    } else if (message.type === 'userLeft') {
-      setUsers((prev) => prev.filter((u) => u.id !== message.user!.id));
-      addMessage(setMessages, t('userLeftRoom', { name: message.user?.name || 'Someone' }), 'leave');
-    } else if (message.type === 'soundPlayed') {
-      playSound(message.sound!);
-      addMessage(
-        setMessages,
-        t('userPlayedSound', {
-          name: message.user?.name || 'Someone',
-          emoji: message.emoji,
-        }),
-        'sound'
-      );
-    } else if (message.type === 'customSoundAdded') {
-      setCustomSounds((prev) => ({
-        ...prev,
-        [message.emoji!]: message.sound!,
-      }));
-      if (message.user) {
+  const handleMessage = useCallback(
+    (message: Message) => {
+      if (message.type === 'usersList') {
+        setUsers(message.users || []);
+      } else if (message.type === 'userJoined') {
+        setUsers((prev) => [...prev, message.user!]);
+        addMessage(setMessages, t('userJoinedRoom', { name: message.user?.name || 'Someone' }), 'join');
+      } else if (message.type === 'userLeft') {
+        setUsers((prev) => prev.filter((u) => u.id !== message.user!.id));
+        addMessage(setMessages, t('userLeftRoom', { name: message.user?.name || 'Someone' }), 'leave');
+      } else if (message.type === 'soundPlayed') {
+        playSound(message.sound!);
         addMessage(
           setMessages,
-          t('userAddedCustomSound', {
-            name: message.user!.name,
+          t('userPlayedSound', {
+            name: message.user?.name || 'Someone',
             emoji: message.emoji,
           }),
-          'custom'
+          'sound'
         );
+      } else if (message.type === 'customSoundAdded') {
+        setCustomSounds((prev) => ({
+          ...prev,
+          [message.emoji!]: message.sound!,
+        }));
+        if (message.user) {
+          addMessage(
+            setMessages,
+            t('userAddedCustomSound', {
+              name: message.user!.name,
+              emoji: message.emoji,
+            }),
+            'custom'
+          );
+        }
+      } else if (message.type === 'customSoundDeleted') {
+        const emoji = message.emoji!;
+        setCustomSounds((prev) => {
+          const newSounds = { ...prev };
+          delete newSounds[emoji];
+          return newSounds;
+        });
+        addMessage(setMessages, t('customSoundDeleted', { emoji }), 'custom');
+      } else if (message.type === 'customSoundUpdated') {
+        setCustomSounds((prev) => ({
+          ...prev,
+          [message.emoji!]: message.sound!,
+        }));
+        if (message.user) {
+          addMessage(
+            setMessages,
+            t('userUpdatedCustomSound', {
+              name: message.user!.name,
+              emoji: message.emoji,
+            }),
+            'custom'
+          );
+        }
       }
-    } else if (message.type === 'customSoundDeleted') {
-      const emoji = message.emoji!;
-      setCustomSounds((prev) => {
-        const newSounds = { ...prev };
-        delete newSounds[emoji];
-        return newSounds;
-      });
-      addMessage(setMessages, t('customSoundDeleted', { emoji }), 'custom');
-    } else if (message.type === 'customSoundUpdated') {
-      setCustomSounds((prev) => ({
-        ...prev,
-        [message.emoji!]: message.sound!,
-      }));
-      if (message.user) {
-        addMessage(
-          setMessages,
-          t('userUpdatedCustomSound', {
-            name: message.user!.name,
-            emoji: message.emoji,
-          }),
-          'custom'
-        );
-      }
-    }
-  }, []);
+    },
+    [t]
+  );
 
   const playSound = (soundFile: string) => {
     const src = soundFile.startsWith('data:') ? [soundFile] : [`/sounds/${soundFile}`];
@@ -374,6 +393,7 @@ export default function RoomPage() {
             customSounds={customSounds}
             onEmojiClick={handleEmojiClick}
             onManageClick={openManageModal}
+            filterFoodEmojis={true}
           />
         </div>
       </main>

@@ -1,4 +1,4 @@
-export interface AppMessage {
+interface AppMessage {
   id: string;
   text: string;
   type: 'join' | 'leave' | 'sound' | 'custom';
