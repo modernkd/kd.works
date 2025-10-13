@@ -24,7 +24,9 @@ export default function FreezerSection({
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onFreezerToggle();
+    if (isFreezerOpen) {
+      onFreezerToggle();
+    }
   };
 
   // Snow animation effect
@@ -121,7 +123,7 @@ export default function FreezerSection({
       </div>
 
       {/* Freezer Door - rotates */}
-      <div className={`${styles.freezerDoor} ${isFreezerOpen ? styles.open : ''}`} onClick={onFreezerToggle}>
+      <div className={`${styles.freezerDoor} ${isFreezerOpen ? styles.open : ''}`} onClick={handleClick}>
         <a href="/more-cowbell" className={styles.cowbellMagnet}>
           🐮🛎️
         </a>
@@ -148,7 +150,7 @@ export default function FreezerSection({
           <DarkModeToggle isDarkMode={isDarkMode} onToggle={onDarkModeToggle} />
         </div>
         <div className={styles.fridgeHandleContainer}>
-          <div className={styles.fridgeHandle} onClick={handleClick} />
+          <div className={styles.fridgeHandle} onClick={() => onFreezerToggle()} />
         </div>
         <div className={styles.freezerHighlightRight} />
       </div>

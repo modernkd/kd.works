@@ -27,12 +27,13 @@ export default function FridgeSection({
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onFridgeToggle();
+    if (isFridgeOpen) {
+      onFridgeToggle();
+    }
   };
 
   const playSound = (emoji: string) => {
     const soundFile = soundMap[emoji] || 'sparkles.mp3';
-    console.log(`Playing sound for ${emoji}: ${soundFile}`);
 
     // Simple, direct approach - just try to play the sound
     const audio = new Audio(`/sounds/${soundFile}`);
@@ -42,7 +43,6 @@ export default function FridgeSection({
       console.error(`Failed to play ${soundFile} for ${emoji}:`, error);
       // Fallback to sparkles if the specific sound fails
       if (soundFile !== 'sparkles.mp3') {
-        console.log('Trying sparkles fallback...');
         const fallbackAudio = new Audio('/sounds/sparkles.mp3');
         fallbackAudio.volume = 0.5;
         fallbackAudio.play().catch((fallbackError) => {
@@ -172,10 +172,10 @@ export default function FridgeSection({
       </div>
 
       {/* Fridge Door - rotates */}
-      <div className={`${styles.fridgeDoor} ${isFridgeOpen ? styles.open : ''}`} onClick={onFridgeToggle}>
+      <div className={`${styles.fridgeDoor} ${isFridgeOpen ? styles.open : ''}`} onClick={handleClick}>
         <div className={styles.fridgeContent}>
           <div className={styles.fridgeHandleContainer}>
-            <div className={styles.fridgeHandle} onClick={handleClick} />
+            <div className={styles.fridgeHandle} onClick={() => onFridgeToggle()} />
           </div>
           <div className={styles.magnetTextContainer}>
             <MagnetText text={t('fridgeMainText')} size="medium" />
