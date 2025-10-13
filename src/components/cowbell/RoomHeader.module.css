@@ -12,6 +12,14 @@
   margin-bottom: 0.5rem;
 }
 
+.titleRow {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
 .welcomeText {
   color: var(--text-primary);
   margin-bottom: 0.5rem;

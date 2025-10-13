@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import emailjs from '@emailjs/browser';
 import styles from './ContactForm.module.css';
@@ -40,9 +40,9 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
     if (isOnline) {
       processQueuedSubmissions();
     }
-  }, [isOnline]);
+  }, [isOnline, processQueuedSubmissions]);
 
-  const processQueuedSubmissions = async () => {
+  const processQueuedSubmissions = useCallback(async () => {
     const queued = JSON.parse(localStorage.getItem(QUEUED_SUBMISSIONS_KEY) || '[]');
     if (queued.length === 0) return;
 
@@ -67,7 +67,7 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
     if (remaining.length === 0) {
       alert(t('contactQueuedSentMessage'));
     }
-  };
+  }, [t]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

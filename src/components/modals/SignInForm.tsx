@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import Card from './Card';
-import PageContainer from './PageContainer';
+import PageContainer from '../ui/PageContainer';
 import styles from './SignInForm.module.css';
 
 interface SignInFormProps {

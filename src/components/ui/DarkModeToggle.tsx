@@ -38,15 +38,39 @@ export default function DarkModeToggle({ isDarkMode, onToggle }: DarkModeToggleP
       title="Toggle theme"
     >
       <div className={`${styles.toggleContainer} ${isDarkMode ? styles.dark : styles.light}`}>
-        <svg width="32" height="32" viewBox="0 0 32 32" className={`${styles.toggleIcon} ${styles.expandIcon}`}>
+        <svg width="32" height="32" viewBox="0 0 64 64" className={`${styles.toggleIcon} ${styles.expandIcon}`}>
           <defs>
             <clipPath id={`moon-cutout-${isDarkMode ? 'dark' : 'light'}`}>
-              <path d="M0-11h25a1 1 0 0017 13v30H0Z" />
+              <path d="M0-22h50a2 2 0 0034 26v60H0Z" />
             </clipPath>
           </defs>
+          {/* Sun for light mode */}
+          {!isDarkMode && (
+            <g className={styles.sunIcon}>
+              <g fill="#ffe62e">
+                <path d="M20.5 59.7l7-7.2c-2.5-.5-4.8-1.5-6.9-2.9l-.1 10.1"></path>
+                <path d="M43.5 4.3l-7 7.2c2.5.5 4.8 1.5 6.9 2.9l.1-10.1"></path>
+                <path d="M4.3 43.5l10.1-.1C13 41.3 12 39 11.5 36.5l-7.2 7"></path>
+                <path d="M59.7 20.5l-10.1.1c1.3 2.1 2.3 4.4 2.9 6.9l7.2-7"></path>
+                <path d="M4.3 20.5l7.2 7c.5-2.5 1.5-4.8 2.9-6.9l-10.1-.1"></path>
+                <path d="M59.7 43.5l-7.2-7c-.5 2.5-1.5 4.8-2.9 6.9l10.1.1"></path>
+                <path d="M20.5 4.3l.1 10.1c2.1-1.3 4.4-2.3 6.9-2.9l-7-7.2"></path>
+                <path d="M43.5 59.7l-.1-10.1C41.3 51 39 52 36.5 52.5l7 7.2"></path>
+              </g>
+              <g fill="#ffce31">
+                <path d="M14.8 44l-4 9.3l9.3-4C18 47.8 16.2 46 14.8 44"></path>
+                <path d="M49.2 20l4-9.3l-9.2 4c2 1.5 3.8 3.3 5.2 5.3"></path>
+                <path d="M11.4 28.3L2 32l9.4 3.7c-.3-1.2-.4-2.4-.4-3.7s.1-2.5.4-3.7"></path>
+                <path d="M52.6 35.7L62 32l-9.4-3.7c.2 1.2.4 2.5.4 3.7c0 1.3-.1 2.5-.4 3.7"></path>
+                <path d="M20 14.8l-9.3-4l4 9.3c1.5-2.1 3.3-3.9 5.3-5.3"></path>
+                <path d="M44 49.2l9.3 4l-4-9.3C47.8 46 46 47.8 44 49.2"></path>
+                <path d="M35.7 11.4L32 2l-3.7 9.4c1.2-.2 2.5-.4 3.7-.4s2.5.1 3.7.4"></path>
+                <path d="M28.3 52.6L32 62l3.7-9.4c-1.2.3-2.4.4-3.7.4s-2.5-.1-3.7-.4"></path>
+                <circle cx="32" cy="32" r="19"></circle>
+              </g>
+            </g>
+          )}
           <g clipPath={`url(#moon-cutout-${isDarkMode ? 'dark' : 'light'})`}>
-            {/* Sun for light mode */}
-            {!isDarkMode && <circle cx="16" cy="16" r="8.4" fill="#ffd700" className={styles.celestialBody} />}
             {/* Crescent moon for dark mode */}
             {isDarkMode && (
               <g className={styles.crescentMoon}>
@@ -62,30 +86,15 @@ export default function DarkModeToggle({ isDarkMode, onToggle }: DarkModeToggleP
                 </defs>
                 {/* Crescent moon shape using path */}
                 <path
-                  d="M 24.4 16 A 8.4 8.4 0 0 1 16 24.4 A 8.4 8.4 0 0 1 7.6 16 A 8.4 8.4 0 0 1 16 7.6 A 6 6 0 0 0 24.4 16 Z"
+                  d="M 48.8 32 A 16.8 16.8 0 0 1 32 48.8 A 16.8 16.8 0 0 1 15.2 32 A 16.8 16.8 0 0 1 32 15.2 A 12 12 0 0 0 48.8 32 Z"
                   fill="url(#moonGradient)"
                   filter="url(#moonShadow)"
                 />
                 {/* Moon craters for texture */}
-                <circle cx="12" cy="12" r="1.2" fill="#e0e0e0" opacity="0.8" />
-                <circle cx="18" cy="14" r="0.8" fill="#e0e0e0" opacity="0.6" />
-                <circle cx="14" cy="18" r="1" fill="#e0e0e0" opacity="0.7" />
+                <circle cx="24" cy="24" r="2.4" fill="#e0e0e0" opacity="0.8" />
+                <circle cx="36" cy="28" r="1.6" fill="#e0e0e0" opacity="0.6" />
+                <circle cx="28" cy="36" r="2" fill="#e0e0e0" opacity="0.7" />
               </g>
-            )}
-            {/* Sun rays for light mode */}
-            {!isDarkMode && (
-              <>
-                <g stroke="#ff8c00" strokeWidth="1.5" fill="none" className={styles.sunRays}>
-                  <line x1="16" y1="4" x2="16" y2="8" />
-                  <line x1="16" y1="24" x2="16" y2="28" />
-                  <line x1="4" y1="16" x2="8" y2="16" />
-                  <line x1="24" y1="16" x2="28" y2="16" />
-                  <line x1="8.7" y1="8.7" x2="11.3" y2="11.3" />
-                  <line x1="20.7" y1="20.7" x2="23.3" y2="23.3" />
-                  <line x1="23.3" y1="8.7" x2="20.7" y2="11.3" />
-                  <line x1="11.3" y1="20.7" x2="8.7" y2="23.3" />
-                </g>
-              </>
             )}
           </g>
         </svg>

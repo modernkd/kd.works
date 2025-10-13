@@ -6,10 +6,19 @@ interface EmojiSoundBoardProps {
   customSounds: Record<string, string>;
   onEmojiClick: (emoji: string) => void;
   onManageClick: () => void;
+  filterFoodEmojis?: boolean;
 }
 
-export default function EmojiSoundBoard({ emojis, customSounds, onEmojiClick, onManageClick }: EmojiSoundBoardProps) {
-  const allEmojis = [...emojis, ...Object.keys(customSounds)];
+export default function EmojiSoundBoard({
+  emojis,
+  customSounds,
+  onEmojiClick,
+  onManageClick,
+  filterFoodEmojis,
+}: EmojiSoundBoardProps) {
+  const foodEmojis = ['🍌', '🍎', '🍕', '🍦', '🍺', '🥕', '🥛', '🥤', '🧃', '🫐'];
+  const filteredEmojis = filterFoodEmojis ? emojis.filter((emoji) => !foodEmojis.includes(emoji)) : emojis;
+  const allEmojis = [...filteredEmojis, ...Object.keys(customSounds)];
   const { t } = useTranslation();
 
   return (

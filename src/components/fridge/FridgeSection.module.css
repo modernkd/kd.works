@@ -1,0 +1,311 @@
+.fridgeSection {
+  position: relative;
+  border: 6px solid var(--fridge-border);
+  border-top: none;
+  border-bottom-right-radius: var(--fridge-outer-border-radius);
+  border-bottom-left-radius: var(--fridge-outer-border-radius);
+  transform-style: preserve-3d;
+  min-height: min-content;
+}
+
+.fridgeDoor {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: var(--fridge-body-bg);
+  border: 2px solid var(--fridge-border);
+  border-top: 4px solid #777777;
+  border-top-right-radius: 0.1rem;
+  border-bottom-right-radius: var(--fridge-inner-border-radius);
+  border-bottom-left-radius: var(--fridge-inner-border-radius);
+  transform-style: preserve-3d;
+  transform-origin: left center;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  z-index: -1;
+}
+
+.fridgeDoor.open {
+  transform: perspective(2000px) rotateY(-120deg);
+}
+
+.fridgeDoor > * {
+  transition: opacity 0.2s ease-in-out 0.3s;
+}
+
+.fridgeDoor.open > * {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.fridgeContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  height: min-content;
+}
+
+.magnetTextContainer {
+  max-width: 26rem;
+}
+
+.whiteboardContainer {
+  margin-top: 0.75rem;
+}
+
+.fridgeHandleContainer {
+  position: absolute;
+  top: 5%;
+  right: 2%;
+  z-index: 20;
+}
+
+.stickyNoteContainer {
+  display: flex;
+  margin-right: -60%;
+}
+
+.stickyNoteContainer.hidden {
+  visibility: hidden;
+}
+
+.fridgeHighlightRight {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 16px;
+  height: 100%;
+  background: linear-gradient(to left, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
+  border-bottom-right-radius: var(--fridge-outer-border-radius);
+  border-top-right-radius: var(--fridge-inner-border-radius);
+  pointer-events: none;
+
+  [data-theme='dark'] & {
+    background: linear-gradient(to left, rgba(239, 236, 213, 0.8), rgba(239, 236, 213, 0));
+  }
+}
+
+.fridgeInterior {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  border-bottom-right-radius: var(--fridge-inner-border-radius);
+  border-bottom-left-radius: var(--fridge-inner-border-radius);
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out 0.4s;
+  z-index: -1;
+}
+
+.fridgeInterior.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.fridgeSection.open .fridgeInterior {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.shelf {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.8) 10%,
+    rgba(255, 255, 255, 0.8) 90%,
+    transparent 100%
+  );
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.topShelf {
+  top: 25%;
+}
+
+.middleShelf {
+  top: 55%;
+}
+
+.bottomShelf {
+  top: 85%;
+}
+
+.shelfItems {
+  position: absolute;
+  left: 15%;
+  display: flex;
+  gap: 1.5rem;
+  width: 70%;
+  transform: translateY(-100%);
+  animation: fadeInUp 0.6s ease-out;
+  justify-content: space-around;
+}
+
+.topShelfItems {
+  top: 27%;
+  animation-delay: 0.1s;
+}
+
+.middleShelfItems {
+  top: 57%;
+  animation-delay: 0.2s;
+}
+
+.bottomShelfItems {
+  top: 87%;
+  animation-delay: 0.3s;
+}
+
+.fridgeItem {
+  font-size: 3rem;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  animation: float 3s ease-in-out infinite;
+}
+
+.fridgeItem:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.4));
+}
+
+.fridgeItem:active {
+  transform: scale(0.95);
+}
+
+.fridgeItem.clicked {
+  animation: bounce 0.3s ease-in-out;
+}
+
+.duffBeer {
+  animation-delay: 0s;
+}
+
+.orangeJuice {
+  animation-delay: 0.5s;
+}
+
+.apple {
+  animation-delay: 1s;
+}
+
+.banana {
+  animation-delay: 1.5s;
+}
+
+.carrot {
+  animation-delay: 2s;
+}
+
+.milk {
+  animation-delay: 2.5s;
+}
+
+.pizza {
+  animation-delay: 3s;
+}
+
+.iceCream {
+  animation-delay: 3.5s;
+}
+
+.smoothie {
+  animation-delay: 4s;
+}
+
+.blueberries {
+  animation-delay: 4.5s;
+}
+
+.fridgeHandle {
+  width: 4rem;
+  height: 1rem;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 5px;
+  clip-path: polygon(0 25%, 100% 10%, 100% 90%, 0 75%);
+  background: linear-gradient(to right, var(--handle-main), var(--handle-main) 80%, var(--fridge-bg-tertiary) 80%);
+  box-shadow: inset -1px 0px 4px 0px #777777;
+  transition: transform 0.2s ease-in-out;
+}
+
+.fridgeHandle:hover {
+  transform: scale(1.05);
+}
+
+.fridgeHandle:active {
+  transform: scale(0.95);
+}
+
+.stickyNote {
+  height: 4rem;
+  width: 4rem;
+  background-color: var(--sticky-note);
+  border: 2px solid var(--sticky-note-border);
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  padding: 3px;
+  transform: rotate(-5deg);
+  transition: transform 0.2s ease-in-out;
+}
+
+.stickyNote:hover {
+  transform: rotate(-5deg) scale(1.05);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}

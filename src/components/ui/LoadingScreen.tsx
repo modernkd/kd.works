@@ -1,4 +1,4 @@
-import Card from './Card';
+import Card from '../modals/Card';
 import PageContainer from './PageContainer';
 import styles from './LoadingScreen.module.css';
 

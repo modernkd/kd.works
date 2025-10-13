@@ -1,0 +1,278 @@
+.freezerSection {
+  position: relative;
+  height: 30rem;
+  border: 6px solid var(--fridge-border);
+  border-top-right-radius: var(--fridge-outer-border-radius);
+  border-top-left-radius: var(--fridge-outer-border-radius);
+  border-bottom: none;
+  transform-style: preserve-3d;
+}
+
+.freezerDoor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 2px solid var(--fridge-border);
+  border-bottom: 4px solid #777777;
+  background-color: var(--fridge-body-bg);
+  border-top-right-radius: var(--fridge-inner-border-radius);
+  border-top-left-radius: var(--fridge-inner-border-radius);
+  border-bottom-right-radius: 0.2rem;
+  transform-style: preserve-3d;
+  transform-origin: left center;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+.freezerDoor.open {
+  transform: perspective(2000px) rotateY(-120deg);
+}
+
+.freezerDoor > * {
+  transition: opacity 0.3s ease-in-out 0.2s;
+}
+
+.freezerDoor.open > * {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.freezerSection.open {
+  transform: perspective(2000px) rotateY(-120deg);
+}
+
+.cowbellMagnet {
+  display: block;
+  background-color: #48a860;
+  color: #333;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  text-decoration: none;
+  border: 3px solid #ff8c00;
+  width: max-content;
+  position: absolute;
+  top: 80%;
+  left: 30%;
+  transform: rotate(6deg);
+  transition: transform 0.2s ease-in-out;
+  z-index: 2;
+}
+
+.cowbellMagnet:hover {
+  transform: rotate(12deg) scale(1.05);
+}
+
+.magnetTextContainer {
+  max-width: 98%;
+  z-index: 2;
+}
+
+.mooseMagnetContainer {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: rotate(3deg);
+  z-index: 2;
+}
+
+.eagleMagnetContainer {
+  position: absolute;
+  top: 50%;
+  left: 65%;
+  transform: rotate(9deg);
+  z-index: 2;
+}
+
+.darkModeMagnetContainer {
+  position: absolute;
+  top: 60%;
+  left: 10%;
+  z-index: 2;
+}
+.fridgeHandleContainer {
+  position: absolute;
+  top: 90%;
+  right: 2%;
+}
+.freezerHighlightRight {
+  position: absolute;
+  top: 0%;
+  right: 0;
+  width: 16px;
+  height: 100%;
+  background: linear-gradient(to left, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
+  border-top-right-radius: var(--fridge-inner-border-radius);
+  border-bottom-right-radius: var(--fridge-inner-border-radius);
+
+  [data-theme='dark'] & {
+    background: linear-gradient(to left, rgba(239, 236, 213, 0.8), rgba(239, 236, 213, 0));
+  }
+}
+
+.freezerInterior {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, #f1f5f6 0%, #e4ebeb 100%);
+  border-top-right-radius: var(--fridge-inner-border-radius);
+  border-top-left-radius: var(--fridge-inner-border-radius);
+
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out 0.4s;
+  z-index: -1;
+}
+
+.freezerInterior.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.snowContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.snowflake {
+  position: absolute;
+  top: -10px;
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+}
+
+.snowman {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.snowmanBody {
+  width: 40px;
+  height: 40px;
+  background: white;
+  border-radius: 50%;
+  position: relative;
+  margin-bottom: 5px;
+}
+
+.snowmanHead {
+  width: 30px;
+  height: 30px;
+  background: white;
+  border-radius: 50%;
+  position: relative;
+  margin: 0 auto 5px;
+}
+
+.snowmanEyes {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 4px;
+  height: 4px;
+  background: black;
+  border-radius: 50%;
+}
+
+.snowmanEyes::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 8px;
+  width: 4px;
+  height: 4px;
+  background: black;
+  border-radius: 50%;
+}
+
+.snowmanNose {
+  position: absolute;
+  top: 12px;
+  left: 15px;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 8px solid #ff8c00;
+  transform: rotate(90deg);
+}
+
+.fridgeHandle {
+  width: 4rem;
+  height: 1rem;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 5px;
+  clip-path: polygon(0 25%, 100% 10%, 100% 90%, 0 75%);
+  background: linear-gradient(to right, var(--handle-main), var(--handle-main) 80%, var(--fridge-bg-tertiary) 80%);
+  box-shadow: inset -1px 0px 4px 0px #777777;
+  transition: transform 0.2s ease-in-out;
+}
+
+.fridgeHandle:hover {
+  transform: scale(1.05);
+}
+
+.fridgeHandle:active {
+  transform: scale(0.95);
+}
+
+.mooseMagnet {
+  display: block;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  border: none;
+  cursor: pointer;
+  width: max-content;
+  transition: transform 0.2s ease-in-out;
+  background:
+    linear-gradient(to right, transparent 40%, #fecb00 40%, #fecb00 60%, transparent 60%),
+    linear-gradient(to bottom, transparent 40%, #fecb00 40%, #fecb00 60%, transparent 60%), #005293;
+}
+
+.mooseMagnet:hover {
+  transform: scale(1.05);
+}
+
+.eagleMagnet {
+  display: block;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  border: none;
+  cursor: pointer;
+  width: max-content;
+  transition: transform 0.2s ease-in-out;
+  background-color: #b22222;
+}
+
+.eagleMagnet:hover {
+  background-color: #a02020;
+  transform: scale(1.05);
+}

@@ -13,7 +13,8 @@
 
 .footerTop {
   display: flex;
-  justify-content: space-between;
+  flex-flow: row wrap;
+  justify-content: space-around;
   align-items: center;
   margin-bottom: 1rem;
 }

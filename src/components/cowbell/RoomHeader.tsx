@@ -30,12 +30,14 @@ export default function RoomHeader({ room, nickname, users, isOnline = true }: R
   const { t } = useTranslation();
   return (
     <header className={styles.header}>
-      <h1 className={styles.title}>
-        {t('roomTitle', { room })}
+      <span className={styles.titleRow}>
+        <h1 className={styles.title}>
+          <span>{t('roomTitle', { room })}</span>
+        </h1>
         <span className={`${styles.status} ${isOnline ? styles.online : styles.offline}`}>
-          {isOnline ? '🟢' : '🔴'}
+          {isOnline ? '🟢 Connected' : '🔴 Offline'}
         </span>
-      </h1>
+      </span>
       <p className={styles.welcomeText}>{t('roomWelcome', { nickname })}</p>
       {isOnline ? (
         <p className={styles.usersText}>{t('roomUsers', { users: getDisplayNames(users).join(', ') })}</p>

@@ -11,6 +11,10 @@
   transition:
     background-color 0.3s ease,
     border-color 0.3s ease;
+
+  @media screen and (max-width: 600px) {
+    height: 60px;
+  }
 }
 
 /* Dark theme background */
@@ -35,43 +39,14 @@
   transition: color 0.3s ease;
   text-decoration: none;
   cursor: pointer;
+
+  @media screen and (max-width: 600px) {
+    font-size: 1rem;
+  }
 }
 
 .siteTitle h1 {
   margin: 0;
-}
-
-.languageSwitcher {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.langButton {
-  background: none;
-  border: none;
-  font-size: 1rem;
-  font-weight: 600;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-  color: var(--text-secondary);
-}
-
-.langButton:hover {
-  background: var(--surface-hover);
-  color: var(--text-primary);
-}
-
-.langButton.active {
-  background: #0070f3;
-  color: white;
-}
-
-.separator {
-  color: var(--text-muted);
-  font-weight: normal;
 }
 
 .backLink {
@@ -89,10 +64,15 @@
 }
 
 .navigationContainer {
-  width: 20rem;
+  width: auto;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+
+  @media screen and (max-width: 600px) {
+    width: auto;
+    gap: 0.5rem;
+  }
 }
 
 .darkModeToggleContainer {
@@ -103,17 +83,4 @@
 /* Dark theme styles - consolidated */
 [data-theme='dark'] .siteTitle {
   color: #fff;
-}
-
-[data-theme='dark'] .langButton {
-  color: #ccc;
-}
-
-[data-theme='dark'] .langButton:hover {
-  background: #333;
-  color: #fff;
-}
-
-[data-theme='dark'] .separator {
-  color: #666;
 }
