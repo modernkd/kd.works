@@ -5,6 +5,10 @@ on:
     branches: [main]
     types: [opened, synchronize, reopened]
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   screenshots:
     runs-on: ubuntu-latest
@@ -54,15 +58,15 @@ jobs:
             New screenshots have been generated for this pull request:
 
             ### Home Page
-            ![Home Screenshot](https://github.com/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/home-screenshot-full.webp)
+            ![Home Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/home-screenshot.webp)
 
             ### Fridge Page
-            ![Fridge Screenshot](https://github.com/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/fridge-screenshot-full.webp)
+            ![Fridge Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/fridge-screenshot.webp)
 
             ### More Cowbell Page
-            ![More Cowbell Screenshot](https://github.com/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/more-cowbell-screenshot-full.webp)
+            ![More Cowbell Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/more-cowbell-screenshot.webp)
 
             ### Room Page
-            ![Room Screenshot](https://github.com/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/room-screenshot-full.webp)
+            ![Room Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/room-screenshot.webp)
 
             *Screenshots are also available as [workflow artifacts](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for download.*
