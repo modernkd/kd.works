@@ -49,7 +49,7 @@ function FooterContent({
         <div className={styles.footerTop}>
           <div className={styles.footerLinks}>
             <a
-              href="https://github.com/modernkd"
+              href="https://github.com/modernkd/kd.works"
               target="_blank"
               rel="noopener noreferrer"
               className={styles.footerLink}
