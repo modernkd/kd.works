@@ -63,18 +63,21 @@ jobs:
 
             # Try to get the base version of the screenshot
             if git show "${BASE_SHA}:${screenshot}" > "$base_file" 2>/dev/null; then
-              # Compare file sizes first (quick check)
-              if [ "$(stat -f%z "$screenshot")" != "$(stat -f%z "$base_file")" ]; then
-                CHANGED_SCREENSHOTS="${CHANGED_SCREENSHOTS} ${filename}"
-              else
-                # If sizes are same, do pixel comparison using ImageMagick
-                if command -v compare >/dev/null 2>&1; then
-                  difference=$(compare -metric AE "$screenshot" "$base_file" /dev/null 2>&1 || echo "different")
-                  if [ "$difference" != "0" ]; then
+              # Use pixelmatch for accurate visual comparison
+              if command -v pixelmatch >/dev/null 2>&1; then
+                # Create diff image
+                pixelmatch "$screenshot" "$base_file" "diff_${filename}.png" 0.1 0 0
+                # Check if diff image has any non-transparent pixels
+                if [ -f "diff_${filename}.png" ]; then
+                  # Use ImageMagick to check if diff has changes
+                  has_changes=$(convert "diff_${filename}.png" -format "%[fx:mean>0?1:0]" info:)
+                  if [ "$has_changes" = "1" ]; then
                     CHANGED_SCREENSHOTS="${CHANGED_SCREENSHOTS} ${filename}"
                   fi
-                else
-                  # Fallback: assume changed if we can't compare
+                fi
+              else
+                # Fallback: compare file sizes
+                if [ "$(stat -f%z "$screenshot")" != "$(stat -f%z "$base_file")" ]; then
                   CHANGED_SCREENSHOTS="${CHANGED_SCREENSHOTS} ${filename}"
                 fi
               fi
