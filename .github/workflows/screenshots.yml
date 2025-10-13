@@ -46,6 +46,9 @@ jobs:
       - name: Compare screenshots with base branch
         id: compare_screenshots
         run: |
+          # Fetch the base branch to ensure we have it
+          git fetch origin ${{ github.event.pull_request.base.ref }} --depth=1
+
           # Get the base branch commit
           BASE_SHA=$(git rev-parse origin/${{ github.event.pull_request.base.ref }})
 
@@ -160,7 +163,12 @@ jobs:
 
       - name: Write description to file
         run: |
-          echo "${{ steps.pr_description.outputs.description }}" > pr_description.md
+          DESCRIPTION="${{ steps.pr_description.outputs.description }}"
+          # Unescape the description for proper formatting
+          DESCRIPTION="${DESCRIPTION//'%0A'/$'\n'}"
+          DESCRIPTION="${DESCRIPTION//'%0D'/$'\r'}"
+          DESCRIPTION="${DESCRIPTION//'%25'/%}"
+          echo "$DESCRIPTION" > pr_description.md
 
       - name: Update PR Description
         uses: nefrob/pr-description@v1.2.0
