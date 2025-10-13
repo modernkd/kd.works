@@ -28,13 +28,10 @@
 }
 
 .fridgeBody {
-  min-width: 50dvw;
-  border-radius: 40px;
   position: relative;
   box-shadow: var(--fridge-shadow);
   margin-bottom: 1.25rem;
   transition: all 0.5s ease-in-out;
-  background: inherit;
   @media screen and (max-width: 768px) {
     width: 90dvw;
   }
@@ -47,12 +44,6 @@
   border-radius: 2rem;
   z-index: 0;
   border-top-left-radius: 3rem;
-}
-
-.fridgeDoorContent {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
 }
 
 .fridgeGlow {
@@ -70,11 +61,11 @@
   @keyframes glowPulse {
     0%,
     100% {
-      box-shadow: 0 0 20px 5px var(--fridge-shadow);
+      box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.8);
       opacity: 0.6;
     }
     50% {
-      box-shadow: 0 0 30px 10px var(--fridge-shadow);
+      box-shadow: 0 0 30px 10px rgba(255, 255, 255, 0.8);
       opacity: 1;
     }
   }

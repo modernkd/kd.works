@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import Card from '../../components/Card';
-import PageContainer from '../../components/PageContainer';
+import Card from '../../components/modals/Card';
+import PageContainer from '../../components/ui/PageContainer';
 import { MetaTags } from '../../hooks/useMetaTags';
 import styles from './MoreCowbellPage.module.css';
 

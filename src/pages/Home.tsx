@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '../hooks/useLocale';
 import { useCookieState } from '../hooks/useCookieState';
 import { MetaTags } from '../hooks/useMetaTags';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import Header from '../components/ui/Header';
+import Footer from '../components/ui/Footer';
 import styles from './Home.module.css';
 
 export default function Portfolio() {
