@@ -94,81 +94,56 @@ jobs:
           path: public/*-screenshot*.webp
 
       - name: Generate PR Description
-        id: pr_description
         run: |
           CHANGED_SCREENSHOTS="${{ steps.compare_screenshots.outputs.changed_screenshots }}"
 
           if [ -n "$CHANGED_SCREENSHOTS" ]; then
-            DESCRIPTION="## Description
-
-          <!-- Describe the changes you made -->
-
-          <!-- Screenshots will be automatically added here by the CI workflow -->
-          ## Screenshots
-
-
-          ### Changed Screenshots
-          "
+            {
+              echo "## Screenshots"
+              echo ""
+              echo "### Changed Screenshots"
+            } > pr_description.md
 
             for screenshot in $CHANGED_SCREENSHOTS; do
               case $screenshot in
                 "home-screenshot.webp")
-                  DESCRIPTION="${DESCRIPTION}
-          ### Home Page
-          ![Home Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/home-screenshot.webp)
-          "
+                  {
+                    echo ""
+                    echo "### Home Page"
+                    echo "![Home Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/home-screenshot.webp)"
+                  } >> pr_description.md
                   ;;
                 "fridge-screenshot.webp")
-                  DESCRIPTION="${DESCRIPTION}
-          ### Fridge Page
-          ![Fridge Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/fridge-screenshot.webp)
-          "
+                  {
+                    echo ""
+                    echo "### Fridge Page"
+                    echo "![Fridge Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/fridge-screenshot.webp)"
+                  } >> pr_description.md
                   ;;
                 "more-cowbell-screenshot.webp")
-                  DESCRIPTION="${DESCRIPTION}
-          ### More Cowbell Page
-          ![More Cowbell Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/more-cowbell-screenshot.webp)
-          "
+                  {
+                    echo ""
+                    echo "### More Cowbell Page"
+                    echo "![More Cowbell Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/more-cowbell-screenshot.webp)"
+                  } >> pr_description.md
                   ;;
                 "room-screenshot.webp")
-                  DESCRIPTION="${DESCRIPTION}
-          ### Room Page
-          ![Room Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/room-screenshot.webp)
-          "
+                  {
+                    echo ""
+                    echo "### Room Page"
+                    echo "![Room Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/room-screenshot.webp)"
+                  } >> pr_description.md
                   ;;
               esac
             done
 
-            DESCRIPTION="${DESCRIPTION}
-          *Screenshots are also available as [workflow artifacts](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for download.*"
+            {
+              echo ""
+              echo "*Screenshots are also available as [workflow artifacts](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for download.*"
+            } >> pr_description.md
           else
-            DESCRIPTION="## Description
-
-          <!-- Describe the changes you made -->
-
-          <!-- Screenshots will be automatically added here by the CI workflow -->
-          ## Screenshots
-
-          No visual changes detected in screenshots."
+            echo "No visual changes detected in screenshots." > pr_description.md
           fi
-
-          # Escape newlines for GitHub Actions output
-          DESCRIPTION="${DESCRIPTION//'%'/'%25'}"
-          DESCRIPTION="${DESCRIPTION//$'\n'/'%0A'}"
-          DESCRIPTION="${DESCRIPTION//$'\r'/'%0D'}"
-
-          echo "description<<EOF" >> $GITHUB_OUTPUT
-          echo "$DESCRIPTION" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-
-      - name: Write description to file
-        run: |
-          DESCRIPTION="${{ steps.pr_description.outputs.description }}"
-          # Unescape the description for proper formatting
-          DESCRIPTION="${DESCRIPTION//'%0A'/$'\n'}"
-          DESCRIPTION="${DESCRIPTION//'%0D'/$'\r'}"
-          DESCRIPTION="${DESCRIPTION//'%25'/%}"
-          echo "$DESCRIPTION" > pr_description.md
 
       - name: Update PR Description
         uses: nefrob/pr-description@v1.2.0
