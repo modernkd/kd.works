@@ -5,7 +5,7 @@ export const soundMap: Record<string, string> = {
   '🍕': 'pizza.mp3',
   '🍦': 'lick.mp3',
   '🍺': 'beer.mp3',
-  '�': 'tada.mp3',
+  '🎉': 'tada.mp3',
   '🎊': 'yahoo.mp3',
   '🎶': 'yodel.mp3',
   '🐮🛎️': 'gotta-have-more-cowbell.mp3',
