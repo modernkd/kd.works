@@ -36,29 +36,23 @@ function handleMetaPage(req, res, meta) {
   let html = template
     .replace(/<title>.*?<\/title>/, `<title>${meta.title}</title>`)
     .replace(
-      '<meta property="og:image" content="/og-image.webp" />',
-      `<meta property="og:image" content="${meta.image}" />`
+      '<!-- Open Graph / Facebook -->',
+      `<!-- Open Graph / Facebook -->
+    <meta property="og:title" content="${meta.title}" />
+    <meta property="og:description" content="${meta.description}" />
+    <meta property="og:url" content="https://kd.works${req.url}" />
+    <meta property="og:image" content="${meta.image}" />`
     )
     .replace(
-      '<meta property="twitter:image" content="/og-image.webp" />',
-      `<meta property="twitter:image" content="${meta.image}" />`
-    )
-    .replace('<meta property="og:title" content="kd davis" />', `<meta property="og:title" content="${meta.title}" />`)
-    .replace(
-      '<meta property="twitter:title" content="kd davis" />',
-      `<meta property="twitter:title" content="${meta.title}" />`
+      '<!-- Twitter -->',
+      `<!-- Twitter -->
+    <meta property="twitter:title" content="${meta.title}" />
+    <meta property="twitter:description" content="${meta.description}" />
+    <meta property="twitter:image" content="${meta.image}" />`
     )
     .replace(
-      '<meta property="og:description" content="A creative portfolio website built with React, TypeScript, and running with Vite. Includes a fun little fridge with some easter eggs and a real-time collaborative sound board" />',
-      `<meta property="og:description" content="${meta.description}" />`
-    )
-    .replace(
-      '<meta property="twitter:description" content="A creative portfolio website built with React, TypeScript, and running with Vite. Includes a fun little fridge with some easter eggs and a real-time collaborative sound board" />',
-      `<meta property="twitter:description" content="${meta.description}" />`
-    )
-    .replace(
-      '<meta name="description" content="A creative portfolio website built with React, TypeScript, and running with Vite. Includes a fun little fridge with some easter eggs and a real-time collaborative sound board" />',
-      `<meta name="description" content="${meta.description}" />`
+      /A creative portfolio website built with React, TypeScript, and running with Vite\. Includes a fun little fridge with some easter eggs and a real-time collaborative sound board/g,
+      meta.description
     );
 
   res.status(200).set({ 'Content-Type': 'text/html' }).send(html);
