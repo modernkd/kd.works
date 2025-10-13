@@ -8,6 +8,7 @@ on:
 permissions:
   contents: read
   pull-requests: write
+  issues: write
 
 jobs:
   screenshots:
@@ -42,31 +43,129 @@ jobs:
       - name: Take screenshots
         run: node src/scripts/take-screenshots.js
 
+      - name: Compare screenshots with base branch
+        id: compare_screenshots
+        run: |
+          # Get the base branch commit
+          BASE_SHA=$(git rev-parse origin/${{ github.event.pull_request.base.ref }})
+
+          # Create a directory for comparison
+          mkdir -p screenshot_comparison
+
+          # Compare each screenshot
+          CHANGED_SCREENSHOTS=""
+          for screenshot in public/*-screenshot.webp; do
+            filename=$(basename "$screenshot")
+            base_file="screenshot_comparison/${filename}"
+
+            # Try to get the base version of the screenshot
+            if git show "${BASE_SHA}:${screenshot}" > "$base_file" 2>/dev/null; then
+              # Compare file sizes first (quick check)
+              if [ "$(stat -f%z "$screenshot")" != "$(stat -f%z "$base_file")" ]; then
+                CHANGED_SCREENSHOTS="${CHANGED_SCREENSHOTS} ${filename}"
+              else
+                # If sizes are same, do pixel comparison using ImageMagick
+                if command -v compare >/dev/null 2>&1; then
+                  difference=$(compare -metric AE "$screenshot" "$base_file" /dev/null 2>&1 || echo "different")
+                  if [ "$difference" != "0" ]; then
+                    CHANGED_SCREENSHOTS="${CHANGED_SCREENSHOTS} ${filename}"
+                  fi
+                else
+                  # Fallback: assume changed if we can't compare
+                  CHANGED_SCREENSHOTS="${CHANGED_SCREENSHOTS} ${filename}"
+                fi
+              fi
+            else
+              # New screenshot (doesn't exist in base)
+              CHANGED_SCREENSHOTS="${CHANGED_SCREENSHOTS} ${filename}"
+            fi
+          done
+
+          # Set output for next step
+          echo "changed_screenshots=${CHANGED_SCREENSHOTS}" >> $GITHUB_OUTPUT
+
       - name: Upload screenshots
         uses: actions/upload-artifact@v4
         with:
           name: screenshots
           path: public/*-screenshot*.webp
 
-      - name: Comment on PR
-        uses: peter-evans/create-or-update-comment@v4
+      - name: Generate PR Description
+        id: pr_description
+        run: |
+          CHANGED_SCREENSHOTS="${{ steps.compare_screenshots.outputs.changed_screenshots }}"
+
+          if [ -n "$CHANGED_SCREENSHOTS" ]; then
+            DESCRIPTION="## Description
+
+          <!-- Describe the changes you made -->
+
+          <!-- Screenshots will be automatically added here by the CI workflow -->
+          ## Screenshots
+
+
+          ### Changed Screenshots
+          "
+
+            for screenshot in $CHANGED_SCREENSHOTS; do
+              case $screenshot in
+                "home-screenshot.webp")
+                  DESCRIPTION="${DESCRIPTION}
+          ### Home Page
+          ![Home Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/home-screenshot.webp)
+          "
+                  ;;
+                "fridge-screenshot.webp")
+                  DESCRIPTION="${DESCRIPTION}
+          ### Fridge Page
+          ![Fridge Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/fridge-screenshot.webp)
+          "
+                  ;;
+                "more-cowbell-screenshot.webp")
+                  DESCRIPTION="${DESCRIPTION}
+          ### More Cowbell Page
+          ![More Cowbell Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/more-cowbell-screenshot.webp)
+          "
+                  ;;
+                "room-screenshot.webp")
+                  DESCRIPTION="${DESCRIPTION}
+          ### Room Page
+          ![Room Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/room-screenshot.webp)
+          "
+                  ;;
+              esac
+            done
+
+            DESCRIPTION="${DESCRIPTION}
+          *Screenshots are also available as [workflow artifacts](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for download.*"
+          else
+            DESCRIPTION="## Description
+
+          <!-- Describe the changes you made -->
+
+          <!-- Screenshots will be automatically added here by the CI workflow -->
+          ## Screenshots
+
+          No visual changes detected in screenshots."
+          fi
+
+          # Escape newlines for GitHub Actions output
+          DESCRIPTION="${DESCRIPTION//'%'/'%25'}"
+          DESCRIPTION="${DESCRIPTION//$'\n'/'%0A'}"
+          DESCRIPTION="${DESCRIPTION//$'\r'/'%0D'}"
+
+          echo "description<<EOF" >> $GITHUB_OUTPUT
+          echo "$DESCRIPTION" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Write description to file
+        run: |
+          echo "${{ steps.pr_description.outputs.description }}" > pr_description.md
+
+      - name: Update PR Description
+        uses: nefrob/pr-description@v1.2.0
         with:
-          issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            ## 📸 Screenshots Updated
-
-            New screenshots have been generated for this pull request:
-
-            ### Home Page
-            ![Home Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/home-screenshot-full.webp)
-
-            ### Fridge Page
-            ![Fridge Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/fridge-screenshot-full.webp)
-
-            ### More Cowbell Page
-            ![More Cowbell Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/more-cowbell-screenshot-full.webp)
-
-            ### Room Page
-            ![Room Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/room-screenshot-full.webp)
-
-            *Screenshots are also available as [workflow artifacts](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for download.*
+          content: pr_description.md
+          contentIsFilePath: true
+          regex: '<!-- SCREENSHOTS_PLACEHOLDER -->'
+          token: ${{ secrets.GITHUB_TOKEN }}
