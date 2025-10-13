@@ -30,10 +30,10 @@ jobs:
           npm run dev &
           sleep 10
 
-      -name: start partykit server
-       run: |
-         npm run partykit &
-         sleep 10
+      - name: Start partykit server
+        run: |
+          npm run partykit &
+          sleep 10
 
       - name: Take screenshots
         run: node src/scripts/take-screenshots.js
