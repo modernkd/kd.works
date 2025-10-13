@@ -102,6 +102,7 @@ jobs:
 
           if [ -n "$CHANGED_SCREENSHOTS" ]; then
             {
+              echo "<!-- SCREENSHOTS_START -->"
               echo "## Screenshots"
               echo ""
               echo "### Changed Screenshots"
@@ -143,9 +144,14 @@ jobs:
             {
               echo ""
               echo "*Screenshots are also available as [workflow artifacts](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for download.*"
+              echo "<!-- SCREENSHOTS_END -->"
             } >> pr_description.md
           else
-            echo "No visual changes detected in screenshots." > pr_description.md
+            {
+              echo "<!-- SCREENSHOTS_START -->"
+              echo "No visual changes detected in screenshots."
+              echo "<!-- SCREENSHOTS_END -->"
+            } > pr_description.md
           fi
 
       - name: Update PR Description
@@ -153,5 +159,6 @@ jobs:
         with:
           content: pr_description.md
           contentIsFilePath: true
-          regex: '<!-- SCREENSHOTS_PLACEHOLDER -->'
+          regex: '<!-- SCREENSHOTS_START -->.*?<!-- SCREENSHOTS_END -->'
+          regexFlags: ims
           token: ${{ secrets.GITHUB_TOKEN }}
