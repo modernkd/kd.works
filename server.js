@@ -57,7 +57,7 @@ function handleMetaPage(req, res, meta) {
       `<meta property="twitter:description" content="${meta.description}" />`
     )
     .replace(
-      /<meta\s+name="description"\s+content="A creative portfolio website built with React, TypeScript, and running with Vite\. Includes a fun little fridge with some easter eggs and a real-time collaborative sound board"[^>]*>/,
+      '<meta name="description" content="A creative portfolio website built with React, TypeScript, and running with Vite. Includes a fun little fridge with some easter eggs and a real-time collaborative sound board" />',
       `<meta name="description" content="${meta.description}" />`
     );
 
