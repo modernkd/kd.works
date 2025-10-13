@@ -35,7 +35,9 @@ export function render(url: string) {
   );
 
   // Extract helmet data
-  const { helmet } = helmetContext as any;
+  const { helmet } = helmetContext as {
+    helmet: { title: { toString: () => string }; meta: { toString: () => string }; link: { toString: () => string } };
+  };
 
   return {
     html,

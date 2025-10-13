@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
-import PWAInstallPrompt from './components/PWAInstallPrompt';
-import LoadingScreen from './components/LoadingScreen';
+import PWAInstallPrompt from './components/ui/PWAInstallPrompt';
+import LoadingScreen from './components/ui/LoadingScreen';
 
 // Layouts
 const Layout = lazy(() => import('./pages/Layout'));

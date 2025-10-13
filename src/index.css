@@ -16,15 +16,16 @@
   -moz-osx-font-smoothing: grayscale;
 
   /* Fridge-specific variables */
-  --fridge-bg-primary: #f0f2f4;
-  --fridge-bg-secondary: #f8afae;
-  --fridge-bg-tertiary: #dcddde;
-  --fridge-highlight: #f0f2f4;
-  --fridge-shadow: #afe0e9;
-  --fridge-body-bg: #def0f4;
-  --fridge-border: #afe0e9;
+  --fridge-highlight: #fff4e6;
+  --fridge-shadow: #ff8c00;
+  --fridge-body-bg: #f57b34;
+  --fridge-border: #ff8c00;
+  --fridge-bg-primary: #fff4e6;
+  --fridge-bg-secondary: #d5692a;
+  --fridge-bg-tertiary: #f0f0f0;
+  --handle-main: #d7d4d4;
   --fridge-outer-border-radius: 2rem;
-  --fridge-inner-border-radius: 1rem;
+  --fridge-inner-border-radius: 1.5rem;
 }
 
 body {
@@ -108,13 +109,13 @@ body {
   background-color: #242424;
 
   /* Dark mode fridge variables */
-  --fridge-bg-primary: #1a1a2e;
-  --fridge-bg-secondary: #16213e;
-  --fridge-bg-tertiary: #0f3460;
-  --fridge-highlight: #1a1a2e;
-  --fridge-shadow: #0f3460;
-  --fridge-body-bg: #90d4e3;
-  --fridge-border: #0f3460;
+  --fridge-highlight: #ff6600;
+  --fridge-shadow: #ff6600;
+  --fridge-body-bg: #ff6600;
+  --fridge-border: #ff7700d8;
+  --fridge-bg-primary: #1a1a1a;
+  --fridge-bg-secondary: #2a2a2a;
+  --fridge-bg-tertiary: #aeadad;
 }
 
 [data-theme='dark'] body {
