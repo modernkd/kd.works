@@ -21,27 +21,6 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const { t } = useTranslation();
 
-  // Update online status
-  useEffect(() => {
-    const handleOnline = () => setIsOnline(true);
-    const handleOffline = () => setIsOnline(false);
-
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
-
-    return () => {
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
-    };
-  }, []);
-
-  // Process queued submissions when coming online
-  useEffect(() => {
-    if (isOnline) {
-      processQueuedSubmissions();
-    }
-  }, [isOnline, processQueuedSubmissions]);
-
   const processQueuedSubmissions = useCallback(async () => {
     const queued = JSON.parse(localStorage.getItem(QUEUED_SUBMISSIONS_KEY) || '[]');
     if (queued.length === 0) return;
@@ -68,6 +47,27 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
       alert(t('contactQueuedSentMessage'));
     }
   }, [t]);
+
+  // Update online status
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
+  // Process queued submissions when coming online
+  useEffect(() => {
+    if (isOnline) {
+      processQueuedSubmissions();
+    }
+  }, [isOnline, processQueuedSubmissions]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
