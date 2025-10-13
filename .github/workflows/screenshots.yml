@@ -57,7 +57,7 @@ jobs:
 
           # Compare each screenshot
           CHANGED_SCREENSHOTS=""
-          for screenshot in public/*-screenshot.webp; do
+          for screenshot in public/*-screenshot-full.webp; do
             filename=$(basename "$screenshot")
             base_file="screenshot_comparison/${filename}"
 
@@ -110,32 +110,32 @@ jobs:
 
             for screenshot in $CHANGED_SCREENSHOTS; do
               case $screenshot in
-                "home-screenshot.webp")
+                "home-screenshot-full.webp")
                   {
                     echo ""
                     echo "### Home Page"
-                    echo "![Home Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/home-screenshot.webp)"
+                    echo "![Home Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/home-screenshot-full.webp)"
                   } >> pr_description.md
                   ;;
-                "fridge-screenshot.webp")
+                "fridge-screenshot-full.webp")
                   {
                     echo ""
                     echo "### Fridge Page"
-                    echo "![Fridge Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/fridge-screenshot.webp)"
+                    echo "![Fridge Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/fridge-screenshot-full.webp)"
                   } >> pr_description.md
                   ;;
-                "more-cowbell-screenshot.webp")
+                "more-cowbell-screenshot-full.webp")
                   {
                     echo ""
                     echo "### More Cowbell Page"
-                    echo "![More Cowbell Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/more-cowbell-screenshot.webp)"
+                    echo "![More Cowbell Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/more-cowbell-screenshot-full.webp)"
                   } >> pr_description.md
                   ;;
-                "room-screenshot.webp")
+                "room-screenshot-full.webp")
                   {
                     echo ""
                     echo "### Room Page"
-                    echo "![Room Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/room-screenshot.webp)"
+                    echo "![Room Screenshot](${{ github.server_url }}/${{ github.repository }}/raw/${{ github.event.pull_request.head.sha }}/public/room-screenshot-full.webp)"
                   } >> pr_description.md
                   ;;
               esac
