@@ -12,6 +12,11 @@ export default function PWAInstallPrompt() {
   const [isInstalled, setIsInstalled] = useState(false);
 
   useEffect(() => {
+    // Hide on Puppeteer (headless browser)
+    if (navigator.webdriver) {
+      return;
+    }
+
     // Check if already installed
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
     const isInWebAppiOS = (window.navigator as { standalone?: boolean }).standalone === true;

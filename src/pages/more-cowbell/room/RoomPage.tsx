@@ -373,7 +373,7 @@ export default function RoomPage() {
         title={`Room: ${room}`}
         description="Real-time collaborative emoji sound board. Play sounds together with others in this room using PartyKit."
         image="/room-screenshot.webp"
-        url={`/more-cowbell/room/${room}`}
+        url={`/more-cowbell/room/${encodeURIComponent(room)}`}
       />
       <main className={styles.main}>
         <div className={styles.container}>

@@ -14,19 +14,19 @@ const pageMeta = {
     title: 'Home | kd davis',
     description:
       'A creative portfolio website built with React, TypeScript, and running with Vite. Includes a fun little fridge with some easter eggs and a real-time collaborative sound board',
-    image: '/home-screenshot.webp',
+    image: 'https://kd.works/home-screenshot.webp',
   },
   '/fridge': {
     title: 'Fridge | kd davis',
     description:
       "Interactive fridge-themed contact page with magnetic notes and contact form. Part of kd davis's creative portfolio website.",
-    image: '/fridge-screenshot.webp',
+    image: 'https://kd.works/fridge-screenshot.webp',
   },
   '/more-cowbell': {
     title: 'More Cowbell | kd davis',
     description:
       'Real-time collaborative emoji sound board app. Join a room and play sounds together with others in real-time using PartyKit.',
-    image: '/room-screenshot.webp',
+    image: 'https://kd.works/more-cowbell-screenshot.webp',
   },
 };
 
@@ -36,12 +36,12 @@ function handleMetaPage(req, res, meta) {
   let html = template
     .replace(/<title>.*?<\/title>/, `<title>${meta.title}</title>`)
     .replace(
-      '<meta property="og:image" content="https://kd.works/og-image.webp" />',
-      `<meta property="og:image" content="https://kd.works${meta.image}" />`
+      '<meta property="og:image" content="/og-image.webp" />',
+      `<meta property="og:image" content="${meta.image}" />`
     )
     .replace(
-      '<meta property="twitter:image" content="https://kd.works/og-image.webp" />',
-      `<meta property="twitter:image" content="https://kd.works${meta.image}" />`
+      '<meta property="twitter:image" content="/og-image.webp" />',
+      `<meta property="twitter:image" content="${meta.image}" />`
     )
     .replace('<meta property="og:title" content="kd davis" />', `<meta property="og:title" content="${meta.title}" />`)
     .replace(
@@ -49,8 +49,16 @@ function handleMetaPage(req, res, meta) {
       `<meta property="twitter:title" content="${meta.title}" />`
     )
     .replace(
-      /A creative portfolio website built with React, TypeScript, and running with Vite\. Includes a fun little fridge with some easter eggs and a real-time collaborative sound board/g,
-      meta.description
+      '<meta property="og:description" content="A creative portfolio website built with React, TypeScript, and running with Vite. Includes a fun little fridge with some easter eggs and a real-time collaborative sound board" />',
+      `<meta property="og:description" content="${meta.description}" />`
+    )
+    .replace(
+      '<meta property="twitter:description" content="A creative portfolio website built with React, TypeScript, and running with Vite. Includes a fun little fridge with some easter eggs and a real-time collaborative sound board" />',
+      `<meta property="twitter:description" content="${meta.description}" />`
+    )
+    .replace(
+      /<meta\s+name="description"\s+content="[^"]*"[^>]*>/,
+      `<meta name="description" content="${meta.description}" />`
     );
 
   res.status(200).set({ 'Content-Type': 'text/html' }).send(html);
@@ -64,6 +72,18 @@ app.get('/fridge', (req, res) => {
 });
 app.get('/more-cowbell', (req, res) => {
   handleMetaPage(req, res, pageMeta['/more-cowbell']);
+});
+
+// Handle room pages dynamically
+app.get('/more-cowbell/room/:room', (req, res) => {
+  const room = req.params.room;
+  const meta = {
+    title: `Room: ${room} | kd davis`,
+    description:
+      'Real-time collaborative emoji sound board. Play sounds together with others in this room using PartyKit.',
+    image: 'https://kd.works/room-screenshot.webp',
+  };
+  handleMetaPage(req, res, meta);
 });
 
 // Catch-all handler for client-side routing

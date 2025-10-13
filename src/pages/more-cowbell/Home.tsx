@@ -14,7 +14,7 @@ export default function MoreCowbellHome() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (roomName.trim()) {
-      navigate(`/more-cowbell/room/${encodeURIComponent(roomName.trim())}`);
+      navigate(`/more-cowbell/room/${encodeURIComponent(roomName.toLowerCase().trim())}`);
     }
   };
 
