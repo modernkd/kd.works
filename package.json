@@ -15,7 +15,8 @@
     "screenshots": "node src/scripts/take-screenshots.js",
     "prepare": "husky",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "chromatic": "npx chromatic --project-token=chpt_eca3179a213e309"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
