@@ -36,3 +36,6 @@ test-results/more-cowbell-More-Cowbell--07fd0-d-custom-sound-successfully-chromi
 
 # partykit
 .partykit/
+
+*storybook.log
+storybook-static

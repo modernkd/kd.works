@@ -44,29 +44,34 @@ interface AppMessage {
   type: 'join' | 'leave' | 'sound' | 'custom';
 }
 
-export default function RoomPage() {
-  const { room } = useParams<{ room: string }>();
+export interface RoomPageProps {
+  roomOverride?: string;
+}
+
+export default function RoomPage({ roomOverride }: RoomPageProps = {}) {
+  const { room: paramRoom } = useParams<{ room: string }>();
+  const room = roomOverride || paramRoom;
   const { t } = useTranslation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!room) {
+    if (!roomOverride && !room) {
       navigate('/more-cowbell');
     }
-  }, [room, navigate]);
+  }, [room, roomOverride, navigate]);
 
   // Play cowbell sound when component mounts (user enters room)
   useEffect(() => {
-    if (room) {
+    if (room && !roomOverride) {
       playCowbellSound();
     }
-  }, [room]);
+  }, [room, roomOverride]);
 
-  const [nickname, setNickname] = useState('');
-  const [isSignedIn, setIsSignedIn] = useState(false);
-  const [isConnected, setIsConnected] = useState(false);
+  const [nickname, setNickname] = useState(roomOverride ? 'Storybook User' : '');
+  const [isSignedIn, setIsSignedIn] = useState(!!roomOverride);
+  const [isConnected, setIsConnected] = useState(!!roomOverride);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<User[]>(roomOverride ? [{ id: 'storybook-user', name: 'Storybook User' }] : []);
   const [messages, setMessages] = useState<AppMessage[]>([]);
   const [customSounds, setCustomSounds] = useState<Record<string, string>>({});
   const [selectedEmoji, setSelectedEmoji] = useState<string>('');
@@ -184,7 +189,7 @@ export default function RoomPage() {
   }, [room]);
 
   useEffect(() => {
-    if (isSignedIn && room && nickname.trim()) {
+    if (isSignedIn && room && nickname.trim() && !roomOverride) {
       if (isOnline) {
         // Online: connect to PartyKit
         if (socketRef.current) {
@@ -218,7 +223,7 @@ export default function RoomPage() {
         addMessage(setMessages, t('offlineModeMessage'), 'join');
       }
     }
-  }, [isSignedIn, room, nickname, handleMessage, isOnline, t]);
+  }, [isSignedIn, room, nickname, handleMessage, isOnline, t, roomOverride]);
 
   useEffect(() => {
     const timers = messages.map((msg) => {
