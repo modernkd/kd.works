@@ -8,12 +8,17 @@ import { useCookieState } from '../hooks/useCookieState';
 import { MetaTags } from '../hooks/useMetaTags';
 import styles from './Fridge.module.css';
 
-export default function Fridge() {
+interface FridgeProps {
+  initialIsFridgeOpen?: boolean;
+  initialIsFreezerOpen?: boolean;
+}
+
+export default function Fridge({ initialIsFridgeOpen = false, initialIsFreezerOpen = false }: FridgeProps) {
   const [isLeavingNote, setIsLeavingNote] = useState(false);
   const [locale, setLocale] = useLocale();
   const [isDarkMode, setIsDarkMode] = useCookieState<boolean>('darkMode', false);
-  const [isFreezerOpen, setIsFreezerOpen] = useState(false);
-  const [isFridgeOpen, setIsFridgeOpen] = useState(false);
+  const [isFreezerOpen, setIsFreezerOpen] = useState(initialIsFreezerOpen);
+  const [isFridgeOpen, setIsFridgeOpen] = useState(initialIsFridgeOpen);
 
   // Update theme attribute on document element
   useEffect(() => {

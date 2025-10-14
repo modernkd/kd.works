@@ -1,7 +1,7 @@
+/// <reference types="vitest/config" />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   server: {
@@ -10,21 +10,18 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: false, // Disable sourcemaps in production for smaller bundle
+    sourcemap: false,
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: true, // Remove console.logs in production
+        drop_console: true,
         drop_debugger: true,
       },
     },
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // Simplified chunking strategy to avoid loading order issues
           if (id.includes('node_modules')) {
-            // Single vendor bundle with all React-related dependencies
-            // This ensures proper loading order and avoids circular dependency issues
             if (
               id.includes('react') ||
               id.includes('react-dom') ||
@@ -35,7 +32,6 @@ export default defineConfig({
             ) {
               return 'vendor';
             }
-            // Separate chunks for heavy, lazy-loaded libraries
             if (id.includes('howler')) return 'sounds';
             if (id.includes('partysocket')) return 'partykit';
             if (id.includes('@emailjs')) return 'email';
