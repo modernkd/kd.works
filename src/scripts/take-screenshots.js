@@ -5,8 +5,7 @@ async function takeScreenshots() {
   console.log('Using existing dev server on port 3000');
 
   const browser = await puppeteer.launch();
-  const context = await browser.createIncognitoBrowserContext();
-  const page = await context.newPage();
+  const page = await browser.newPage();
 
   // Listen for console messages and errors
   page.on('console', (msg) => console.log('PAGE LOG:', msg.text()));
@@ -28,21 +27,8 @@ async function takeScreenshots() {
   for (const { path, filename, nickname } of pages) {
     console.log(`Taking screenshot of ${path}...`);
 
-    // Set dark mode cookie before navigating
-    await context.setCookie({
-      name: 'darkMode',
-      value: 'true',
-      domain: 'localhost',
-      path: '/',
-    });
-
     console.log(`Navigating to ${baseUrl}${path}`);
     await page.goto(`${baseUrl}${path}`, { waitUntil: 'networkidle2' });
-
-    // Ensure dark mode is applied
-    await page.evaluate(() => {
-      document.documentElement.setAttribute('data-theme', 'dark');
-    });
 
     if (nickname) {
       console.log(`Signing in with nickname: ${nickname}`);
