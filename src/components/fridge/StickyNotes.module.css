@@ -50,10 +50,28 @@
   font-weight: bold;
   margin: 0 0 5px 0;
   color: #92400e;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .dark .noteTitle {
   color: #fbbf24;
+}
+
+.statusBadge {
+  font-size: 10px;
+  font-weight: normal;
+  color: #a16207;
+  background: rgba(245, 158, 11, 0.2);
+  padding: 2px 6px;
+  border-radius: 10px;
+  text-transform: uppercase;
+}
+
+.dark .statusBadge {
+  color: #d97706;
+  background: rgba(251, 191, 36, 0.2);
 }
 
 .noteAuthor {

@@ -43,6 +43,7 @@ export const WithNotes: Story = {
         title: 'Great work!',
         message: 'Love the interactive fridge. The sticky notes are a nice touch!',
         created_at: '2024-01-15T10:30:00Z',
+        status: 'approved',
       },
       {
         id: 2,
@@ -50,6 +51,7 @@ export const WithNotes: Story = {
         title: 'Feedback',
         message: 'The sound effects are really fun. Keep up the good work!',
         created_at: '2024-01-16T14:20:00Z',
+        status: 'approved',
       },
       {
         id: 3,
@@ -57,6 +59,7 @@ export const WithNotes: Story = {
         title: 'Suggestion',
         message: 'Maybe add more fridge magnet colors?',
         created_at: '2024-01-17T09:15:00Z',
+        status: 'pending',
       },
     ],
   },
@@ -75,6 +78,7 @@ export const SingleNote: Story = {
         title: 'Great work!',
         message: 'Love the interactive fridge. The sticky notes are a nice touch!',
         created_at: '2024-01-15T10:30:00Z',
+        status: 'approved',
       },
     ],
   },

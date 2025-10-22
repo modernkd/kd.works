@@ -1,6 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import StickyNotes from './StickyNotes';
+import type { QueuedSubmission } from '../../types';
 
 interface Note {
   id: number;
@@ -8,52 +9,58 @@ interface Note {
   title: string;
   message: string;
   created_at: string;
+  status: string;
 }
 
 interface StickyNotesWrapperProps {
   isDarkMode?: boolean;
   notes?: Note[];
   onNotesChange?: (notes: Note[]) => void;
+  queuedSubmissions?: QueuedSubmission[];
 }
 
 export default function StickyNotesWrapper({
   isDarkMode = false,
   notes: initialNotes = [],
-  onNotesChange,
+  queuedSubmissions = [],
 }: StickyNotesWrapperProps) {
   const [notes, setNotes] = useState<Note[]>(initialNotes);
 
-  // Update notes when props change (only if different)
+  // Combine database notes with queued submissions
   useEffect(() => {
-    if (JSON.stringify(initialNotes) !== JSON.stringify(notes)) {
-      setNotes(initialNotes);
-    }
-  }, [initialNotes, notes]);
+    const loadNotes = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('notes')
+          .select('id, name, title, message, created_at, status')
+          .neq('status', 'rejected')
+          .order('created_at', { ascending: false });
 
-  // Notify parent of changes
-  useEffect(() => {
-    onNotesChange?.(notes);
-  }, [notes, onNotesChange]);
+        if (error) {
+          console.error('Failed to fetch notes:', error);
+          return;
+        }
 
-  const fetchNotes = useCallback(async (): Promise<Note[]> => {
-    try {
-      const { data, error } = await supabase
-        .from('notes')
-        .select('id, name, title, message, created_at')
-        .eq('status', 'approved')
-        .order('created_at');
+        // Convert queued submissions to note format for optimistic display
+        const queuedNotes: Note[] = queuedSubmissions.map((submission) => ({
+          id: parseInt(submission.id) || -Date.now(), // Use negative ID for queued notes
+          name: submission.data.name,
+          title: submission.data.title,
+          message: submission.data.message,
+          created_at: new Date(submission.timestamp).toISOString(),
+          status: 'pending', // Mark as pending since they're queued
+        }));
 
-      if (error) {
+        const allNotes = [...(data || []), ...queuedNotes];
+        console.log('Combined notes for fridge:', allNotes);
+        setNotes(allNotes);
+      } catch (error) {
         console.error('Failed to fetch notes:', error);
-        return [];
       }
+    };
 
-      return data || [];
-    } catch (error) {
-      console.error('Failed to fetch notes:', error);
-      return [];
-    }
-  }, []);
+    loadNotes();
+  }, [queuedSubmissions]);
 
-  return <StickyNotes isDarkMode={isDarkMode} notes={notes} setNotes={setNotes} onFetchNotes={fetchNotes} />;
+  return <StickyNotes isDarkMode={isDarkMode} notes={notes} setNotes={setNotes} />;
 }

@@ -2,16 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../../lib/supabase';
 import ContactForm from './ContactForm';
 
-interface QueuedSubmission {
-  id: string;
-  data: {
-    name: string;
-    email: string;
-    title: string;
-    message: string;
-  };
-  timestamp: number;
-}
+import type { QueuedSubmission } from '../../types';
 
 export interface ContactFormWrapperProps {
   isVisible?: boolean;

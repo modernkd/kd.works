@@ -284,3 +284,47 @@
   border-color: #4b5563;
   color: #f9fafb;
 }
+
+/* Dark mode table styles */
+[data-theme='dark'] .notesTableContainer {
+  background: #374151;
+  border-color: #6b7280;
+}
+
+[data-theme='dark'] .notesTable th {
+  background: #4b5563;
+  color: #f9fafb;
+  border-bottom-color: #6b7280;
+}
+
+[data-theme='dark'] .notesTable td {
+  color: #f9fafb;
+  border-bottom-color: #6b7280;
+}
+
+[data-theme='dark'] .notesTable tbody tr:hover {
+  background: #4b5563;
+}
+
+[data-theme='dark'] .dropdownTrigger {
+  background: #4b5563;
+  border-color: #6b7280;
+  color: #f9fafb;
+}
+
+[data-theme='dark'] .dropdownTrigger:hover {
+  background: #6b7280;
+}
+
+[data-theme='dark'] .dropdownMenu {
+  background: #374151;
+  border-color: #6b7280;
+}
+
+[data-theme='dark'] .dropdownItem {
+  color: #f9fafb;
+}
+
+[data-theme='dark'] .dropdownItem:hover {
+  background: #4b5563;
+}

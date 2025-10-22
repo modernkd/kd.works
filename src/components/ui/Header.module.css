@@ -59,14 +59,14 @@
   transition: color 0.2s ease-in-out;
   padding: 0.5rem 1rem;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  border: 1px solid transparent;
 }
 
 .backLink:hover {
   color: var(--accent-hover);
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .navigationContainer {
@@ -103,5 +103,17 @@
 }
 /* Dark theme styles - consolidated */
 [data-theme='dark'] .siteTitle {
+  color: #fff;
+}
+
+[data-theme='dark'] .backLink {
+  background: transparent;
+  border-color: transparent;
+  color: #fff;
+}
+
+[data-theme='dark'] .backLink:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
   color: #fff;
 }
