@@ -72,6 +72,9 @@ export default function FridgeSection({
         case '🍌':
           onThemeChange('yellow');
           break;
+        case '🧃':
+          onThemeChange('green');
+          break;
         default:
           break;
       }

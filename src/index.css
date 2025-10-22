@@ -26,6 +26,31 @@
   --handle-main: #d7d4d4;
   --fridge-outer-border-radius: 2rem;
   --fridge-inner-border-radius: 1.5rem;
+
+  /* Background splotch colors */
+  --splotch-color-1: rgba(34, 139, 34, 0.15);
+  --splotch-color-2: rgba(50, 205, 50, 0.601);
+  --splotch-color-3: rgba(0, 128, 0, 0.1);
+  --splotch-color-4: rgba(34, 139, 34, 0.585);
+  --splotch-color-5: rgba(50, 205, 50, 0.12);
+  --splotch-color-6: rgba(0, 128, 0, 0.281);
+  --splotch-color-7: rgba(34, 139, 34, 0.1);
+  --splotch-color-8: rgba(50, 205, 50, 0.666);
+  --splotch-color-9: rgba(34, 139, 34, 0.08);
+  --splotch-color-10: rgba(50, 205, 50, 0.05);
+  --splotch-color-11: rgba(0, 128, 0, 0.15);
+  --splotch-color-12: rgba(34, 139, 34, 0.25);
+  --splotch-color-13: rgba(50, 205, 50, 0.09);
+  --splotch-color-14: rgba(0, 128, 0, 0.12);
+  --splotch-color-15: rgba(34, 139, 34, 0.18);
+  --splotch-color-16: rgba(50, 205, 50, 0.07);
+  --splotch-linear: linear-gradient(135deg, rgba(34, 139, 34, 0.05), rgba(50, 205, 50, 0.05));
+
+  /* Fridge theme switches */
+  --fridge-theme-red: #dc3545;
+  --fridge-theme-blue: #007bff;
+  --fridge-theme-yellow: #ffc107;
+  --fridge-theme-orange: #fd7e14;
 }
 
 body {
@@ -33,15 +58,15 @@ body {
   padding: 0;
   min-height: 100vh;
   background:
-    radial-gradient(circle at 20% 80%, rgba(34, 139, 34, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(50, 205, 50, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(0, 128, 0, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 60% 10%, rgba(34, 139, 34, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 10% 60%, rgba(50, 205, 50, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 70% 70%, rgba(0, 128, 0, 0.06) 0%, transparent 50%),
-    radial-gradient(circle at 30% 90%, rgba(34, 139, 34, 0.07) 0%, transparent 50%),
-    radial-gradient(circle at 90% 30%, rgba(50, 205, 50, 0.07) 0%, transparent 50%),
-    linear-gradient(135deg, rgba(34, 139, 34, 0.02), rgba(50, 205, 50, 0.02));
+    radial-gradient(circle at 20% 80%, rgba(34, 139, 34, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(50, 205, 50, 0.601) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(0, 128, 0, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 60% 10%, rgba(34, 139, 34, 0.585) 0%, transparent 50%),
+    radial-gradient(circle at 10% 60%, rgba(50, 205, 50, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 70% 70%, rgba(0, 128, 0, 0.281) 0%, transparent 50%),
+    radial-gradient(circle at 30% 90%, rgba(34, 139, 34, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 90% 30%, rgba(50, 205, 50, 0.666) 0%, transparent 50%),
+    linear-gradient(135deg, rgba(34, 139, 34, 0.05), rgba(50, 205, 50, 0.05));
   background-size:
     150px 150px,
     120px 120px,
