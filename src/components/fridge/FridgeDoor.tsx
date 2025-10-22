@@ -1,5 +1,6 @@
 import FreezerSection from './FreezerSection';
 import FridgeSection from './FridgeSection';
+import type { FridgeTheme, QueuedSubmission } from '../../types';
 import styles from './FridgeDoor.module.css';
 
 interface FridgeDoorProps {
@@ -12,7 +13,8 @@ interface FridgeDoorProps {
   isFormOpen: boolean;
   isFridgeOpen: boolean;
   onFridgeToggle: () => void;
-  onThemeChange?: (theme: string) => void;
+  onThemeChange?: (theme: FridgeTheme) => void;
+  queuedSubmissions?: QueuedSubmission[];
 }
 
 export default function FridgeDoor({
@@ -26,6 +28,7 @@ export default function FridgeDoor({
   isFridgeOpen,
   onFridgeToggle,
   onThemeChange,
+  queuedSubmissions = [],
 }: FridgeDoorProps) {
   return (
     <div className={styles.fridgecontent}>
@@ -43,6 +46,7 @@ export default function FridgeDoor({
         isFridgeOpen={isFridgeOpen}
         onFridgeToggle={onFridgeToggle}
         onThemeChange={onThemeChange}
+        queuedSubmissions={queuedSubmissions}
       />
     </div>
   );

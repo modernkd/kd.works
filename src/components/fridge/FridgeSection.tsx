@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import MagnetText from '../magnets/MagnetText';
 import FamilyWhiteboard from './FamilyWhiteboard';
-import StickyNotes from './StickyNotes';
+import StickyNotesWrapper from './StickyNotesWrapper';
+import type { FridgeTheme, QueuedSubmission } from '../../types';
 import styles from './FridgeSection.module.css';
 import { useTranslation } from 'react-i18next';
 import { soundMap } from '../../lib/soundMap';
@@ -12,7 +13,8 @@ interface FridgeSectionProps {
   isFormOpen: boolean;
   isFridgeOpen: boolean;
   onFridgeToggle: () => void;
-  onThemeChange?: (theme: string) => void;
+  onThemeChange?: (theme: FridgeTheme) => void;
+  queuedSubmissions?: QueuedSubmission[];
 }
 
 export default function FridgeSection({
@@ -22,6 +24,7 @@ export default function FridgeSection({
   isFridgeOpen,
   onFridgeToggle,
   onThemeChange,
+  queuedSubmissions = [],
 }: FridgeSectionProps) {
   const { t } = useTranslation();
   const [clickedItem, setClickedItem] = useState<string | null>(null);
@@ -184,7 +187,7 @@ export default function FridgeSection({
           <div className={styles.magnetTextContainer}>
             <MagnetText text={t('fridgeMainText')} size="medium" />
           </div>
-          <StickyNotes isDarkMode={isDarkMode} />
+          <StickyNotesWrapper isDarkMode={isDarkMode} queuedSubmissions={queuedSubmissions} />
           <div className={`${styles.stickyNoteContainer} ${isFormOpen ? styles.hidden : ''}`}>
             <div onClick={handleNoteTaking} className={styles.stickyNote}>
               <div>{t('stickyNoteText')}</div>

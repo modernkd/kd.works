@@ -7,6 +7,7 @@ interface Note {
   title: string;
   message: string;
   created_at: string;
+  status: string;
 }
 
 interface StickyNotesProps {
@@ -54,7 +55,10 @@ export default function StickyNotes({
     <div className={`${styles.stickyNotesContainer} ${isDarkMode ? styles.dark : ''}`}>
       <div className={styles.stickyNote}>
         <div className={styles.noteHeader}>
-          <h4 className={styles.noteTitle}>{currentNote.title}</h4>
+          <h4 className={styles.noteTitle}>
+            {currentNote.title}
+            {currentNote.status !== 'approved' && <span className={styles.statusBadge}>({currentNote.status})</span>}
+          </h4>
           <span className={styles.noteAuthor}>by {currentNote.name}</span>
         </div>
         <div className={styles.noteMessage}>{currentNote.message}</div>
