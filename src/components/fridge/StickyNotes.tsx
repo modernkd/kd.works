@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import styles from './StickyNotes.module.css';
-import { supabase } from '../../lib/supabase';
 
 interface Note {
   id: number;
@@ -12,34 +11,30 @@ interface Note {
 
 interface StickyNotesProps {
   isDarkMode?: boolean;
+  notes?: Note[];
+  setNotes?: React.Dispatch<React.SetStateAction<Note[]>>;
+  onFetchNotes?: () => Promise<Note[]>;
 }
 
-export default function StickyNotes({ isDarkMode = false }: StickyNotesProps) {
-  const [notes, setNotes] = useState<Note[]>([]);
+export default function StickyNotes({
+  isDarkMode = false,
+  notes: propNotes,
+  setNotes: propSetNotes,
+  onFetchNotes,
+}: StickyNotesProps) {
+  const [internalNotes, setInternalNotes] = useState<Note[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Use props if provided, otherwise use internal state
+  const notes = propNotes !== undefined ? propNotes : internalNotes;
+  const setNotes = propSetNotes || setInternalNotes;
+
   useEffect(() => {
-    // Fetch approved notes from Supabase
-    const fetchNotes = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('notes')
-          .select('id, name, title, message, created_at')
-          .eq('status', 'approved')
-          .order('created_at');
-
-        if (error) {
-          console.error('Failed to fetch notes:', error);
-        } else {
-          setNotes(data || []);
-        }
-      } catch (error) {
-        console.error('Failed to fetch notes:', error);
-      }
-    };
-
-    fetchNotes();
-  }, []);
+    // Only fetch if no notes prop is provided and we have a fetch callback
+    if (propNotes === undefined && onFetchNotes) {
+      onFetchNotes().then(setNotes).catch(console.error);
+    }
+  }, [propNotes, setNotes, onFetchNotes]);
 
   const nextNote = () => {
     setCurrentIndex((prev) => (prev + 1) % notes.length);

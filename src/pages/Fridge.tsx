@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import FridgeDoor from '../components/fridge/FridgeDoor';
-import ContactForm from '../components/modals/ContactForm';
+import ContactFormWrapper from '../components/modals/ContactFormWrapper';
 import Footer from '../components/ui/Footer';
 import Header from '../components/ui/Header';
 import { useLocale } from '../hooks/useLocale';
@@ -138,7 +138,7 @@ export default function Fridge({ initialIsFridgeOpen = false, initialIsFreezerOp
           />
 
           {/* Contact Form */}
-          <ContactForm isVisible={isLeavingNote} onClose={() => setIsLeavingNote(false)} />
+          <ContactFormWrapper isVisible={isLeavingNote} onClose={() => setIsLeavingNote(false)} />
           <div className={styles.fridgeGlow} />
         </div>
       </main>

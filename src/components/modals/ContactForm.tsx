@@ -1,16 +1,19 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './ContactForm.module.css';
-import { supabase } from '../../lib/supabase';
 
 interface ContactFormProps {
   isVisible: boolean;
-  onClose: () => void;
+  onClose?: () => void;
+  onSubmit?: (data: { name: string; email: string; title: string; message: string }) => void;
+  onProcessQueued?: (
+    submissions: Array<{ name: string; email: string; title: string; message: string }>
+  ) => Promise<void>;
 }
 
 const QUEUED_SUBMISSIONS_KEY = 'queuedContactSubmissions';
 
-export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
+export default function ContactForm({ isVisible, onClose = () => {}, onSubmit, onProcessQueued }: ContactFormProps) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -20,39 +23,19 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [isSupabaseConnected, setIsSupabaseConnected] = useState(true);
+  const [connectionChecked, setConnectionChecked] = useState(false);
   const { t } = useTranslation();
 
   const processQueuedSubmissions = useCallback(async () => {
     const queued = JSON.parse(localStorage.getItem(QUEUED_SUBMISSIONS_KEY) || '[]');
     if (queued.length === 0) return;
 
-    const remaining = [];
-    for (const submission of queued) {
-      try {
-        const response = await fetch('/api/notes', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(submission),
-        });
-
-        if (response.ok) {
-          // Success, don't add to remaining
-        } else {
-          remaining.push(submission);
-        }
-      } catch (error) {
-        console.error('Failed to send queued submission:', error);
-        remaining.push(submission);
-      }
-    }
-
-    localStorage.setItem(QUEUED_SUBMISSIONS_KEY, JSON.stringify(remaining));
-    if (remaining.length === 0) {
+    if (onProcessQueued) {
+      await onProcessQueued(queued);
+      localStorage.setItem(QUEUED_SUBMISSIONS_KEY, JSON.stringify([]));
       alert(t('contactQueuedSentMessage'));
     }
-  }, [t]);
+  }, [t, onProcessQueued]);
 
   // Update online status
   useEffect(() => {
@@ -70,16 +53,12 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
 
   // Check Supabase connection on mount
   useEffect(() => {
-    const checkConnection = async () => {
-      try {
-        const { error } = await supabase.from('notes').select('id').limit(1);
-        setIsSupabaseConnected(!error);
-      } catch {
-        setIsSupabaseConnected(false);
-      }
-    };
-    checkConnection();
-  }, []);
+    if (onProcessQueued) {
+      // If we have a process callback, assume we're connected
+      setIsSupabaseConnected(true);
+      setConnectionChecked(true);
+    }
+  }, [onProcessQueued]);
 
   // Process queued submissions when coming online
   useEffect(() => {
@@ -103,33 +82,25 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
       title: formData.title || 'No Title',
     };
 
-    try {
-      // Submit note to Supabase
-      const { error } = await supabase.from('notes').insert([submissionData]);
+    // If onSubmit prop is provided, use it instead of direct submission
+    if (onSubmit) {
+      onSubmit(submissionData);
+      setFormData({ name: '', email: '', message: '', title: '' });
+      setIsSubmitting(false);
+      return;
+    }
 
-      if (error) {
-        throw error;
-      }
+    // Queue for later when offline or server unavailable
+    if (!isOnline || !isSupabaseConnected) {
+      const queued = JSON.parse(localStorage.getItem(QUEUED_SUBMISSIONS_KEY) || '[]');
+      queued.push(submissionData);
+      localStorage.setItem(QUEUED_SUBMISSIONS_KEY, JSON.stringify(queued));
 
-      alert(t('contactSuccessMessage'));
+      alert(t('contactQueuedMessage'));
       setFormData({ name: '', email: '', message: '', title: '' });
       onClose();
-    } catch (error) {
-      console.error('Note submission error:', error);
-
-      // Queue for later when offline or server unavailable
-      if (!isOnline || !isSupabaseConnected) {
-        const queued = JSON.parse(localStorage.getItem(QUEUED_SUBMISSIONS_KEY) || '[]');
-        queued.push(submissionData);
-        localStorage.setItem(QUEUED_SUBMISSIONS_KEY, JSON.stringify(queued));
-
-        alert(t('contactQueuedMessage'));
-      } else {
-        alert(t('contactErrorMessage'));
-      }
-
-      setFormData({ name: '', email: '', message: '', title: '' });
-      onClose();
+    } else {
+      alert(t('contactErrorMessage'));
     }
 
     setIsSubmitting(false);
