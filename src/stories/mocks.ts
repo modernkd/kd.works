@@ -51,14 +51,6 @@ export const mockLocalStorage = {
   clear: () => {},
 };
 
-// Mock Howl (audio)
-export const mockHowl = class {
-  constructor() {}
-  play = () => {};
-  pause = () => {};
-  stop = () => {};
-};
-
 // Mock navigator.onLine
 export const mockNavigator = {
   onLine: true,

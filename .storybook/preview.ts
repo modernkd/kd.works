@@ -24,23 +24,7 @@ Object.defineProperty(window, 'navigator', {
   value: {
     ...window.navigator,
     onLine: true,
-  },
-  writable: true,
-});
-
-// Mock Howl globally for Storybook
-Object.defineProperty(window, 'Howl', {
-  value: class MockHowl {
-    constructor() {
-      return {
-        play: () => {},
-        pause: () => {},
-        stop: () => {},
-        volume: () => {},
-        mute: () => {},
-        unload: () => {},
-      };
-    }
+    userAgent: window.navigator?.userAgent || 'Mozilla/5.0 (compatible; Storybook)',
   },
   writable: true,
 });

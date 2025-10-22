@@ -3,6 +3,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { soundMap, emojis } from '../../../lib/soundMap';
 import { addMessage } from '../../../utils/messageUtils';
+import { MetaTags } from '../../../hooks/useMetaTags';
+import { PartySocket } from 'partysocket';
+import { Howl } from 'howler';
 
 // Play cowbell sound when entering the room
 const playCowbellSound = () => {
@@ -79,7 +82,7 @@ export default function RoomPage({ roomOverride, onSocketMessage, onSocketSend }
   const [showManageModal, setShowManageModal] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const socketRef = useRef<any>(null);
+  const socketRef = useRef<PartySocket | null>(null);
 
   const handleMessage = useCallback(
     (message: Message) => {
@@ -207,7 +210,7 @@ export default function RoomPage({ roomOverride, onSocketMessage, onSocketSend }
           onSocketSend?.(JSON.stringify({ type: 'join', name: nickname }));
         });
 
-        socket.addEventListener('message', (event: any) => {
+        socket.addEventListener('message', (event: MessageEvent) => {
           const message: Message = JSON.parse(event.data);
           handleMessage(message);
           onSocketMessage?.(message);
@@ -224,7 +227,7 @@ export default function RoomPage({ roomOverride, onSocketMessage, onSocketSend }
         addMessage(setMessages, t('offlineModeMessage'), 'join');
       }
     }
-  }, [isSignedIn, room, nickname, handleMessage, isOnline, t, roomOverride]);
+  }, [isSignedIn, room, nickname, handleMessage, isOnline, t, roomOverride, onSocketSend, onSocketMessage]);
 
   useEffect(() => {
     const timers = messages.map((msg) => {

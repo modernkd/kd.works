@@ -38,14 +38,6 @@ const meta = {
       control: 'text',
       description: 'Override the room name for Storybook testing',
     },
-    onSocketMessage: {
-      action: 'socketMessage',
-      description: 'Callback for socket messages',
-    },
-    onSocketSend: {
-      action: 'socketSend',
-      description: 'Callback for socket sends',
-    },
   },
 } satisfies Meta<RoomPageProps>;
 

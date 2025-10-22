@@ -38,7 +38,7 @@ type Story = StoryObj<typeof EmojiSoundBoard>;
 
 export const Default: Story = {
   args: {
-    emojis: emojis.concat(['🎵', '🎸']),
+    emojis,
     customSounds: {},
     onEmojiClick: (emoji) => {
       console.log(`Clicked emoji: ${emoji}`);

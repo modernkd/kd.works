@@ -16,10 +16,8 @@ interface QueuedSubmission {
 export interface ContactFormWrapperProps {
   isVisible?: boolean;
   onClose?: () => void;
-  // Props for controlling state externally
   initialQueuedSubmissions?: QueuedSubmission[];
   onSubmissionQueued?: (submission: QueuedSubmission) => void;
-  onSubmissionProcessed?: (submission: QueuedSubmission) => void;
 }
 
 export default function ContactFormWrapper({
@@ -27,15 +25,8 @@ export default function ContactFormWrapper({
   onClose,
   initialQueuedSubmissions = [],
   onSubmissionQueued,
-  onSubmissionProcessed,
 }: ContactFormWrapperProps) {
   const [queuedSubmissions, setQueuedSubmissions] = useState<QueuedSubmission[]>(initialQueuedSubmissions);
-
-  // Notify parent of state changes
-  useEffect(() => {
-    // This would normally handle the actual submission logic
-    // For now, we'll just simulate processing
-  }, [queuedSubmissions]);
 
   const processQueuedSubmissions = useCallback(
     async (submissions: Array<{ name: string; email: string; title: string; message: string }>) => {
@@ -80,19 +71,22 @@ export default function ContactFormWrapper({
     return () => window.removeEventListener('online', handleOnline);
   }, [processQueuedSubmissions, queuedSubmissions]);
 
-  const handleFormSubmit = useCallback((formData: { name: string; email: string; title: string; message: string }) => {
-    const submission: QueuedSubmission = {
-      id: Date.now().toString(),
-      data: formData,
-      timestamp: Date.now(),
-    };
+  const handleFormSubmit = useCallback(
+    (formData: { name: string; email: string; title: string; message: string }) => {
+      const submission: QueuedSubmission = {
+        id: Date.now().toString(),
+        data: formData,
+        timestamp: Date.now(),
+      };
 
-    setQueuedSubmissions((prev) => [...prev, submission]);
-    onSubmissionQueued?.(submission);
+      setQueuedSubmissions((prev) => [...prev, submission]);
+      onSubmissionQueued?.(submission);
 
-    // Close form after submission
-    onClose?.();
-  });
+      // Close form after submission
+      onClose?.();
+    },
+    [onSubmissionQueued, onClose]
+  );
 
   return (
     <ContactForm
