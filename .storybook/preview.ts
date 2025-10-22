@@ -4,6 +4,62 @@ import '../src/globals.css';
 // @ts-expect-error: Importing CSS files is not recognized by TypeScript
 import '../src/index.css';
 
+// Initialize i18n for Storybook
+import '../src/i18n';
+
+// Mock global objects for Storybook
+Object.defineProperty(window, 'localStorage', {
+  value: {
+    getItem: () => null,
+    setItem: () => {},
+    removeItem: () => {},
+    clear: () => {},
+    length: 0,
+    key: () => null,
+  },
+  writable: true,
+});
+
+Object.defineProperty(window, 'navigator', {
+  value: {
+    ...window.navigator,
+    onLine: true,
+  },
+  writable: true,
+});
+
+// Mock Howl globally for Storybook
+Object.defineProperty(window, 'Howl', {
+  value: class MockHowl {
+    constructor() {
+      return {
+        play: () => {},
+        pause: () => {},
+        stop: () => {},
+        volume: () => {},
+        mute: () => {},
+        unload: () => {},
+      };
+    }
+  },
+  writable: true,
+});
+
+// Mock PartySocket globally for Storybook
+Object.defineProperty(window, 'PartySocket', {
+  value: class MockPartySocket {
+    constructor() {
+      return {
+        addEventListener: () => {},
+        send: () => {},
+        close: () => {},
+        removeEventListener: () => {},
+      };
+    }
+  },
+  writable: true,
+});
+
 const preview: Preview = {
   parameters: {
     controls: {
