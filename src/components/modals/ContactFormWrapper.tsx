@@ -30,9 +30,11 @@ export default function ContactFormWrapper({
 
   const processQueuedSubmissions = useCallback(
     async (submissions: Array<{ name: string; email: string; title: string; message: string }>) => {
+      console.log('Processing queued submissions:', submissions.length);
       // Process queued submissions by attempting to submit to Supabase
       for (const submission of submissions) {
         try {
+          console.log('Attempting to insert submission:', submission);
           const { error } = await supabase.from('notes').insert([submission]);
 
           if (!error) {
