@@ -367,11 +367,11 @@ export default function Fridge({ initialIsFridgeOpen = false, initialIsFreezerOp
             onThemeChange={handleThemeChange}
           />
 
-          {/* Contact Form */}
-          <ContactFormWrapper isVisible={isLeavingNote} onClose={() => setIsLeavingNote(false)} />
           <div className={styles.fridgeGlow} />
         </div>
       </main>
+      {/* Contact Form */}
+      <ContactFormWrapper isVisible={isLeavingNote} onClose={() => setIsLeavingNote(false)} />
       <Footer locale={locale} onLocaleChange={setLocale} />
     </>
   );
