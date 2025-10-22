@@ -75,7 +75,7 @@ export default function CustomSoundModal({
         <label className={styles.label}>{t('selectEmoji')}</label>
         {React.createElement('emoji-picker', {
           ref: emojiPickerRef,
-          'data-theme': document.documentElement.getAttribute('data-theme'),
+          ['data-theme']: document.documentElement.getAttribute('data-theme'),
           style: {
             width: '100%',
             height: '350px',
