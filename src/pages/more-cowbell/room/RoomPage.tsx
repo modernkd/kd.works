@@ -11,7 +11,7 @@ import { Howl } from 'howler';
 const playCowbellSound = () => {
   const sound = new Howl({
     src: ['/sounds/gotta-have-more-cowbell.mp3'],
-    volume: 0.7,
+    volume: 0.2,
   });
   sound.play();
 };

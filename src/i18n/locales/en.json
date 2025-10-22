@@ -85,5 +85,6 @@
   "adminTableDate": "Date",
   "adminTableActions": "Actions",
   "adminActionsButton": "Actions",
-  "adminArchiveButton": "Archive"
+  "adminArchiveButton": "Archive",
+  "adminReapproveButton": "Reapprove"
 }

@@ -92,13 +92,35 @@
   padding: 0.75rem;
   text-align: left;
   border-bottom: 1px solid #eee;
+  color: #1a1a1a;
 }
 
 .notesTable th {
   background: #f8f9fa;
   font-weight: 600;
-  color: #333;
+  color: #1a1a1a;
   border-bottom: 2px solid #ddd;
+}
+
+.sortButton {
+  background: none;
+  border: none;
+  font-weight: 600;
+  color: #1a1a1a;
+  cursor: pointer;
+  padding: 0;
+  font-size: inherit;
+  text-align: left;
+  width: 100%;
+}
+
+.sortButton:hover {
+  color: #333;
+}
+
+.sortButton:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
 }
 
 .notesTable tbody tr:hover {
@@ -134,6 +156,7 @@
   font-size: 0.875rem;
   cursor: pointer;
   transition: background 0.2s;
+  color: #1a1a1a;
 }
 
 .dropdownTrigger:hover {
@@ -141,7 +164,7 @@
 }
 
 .dropdownMenu {
-  position: fixed;
+  position: absolute;
   background: white;
   border: 1px solid #d1d5db;
   border-radius: 4px;
@@ -160,6 +183,7 @@
   cursor: pointer;
   font-size: 0.875rem;
   transition: background 0.2s;
+  color: #1a1a1a;
 }
 
 .dropdownItem:hover {
@@ -168,6 +192,11 @@
 
 .deleteItem {
   color: #dc2626;
+}
+
+.deleteItem:hover {
+  background: #fef2f2;
+  color: #b91c1c;
 }
 
 .deleteItem:hover {
@@ -184,6 +213,22 @@
   display: inline-block;
 }
 
+.status-pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-approved {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status-rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Ensure high contrast for status badges */
 .status-pending {
   background: #fef3c7;
   color: #92400e;
@@ -297,9 +342,26 @@
   border-bottom-color: #6b7280;
 }
 
+[data-theme='dark'] .sortButton {
+  color: #f9fafb;
+}
+
+[data-theme='dark'] .sortButton:hover {
+  color: #e5e7eb;
+}
+
+[data-theme='dark'] .sortButton:focus {
+  outline-color: #60a5fa;
+}
+
 [data-theme='dark'] .notesTable td {
   color: #f9fafb;
   border-bottom-color: #6b7280;
+}
+
+[data-theme='dark'] .notesTable th,
+[data-theme='dark'] .notesTable td {
+  color: #f9fafb;
 }
 
 [data-theme='dark'] .notesTable tbody tr:hover {
