@@ -57,10 +57,16 @@
   align-items: center;
   gap: 0.5rem;
   transition: color 0.2s ease-in-out;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .backLink:hover {
   color: var(--accent-hover);
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 .navigationContainer {

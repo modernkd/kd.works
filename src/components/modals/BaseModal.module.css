@@ -1,7 +1,7 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(34, 139, 34, 0.3));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -10,7 +10,7 @@
 }
 
 .modal {
-  background-color: var(--background);
+  background-color: var(--surface);
   border-radius: 0.5rem;
   box-shadow: var(--shadow);
   max-width: 28rem;
@@ -18,6 +18,19 @@
   max-height: 80vh;
   overflow-y: auto;
   position: relative;
+  background-image:
+    radial-gradient(circle at 20% 80%, rgba(34, 139, 34, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(50, 205, 50, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(0, 128, 0, 0.05) 0%, transparent 50%);
+  background-size:
+    100px 100px,
+    80px 80px,
+    120px 120px;
+  background-position:
+    0% 0%,
+    100% 100%,
+    50% 50%;
+  background-repeat: no-repeat;
 }
 
 .modalContent {
@@ -34,6 +47,7 @@
 .modalTitle {
   font-weight: 600;
   font-size: 1.125rem;
+  color: var(--text-primary);
 }
 
 .closeButton {
@@ -51,6 +65,7 @@
 
 .modalBody {
   margin-bottom: 1rem;
+  color: var(--text-primary);
 }
 
 .modalFooter {

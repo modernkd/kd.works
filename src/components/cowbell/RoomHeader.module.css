@@ -3,13 +3,13 @@
   border-radius: 0.5rem;
   box-shadow: var(--shadow);
   padding: 1.5rem;
-  margin-bottom: 1rem;
+  text-align: center;
 }
 
 .title {
   font-size: 1.5rem;
   font-weight: bold;
-  margin-bottom: 0.5rem;
+  text-align: center;
 }
 
 .titleRow {

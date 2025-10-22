@@ -24,8 +24,8 @@
   transform: translateX(-50%);
   width: 40px;
   height: 20px;
-  background: linear-gradient(135deg, #fef3c7 0%, #fbbf24 100%);
-  border: 2px solid #f59e0b;
+  background: linear-gradient(135deg, #e0e0e0 0%, #c0c0c0 50%, #a0a0a0 100%);
+  border: 2px solid #808080;
   border-bottom: none;
   border-radius: 50% 50% 0 0;
 }
@@ -37,8 +37,8 @@
 }
 
 .dark .stickyNote::before {
-  background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
-  border-color: #6b7280;
+  background: linear-gradient(135deg, #e0e0e0 0%, #c0c0c0 50%, #a0a0a0 100%);
+  border-color: #808080;
 }
 
 .noteHeader {
