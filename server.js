@@ -4,6 +4,7 @@ import path from 'path';
 import { db } from './src/db/index.js';
 import { notes } from './src/db/schema.js';
 import { getPendingNotes, getApprovedNotes, approveNote, rejectNote } from './src/db/auth.js';
+import { render } from './dist/entry-server.js';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -74,27 +75,14 @@ const pageMeta = {
 function handleMetaPage(req, res, meta) {
   const template = fs.readFileSync(path.resolve('dist/index.html'), 'utf-8');
 
+  // Render the React app with SSR
+  const { html: appHtml, helmet } = render(req.url);
+
   let html = template
-    .replace(/<title>.*?<\/title>/, `<title>${meta.title}</title>`)
-    .replace(
-      '<!-- Open Graph / Facebook -->',
-      `<!-- Open Graph / Facebook -->
-    <meta property="og:title" content="${meta.title}" />
-    <meta property="og:description" content="${meta.description}" />
-    <meta property="og:url" content="https://kd.works${req.url}" />
-    <meta property="og:image" content="${meta.image}" />`
-    )
-    .replace(
-      '<!-- Twitter -->',
-      `<!-- Twitter -->
-    <meta property="twitter:title" content="${meta.title}" />
-    <meta property="twitter:description" content="${meta.description}" />
-    <meta property="twitter:image" content="${meta.image}" />`
-    )
-    .replace(
-      /A creative portfolio website built with React, TypeScript, and running with Vite\. Includes a fun little fridge with some easter eggs and a real-time collaborative sound board/g,
-      meta.description
-    );
+    .replace('<!--ssr-outlet-->', appHtml)
+    .replace(/<title>.*?<\/title>/, helmet.title.toString())
+    .replace(/<meta name="description".*?>/, helmet.meta.toString())
+    .replace(/<link rel="canonical".*?>/, helmet.link.toString());
 
   res.status(200).set({ 'Content-Type': 'text/html' }).send(html);
 }
