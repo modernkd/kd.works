@@ -75,5 +75,15 @@
   "adminNoteManagementTitle": "Lapp-hantering",
   "adminFromLabel": "Från:",
   "adminApproveButton": "Godkänn",
-  "adminRejectButton": "Avvisa"
+  "adminRejectButton": "Avvisa",
+  "adminDeleteButton": "Ta bort",
+  "adminTableTitle": "Titel",
+  "adminTableMessage": "Meddelande",
+  "adminTableName": "Namn",
+  "adminTableEmail": "E-post",
+  "adminTableStatus": "Status",
+  "adminTableDate": "Datum",
+  "adminTableActions": "Åtgärder",
+  "adminActionsButton": "Åtgärder",
+  "adminArchiveButton": "Arkivera"
 }

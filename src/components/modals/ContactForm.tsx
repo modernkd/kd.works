@@ -85,6 +85,7 @@ export default function ContactForm({ isVisible, onClose = () => {}, onSubmit, o
     // If onSubmit prop is provided, use it instead of direct submission
     if (onSubmit) {
       onSubmit(submissionData);
+      alert(t('contactSuccessMessage'));
       setFormData({ name: '', email: '', message: '', title: '' });
       setIsSubmitting(false);
       return;

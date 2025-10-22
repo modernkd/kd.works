@@ -78,6 +78,7 @@
   "adminRejectButton": "Reject",
   "adminDeleteButton": "Delete",
   "adminTableTitle": "Title",
+  "adminTableMessage": "Message",
   "adminTableName": "Name",
   "adminTableEmail": "Email",
   "adminTableStatus": "Status",

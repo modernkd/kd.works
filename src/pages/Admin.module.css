@@ -63,8 +63,8 @@
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 800px;
-  width: 100%;
+  max-width: 100%;
+  width: max-content;
 }
 
 .adminPanel h1 {
@@ -108,6 +108,12 @@
 .titleCell {
   max-width: 200px;
   word-wrap: break-word;
+}
+
+.messageCell {
+  max-width: 300px;
+  word-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 .actionsCell {

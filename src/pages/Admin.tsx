@@ -298,6 +298,7 @@ export default function Admin() {
               <thead>
                 <tr>
                   <th>{t('adminTableTitle')}</th>
+                  <th>{t('adminTableMessage')}</th>
                   <th>{t('adminTableName')}</th>
                   <th>{t('adminTableEmail')}</th>
                   <th>{t('adminTableStatus')}</th>
@@ -309,6 +310,7 @@ export default function Admin() {
                 {notes.map((note) => (
                   <tr key={note.id}>
                     <td className={styles.titleCell}>{note.title}</td>
+                    <td className={styles.messageCell}>{note.message}</td>
                     <td>{note.name}</td>
                     <td>{note.email}</td>
                     <td>
