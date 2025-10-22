@@ -1,12 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import '../i18n';
 import RoomPage, { RoomPageProps } from '../pages/more-cowbell/room/RoomPage';
 import { ThemeProvider } from './ThemeProvider';
 
+// Mock hooks and dependencies to avoid network calls and external dependencies
+
 const meta = {
-  title: 'Pages/Room',
+  title: 'Pages/More-Cowbell/Room',
   component: RoomPage,
   decorators: [
     (Story, context) => {
@@ -25,6 +26,26 @@ const meta = {
   ],
   parameters: {
     layout: 'fullscreen',
+    docs: {
+      description: {
+        component:
+          'Real-time collaborative emoji sound board room where users can play sounds and manage custom sounds.',
+      },
+    },
+  },
+  argTypes: {
+    roomOverride: {
+      control: 'text',
+      description: 'Override the room name for Storybook testing',
+    },
+    onSocketMessage: {
+      action: 'socketMessage',
+      description: 'Callback for socket messages',
+    },
+    onSocketSend: {
+      action: 'socketSend',
+      description: 'Callback for socket sends',
+    },
   },
 } satisfies Meta<RoomPageProps>;
 
@@ -32,6 +53,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const LightMode: Story = {
+  name: 'Light Mode',
   args: {
     roomOverride: 'storybook-room',
   },
@@ -47,6 +69,7 @@ export const LightMode: Story = {
 };
 
 export const DarkMode: Story = {
+  name: 'Dark Mode',
   args: {
     roomOverride: 'storybook-room',
   },
@@ -57,5 +80,6 @@ export const DarkMode: Story = {
     backgrounds: {
       default: 'dark',
     },
+    theme: 'dark',
   },
 };
