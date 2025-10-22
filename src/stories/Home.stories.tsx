@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import '../i18n';
 import Home from '../pages/Home';
 import { ThemeProvider } from './ThemeProvider';
 
@@ -25,6 +24,11 @@ const meta = {
   ],
   parameters: {
     layout: 'fullscreen',
+    docs: {
+      description: {
+        component: 'Portfolio home page with introduction, developer journey, and links to other sections.',
+      },
+    },
   },
 } satisfies Meta<typeof Home>;
 
@@ -32,6 +36,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const LightMode: Story = {
+  name: 'Light Mode',
   globals: {
     theme: 'light',
   },
@@ -44,6 +49,7 @@ export const LightMode: Story = {
 };
 
 export const DarkMode: Story = {
+  name: 'Dark Mode',
   globals: {
     theme: 'dark',
   },
@@ -51,5 +57,6 @@ export const DarkMode: Story = {
     backgrounds: {
       default: 'dark',
     },
+    theme: 'dark',
   },
 };

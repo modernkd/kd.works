@@ -31,6 +31,11 @@
     Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
     Access-Control-Allow-Headers = "Content-Type, Authorization"
 
+# Environment variables for Supabase
+[build.environment]
+  VITE_SUPABASE_URL = "https://stcsxlrrzunljxzlahub.supabase.co"
+  VITE_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0Y3N4bHJyenVubGp4emxhaHViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU0MzEyMzEsImV4cCI6MjA3MTAwNzIzMX0.ZfA0iNwFSR-a2TZ0dNc7UqDxnstF0QqzSqL1b2jPNfc"
+
 [[headers]]
   for = "/index.html"
   [headers.values]

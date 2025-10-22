@@ -70,6 +70,12 @@ async function takeScreenshots() {
     // Convert cropped screenshot to webp
     await sharp(croppedScreenshotBuffer).webp({ quality: 90 }).toFile(`public/${filename}.webp`);
 
+    // If this is the home screenshot, also copy it as og-image.webp
+    if (filename === 'home-screenshot') {
+      await sharp(croppedScreenshotBuffer).webp({ quality: 90 }).toFile('public/og-image.webp');
+      console.log('Updated og-image.webp with home screenshot');
+    }
+
     console.log(`Saved ${filename}.webp (both full and cropped)`);
   }
 

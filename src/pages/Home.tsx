@@ -5,6 +5,7 @@ import { useCookieState } from '../hooks/useCookieState';
 import { MetaTags } from '../hooks/useMetaTags';
 import Header from '../components/ui/Header';
 import Footer from '../components/ui/Footer';
+import { Highlight, themes } from 'prism-react-renderer';
 import styles from './Home.module.css';
 
 export default function Portfolio() {
@@ -62,45 +63,41 @@ export default function Portfolio() {
                 <h2>{t('homeDeveloperJourneyTitle')}</h2>
                 <p>{t('homeDeveloperJourneyText')}</p>
 
-                <pre className={styles.codeBlock}>
-                  <code>
-                    {`// The Developer's Infinite Loop
+                <Highlight
+                  theme={isDarkMode ? themes.nightOwl : themes.oneLight}
+                  code={`
+// The Developer's Infinite Loop
 async function developerLife() {
   try {
-    while (true) {
-      // Phase 1: Problem Discovery
-      const problems = await identifyBugs();
-      const features = await gatherRequirements();
+    // Phase 1: Problem Discovery
+    const problems = await identifyBugs();
+    const features = await gatherRequirements();
 
-      // Phase 2: Fuel Acquisition
-      const fuel = await getCaffeine();
-      if (fuel < 50) {
-        await drink(coffee || energyDrink);
-      }
-
-      // Phase 3: The Magic Happens
-      await writeCode(problems, features);
-      await refactorForReadability();
-      await addComprehensiveTests();
-
-      // Phase 4: Quality Assurance
-      const testsPass = await runTestSuite();
-      if (!testsPass) {
-        console.log("🔧 Fixing bugs...");
-        continue; // Back to coding!
-      }
-
-      // Phase 5: Deployment & Celebration
-      await deployToProduction();
-      await celebrateSuccess();
-
-      // Phase 6: Reflection & Growth
-      await learnFromExperience();
-      await planNextIteration();
-
-      // Brief pause before the next cycle
-      await sleep(8 * 60 * 60 * 1000); // 8 hours in ms
+    // Phase 2: Fuel Acquisition
+    const fuel = await getCaffeine();
+    if (fuel < 50) {
+      await drink(coffee || energyDrink);
     }
+
+    // Phase 3: The Magic Happens
+    await writeCode(problems, features);
+    await refactorForReadability();
+    await addComprehensiveTests();
+
+    // Phase 4: Quality Assurance
+    const testsPass = await runTestSuite();
+    if (!testsPass) {
+      console.log('🔧 Fixing bugs...');
+      await code();
+    }
+
+    // Phase 5: Deployment & Celebration
+    await deployToProduction();
+    await celebrateSuccess();
+
+    // Phase 6: Reflection & Growth
+    await learnFromExperience();
+    await planNextIteration();
   } catch (error) {
     if (error.name === 'BurnoutError') {
       await takeBreak();
@@ -109,14 +106,30 @@ async function developerLife() {
       console.error('Unexpected error:', error);
       await debugAndFix(error);
     }
-    return developerLife(); // Recursion saves the day!
+  } finally {
+    // Brief pause before the next cycle
+    await sleep(8 * 60 * 60 * 1000); // 8 hours in ms
+    developerLife();
   }
 }
 
 // Start the endless cycle
-developerLife();`}
-                  </code>
-                </pre>
+developerLife();
+`}
+                  language="javascript"
+                >
+                  {({ className, style, tokens, getLineProps, getTokenProps }) => (
+                    <pre className={`${styles.codeBlock} ${className}`} style={style}>
+                      {tokens.map((line, i) => (
+                        <div key={i} {...getLineProps({ line })}>
+                          {line.map((token, key) => (
+                            <span key={key} {...getTokenProps({ token })} />
+                          ))}
+                        </div>
+                      ))}
+                    </pre>
+                  )}
+                </Highlight>
               </div>
             </div>
           </div>

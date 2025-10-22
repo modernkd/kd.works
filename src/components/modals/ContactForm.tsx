@@ -1,16 +1,19 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import emailjs from '@emailjs/browser';
 import styles from './ContactForm.module.css';
 
 interface ContactFormProps {
   isVisible: boolean;
-  onClose: () => void;
+  onClose?: () => void;
+  onSubmit?: (data: { name: string; email: string; title: string; message: string }) => void;
+  onProcessQueued?: (
+    submissions: Array<{ name: string; email: string; title: string; message: string }>
+  ) => Promise<void>;
 }
 
 const QUEUED_SUBMISSIONS_KEY = 'queuedContactSubmissions';
 
-export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
+export default function ContactForm({ isVisible, onClose = () => {}, onSubmit, onProcessQueued }: ContactFormProps) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -19,34 +22,20 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [isSupabaseConnected, setIsSupabaseConnected] = useState(true);
+  const [connectionChecked, setConnectionChecked] = useState(false);
   const { t } = useTranslation();
 
   const processQueuedSubmissions = useCallback(async () => {
     const queued = JSON.parse(localStorage.getItem(QUEUED_SUBMISSIONS_KEY) || '[]');
     if (queued.length === 0) return;
 
-    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-
-    if (!serviceId || !templateId || !publicKey) return;
-
-    const remaining = [];
-    for (const submission of queued) {
-      try {
-        await emailjs.send(serviceId, templateId, submission, publicKey);
-        // Success, don't add to remaining
-      } catch (error) {
-        console.error('Failed to send queued submission:', error);
-        remaining.push(submission);
-      }
-    }
-
-    localStorage.setItem(QUEUED_SUBMISSIONS_KEY, JSON.stringify(remaining));
-    if (remaining.length === 0) {
+    if (onProcessQueued) {
+      await onProcessQueued(queued);
+      localStorage.setItem(QUEUED_SUBMISSIONS_KEY, JSON.stringify([]));
       alert(t('contactQueuedSentMessage'));
     }
-  }, [t]);
+  }, [t, onProcessQueued]);
 
   // Update online status
   useEffect(() => {
@@ -62,12 +51,21 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
     };
   }, []);
 
+  // Check Supabase connection on mount
+  useEffect(() => {
+    if (onProcessQueued) {
+      // If we have a process callback, assume we're connected
+      setIsSupabaseConnected(true);
+      setConnectionChecked(true);
+    }
+  }, [onProcessQueued]);
+
   // Process queued submissions when coming online
   useEffect(() => {
-    if (isOnline) {
+    if (isOnline && isSupabaseConnected) {
       processQueuedSubmissions();
     }
-  }, [isOnline, processQueuedSubmissions]);
+  }, [isOnline, isSupabaseConnected, processQueuedSubmissions]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -77,23 +75,6 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Check if we're on the client side and emailjs is available
-    if (typeof window === 'undefined' || !emailjs) {
-      alert(t('contactConfigErrorMessage'));
-      setIsSubmitting(false);
-      return;
-    }
-
-    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-
-    if (!serviceId || !templateId || !publicKey) {
-      alert(t('contactConfigErrorMessage'));
-      setIsSubmitting(false);
-      return;
-    }
-
     const submissionData = {
       name: formData.name,
       email: formData.email,
@@ -101,29 +82,29 @@ export default function ContactForm({ isVisible, onClose }: ContactFormProps) {
       title: formData.title || 'No Title',
     };
 
-    if (!isOnline) {
-      // Queue for later
-      const queued = JSON.parse(localStorage.getItem(QUEUED_SUBMISSIONS_KEY) || '[]');
-      queued.push(submissionData);
-      localStorage.setItem(QUEUED_SUBMISSIONS_KEY, JSON.stringify(queued));
-      alert(t('contactQueuedMessage'));
+    // If onSubmit prop is provided, use it instead of direct submission
+    if (onSubmit) {
+      onSubmit(submissionData);
+      alert(t('contactSuccessMessage'));
       setFormData({ name: '', email: '', message: '', title: '' });
       setIsSubmitting(false);
-      onClose();
       return;
     }
 
-    try {
-      await emailjs.send(serviceId, templateId, submissionData, publicKey);
-      alert(t('contactSuccessMessage'));
-    } catch (error) {
-      console.error('Email send error:', error);
+    // Queue for later when offline or server unavailable
+    if (!isOnline || !isSupabaseConnected) {
+      const queued = JSON.parse(localStorage.getItem(QUEUED_SUBMISSIONS_KEY) || '[]');
+      queued.push(submissionData);
+      localStorage.setItem(QUEUED_SUBMISSIONS_KEY, JSON.stringify(queued));
+
+      alert(t('contactQueuedMessage'));
+      setFormData({ name: '', email: '', message: '', title: '' });
+      onClose();
+    } else {
       alert(t('contactErrorMessage'));
     }
 
-    setFormData({ name: '', email: '', message: '', title: '' });
     setIsSubmitting(false);
-    onClose();
   };
 
   if (!isVisible) return null;

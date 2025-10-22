@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import PartySocket from 'partysocket';
-import { Howl } from 'howler';
 import { soundMap, emojis } from '../../../lib/soundMap';
 import { addMessage } from '../../../utils/messageUtils';
 import { MetaTags } from '../../../hooks/useMetaTags';
+import { PartySocket } from 'partysocket';
+import { Howl } from 'howler';
 
 // Play cowbell sound when entering the room
 const playCowbellSound = () => {
@@ -46,9 +46,11 @@ interface AppMessage {
 
 export interface RoomPageProps {
   roomOverride?: string;
+  onSocketMessage?: (message: Message) => void;
+  onSocketSend?: (message: string) => void;
 }
 
-export default function RoomPage({ roomOverride }: RoomPageProps = {}) {
+export default function RoomPage({ roomOverride, onSocketMessage, onSocketSend }: RoomPageProps = {}) {
   const { room: paramRoom } = useParams<{ room: string }>();
   const room = roomOverride || paramRoom;
   const { t } = useTranslation();
@@ -205,11 +207,13 @@ export default function RoomPage({ roomOverride }: RoomPageProps = {}) {
         socket.addEventListener('open', () => {
           setIsConnected(true);
           socket.send(JSON.stringify({ type: 'join', name: nickname }));
+          onSocketSend?.(JSON.stringify({ type: 'join', name: nickname }));
         });
 
-        socket.addEventListener('message', (event) => {
+        socket.addEventListener('message', (event: MessageEvent) => {
           const message: Message = JSON.parse(event.data);
           handleMessage(message);
+          onSocketMessage?.(message);
         });
 
         socket.addEventListener('close', () => {
@@ -223,7 +227,7 @@ export default function RoomPage({ roomOverride }: RoomPageProps = {}) {
         addMessage(setMessages, t('offlineModeMessage'), 'join');
       }
     }
-  }, [isSignedIn, room, nickname, handleMessage, isOnline, t, roomOverride]);
+  }, [isSignedIn, room, nickname, handleMessage, isOnline, t, roomOverride, onSocketSend, onSocketMessage]);
 
   useEffect(() => {
     const timers = messages.map((msg) => {
@@ -374,12 +378,14 @@ export default function RoomPage({ roomOverride }: RoomPageProps = {}) {
 
   return (
     <>
-      <MetaTags
-        title={`Room: ${room}`}
-        description="Real-time collaborative emoji sound board. Play sounds together with others in this room using PartyKit."
-        image="/room-screenshot.webp"
-        url={`/more-cowbell/room/${encodeURIComponent(room)}`}
-      />
+      {roomOverride ? null : (
+        <MetaTags
+          title={`Room: ${room}`}
+          description="Real-time collaborative emoji sound board. Play sounds together with others in this room using PartyKit."
+          image="/room-screenshot.webp"
+          url={`/more-cowbell/room/${encodeURIComponent(room)}`}
+        />
+      )}
       <main className={styles.main}>
         <div className={styles.container}>
           <div className={styles.messages}>

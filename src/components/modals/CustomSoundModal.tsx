@@ -1,10 +1,8 @@
-import { useRef, lazy, Suspense } from 'react';
+import React, { useRef, useEffect } from 'react';
 import BaseModal from './BaseModal';
 import styles from './CustomSoundModal.module.css';
 import { useTranslation } from 'react-i18next';
-
-// Lazy load the emoji picker to reduce initial bundle size
-const Picker = lazy(() => import('emoji-picker-react'));
+import 'emoji-picker-element';
 
 interface CustomSoundModalProps {
   isOpen: boolean;
@@ -28,7 +26,23 @@ export default function CustomSoundModal({
   onSubmit,
 }: CustomSoundModalProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const emojiPickerRef = useRef<HTMLElement>(null);
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (isOpen && emojiPickerRef.current) {
+      const picker = emojiPickerRef.current;
+      const handleEmojiClick = (event: Event) => {
+        const customEvent = event as CustomEvent<{ unicode: string }>;
+        onEmojiSelect({ emoji: customEvent.detail.unicode });
+      };
+      picker.addEventListener('emoji-click', handleEmojiClick);
+
+      return () => {
+        picker.removeEventListener('emoji-click', handleEmojiClick);
+      };
+    }
+  }, [isOpen, onEmojiSelect]);
 
   const handleFileInputClick = () => {
     fileInputRef.current?.click();
@@ -59,9 +73,14 @@ export default function CustomSoundModal({
     >
       <div className={styles.formGroup}>
         <label className={styles.label}>{t('selectEmoji')}</label>
-        <Suspense fallback={<div className={styles.pickerLoading}>Loading emoji picker...</div>}>
-          <Picker onEmojiClick={onEmojiSelect} width="100%" height={350} />
-        </Suspense>
+        {React.createElement('emoji-picker', {
+          ref: emojiPickerRef,
+          ['data-theme']: document.documentElement.getAttribute('data-theme'),
+          style: {
+            width: '100%',
+            height: '350px',
+          },
+        })}
         {selectedEmoji && <p className={styles.emojiDisplay}>{selectedEmoji}</p>}
       </div>
 

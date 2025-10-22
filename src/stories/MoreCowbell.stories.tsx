@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import '../i18n';
 import MoreCowbellHome from '../pages/more-cowbell/Home';
 import { ThemeProvider } from './ThemeProvider';
 
@@ -25,6 +24,12 @@ const meta = {
   ],
   parameters: {
     layout: 'fullscreen',
+    docs: {
+      description: {
+        component:
+          'Landing page for the More Cowbell app, allowing users to enter a room name to join a collaborative sound board.',
+      },
+    },
   },
 } satisfies Meta<typeof MoreCowbellHome>;
 
@@ -32,6 +37,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const LightMode: Story = {
+  name: 'Light Mode',
   globals: {
     theme: 'light',
   },
@@ -44,6 +50,7 @@ export const LightMode: Story = {
 };
 
 export const DarkMode: Story = {
+  name: 'Dark Mode',
   globals: {
     theme: 'dark',
   },
@@ -51,5 +58,6 @@ export const DarkMode: Story = {
     backgrounds: {
       default: 'dark',
     },
+    theme: 'dark',
   },
 };

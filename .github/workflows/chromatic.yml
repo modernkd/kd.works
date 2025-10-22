@@ -31,3 +31,4 @@ jobs:
           buildScriptName: build-storybook
           exitZeroOnChanges: true
           autoAcceptChanges: main
+          chromaticVersion: '13.3.1'

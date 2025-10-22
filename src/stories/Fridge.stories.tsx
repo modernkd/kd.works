@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import '../i18n';
 import Fridge from '../pages/Fridge';
 import { ThemeProvider } from './ThemeProvider';
 
@@ -25,13 +24,31 @@ const meta = {
   ],
   parameters: {
     layout: 'fullscreen',
+    docs: {
+      description: {
+        component:
+          'Interactive fridge-themed contact page with fridge and freezer doors that can be opened, and theme customization options.',
+      },
+    },
+  },
+  argTypes: {
+    initialIsFridgeOpen: {
+      control: 'boolean',
+      description: 'Initial state of the fridge door',
+    },
+    initialIsFreezerOpen: {
+      control: 'boolean',
+      description: 'Initial state of the freezer door',
+    },
   },
 } satisfies Meta<typeof Fridge>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+// Light mode stories
 export const LightModeClosed: Story = {
+  name: 'Light Mode - Closed',
   globals: {
     theme: 'light',
   },
@@ -44,6 +61,7 @@ export const LightModeClosed: Story = {
 };
 
 export const LightModeFridgeOpen: Story = {
+  name: 'Light Mode - Fridge Open',
   args: {
     initialIsFridgeOpen: true,
   },
@@ -59,6 +77,7 @@ export const LightModeFridgeOpen: Story = {
 };
 
 export const LightModeFreezerOpen: Story = {
+  name: 'Light Mode - Freezer Open',
   args: {
     initialIsFreezerOpen: true,
   },
@@ -73,7 +92,9 @@ export const LightModeFreezerOpen: Story = {
   },
 };
 
+// Dark mode stories
 export const DarkModeClosed: Story = {
+  name: 'Dark Mode - Closed',
   globals: {
     theme: 'dark',
   },
@@ -81,10 +102,12 @@ export const DarkModeClosed: Story = {
     backgrounds: {
       default: 'dark',
     },
+    theme: 'dark',
   },
 };
 
 export const DarkModeFridgeOpen: Story = {
+  name: 'Dark Mode - Fridge Open',
   args: {
     initialIsFridgeOpen: true,
   },
@@ -95,10 +118,12 @@ export const DarkModeFridgeOpen: Story = {
     backgrounds: {
       default: 'dark',
     },
+    theme: 'dark',
   },
 };
 
 export const DarkModeFreezerOpen: Story = {
+  name: 'Dark Mode - Freezer Open',
   args: {
     initialIsFreezerOpen: true,
   },
@@ -109,5 +134,6 @@ export const DarkModeFreezerOpen: Story = {
     backgrounds: {
       default: 'dark',
     },
+    theme: 'dark',
   },
 };

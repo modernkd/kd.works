@@ -57,10 +57,16 @@
   align-items: center;
   gap: 0.5rem;
   transition: color 0.2s ease-in-out;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .backLink:hover {
   color: var(--accent-hover);
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 .navigationContainer {
@@ -75,10 +81,25 @@
   }
 }
 
-.darkModeToggleContainer {
+.headerActions {
   display: flex;
   align-items: center;
-  margin-left: 1rem;
+  gap: 1rem;
+}
+
+.signOutButton {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease;
+}
+
+.signOutButton:hover {
+  background: var(--accent-hover);
 }
 /* Dark theme styles - consolidated */
 [data-theme='dark'] .siteTitle {
