@@ -13,7 +13,10 @@ interface ThemeProviderProps {
 }
 
 export function ThemeProvider({ children, initialTheme = 'light' }: ThemeProviderProps) {
-  const [theme, setTheme] = useState(initialTheme);
+  // Use deterministic theme for Storybook visual testing
+  const isStorybook =
+    typeof window !== 'undefined' && window.location?.hostname === 'localhost' && window.location?.port === '6006';
+  const [theme, setTheme] = useState(isStorybook ? 'light' : initialTheme);
 
   // Apply theme to document element
   React.useEffect(() => {

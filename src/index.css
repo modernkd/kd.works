@@ -117,6 +117,15 @@ body {
   overflow-x: hidden;
 }
 
+/* Deterministic background for Storybook visual testing */
+body:has(.sb-show-main) {
+  background: linear-gradient(135deg, rgba(34, 139, 34, 0.05), rgba(50, 205, 50, 0.05)) !important;
+}
+
+[data-theme='dark'] body:has(.sb-show-main) {
+  background: linear-gradient(135deg, rgba(34, 139, 34, 0.05), rgba(50, 205, 50, 0.05)) !important;
+}
+
 /* Ensure #root takes full height */
 #root {
   min-height: 100vh;
