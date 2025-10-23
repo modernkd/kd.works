@@ -3,6 +3,10 @@ import { notesApi } from '../lib/api';
 import { queryKeys } from '../lib/queryKeys';
 import { NewNote, Note } from '../db/schema';
 
+/**
+ * Hook to fetch all approved notes.
+ * @returns {import('@tanstack/react-query').UseQueryResult<Note[], Error>} Query object with approved notes data, loading state, and error state.
+ */
 export const useApprovedNotes = () => {
   return useQuery({
     queryKey: queryKeys.notes.approved,
@@ -17,6 +21,10 @@ export const useApprovedNotes = () => {
   });
 };
 
+/**
+ * Hook to fetch all pending notes.
+ * @returns {import('@tanstack/react-query').UseQueryResult<Note[], Error>} Query object with pending notes data, loading state, and error state.
+ */
 export const usePendingNotes = () => {
   return useQuery({
     queryKey: queryKeys.notes.pending,
@@ -31,6 +39,10 @@ export const usePendingNotes = () => {
   });
 };
 
+/**
+ * Hook to fetch all notes regardless of status.
+ * @returns {import('@tanstack/react-query').UseQueryResult<Note[], Error>} Query object with all notes data, loading state, and error state.
+ */
 export const useAllNotes = () => {
   return useQuery({
     queryKey: queryKeys.notes.all,
@@ -45,6 +57,11 @@ export const useAllNotes = () => {
   });
 };
 
+/**
+ * Hook to create a new note.
+ * @param {NewNote} noteData - The data for the new note to create.
+ * @returns {import('@tanstack/react-query').UseMutationResult<Note, Error, NewNote>} Mutation object with create function, loading state, and error state.
+ */
 export const useCreateNote = () => {
   const queryClient = useQueryClient();
 
@@ -57,12 +74,15 @@ export const useCreateNote = () => {
       return response.data;
     },
     onSuccess: () => {
-      // Invalidate approved notes since new notes start as pending
       queryClient.invalidateQueries({ queryKey: queryKeys.notes.pending });
     },
   });
 };
-
+/**
+ * Hook to approve a pending note.
+ * @param {number} noteId - The ID of the note to approve.
+ * @returns {import('@tanstack/react-query').UseMutationResult<Note, Error, number>} Mutation object with approve function, loading state, and error state.
+ */
 export const useApproveNote = () => {
   const queryClient = useQueryClient();
 
@@ -75,26 +95,21 @@ export const useApproveNote = () => {
       return response.data;
     },
     onSuccess: () => {
-      // Invalidate both pending and approved notes
       queryClient.invalidateQueries({ queryKey: queryKeys.notes.pending });
       queryClient.invalidateQueries({ queryKey: queryKeys.notes.approved });
       queryClient.invalidateQueries({ queryKey: queryKeys.notes.all });
     },
     onMutate: async (noteId: number) => {
-      // Cancel outgoing refetches
       await queryClient.cancelQueries({ queryKey: queryKeys.notes.pending });
       await queryClient.cancelQueries({ queryKey: queryKeys.notes.approved });
 
-      // Snapshot previous values
-      const previousPending = queryClient.getQueryData(queryKeys.notes.pending);
-      const previousApproved = queryClient.getQueryData(queryKeys.notes.approved);
+      const previousPendingNotes = queryClient.getQueryData(queryKeys.notes.pending);
+      const previousApprovedNotes = queryClient.getQueryData(queryKeys.notes.approved);
 
-      // Optimistically update pending notes (remove the approved note)
       queryClient.setQueryData(queryKeys.notes.pending, (old: Note[] | undefined) => {
         return old?.filter((note) => note.id !== noteId) || [];
       });
 
-      // Optimistically update approved notes (add the approved note)
       queryClient.setQueryData(queryKeys.notes.approved, (old: Note[] | undefined) => {
         const pendingNotes = queryClient.getQueryData(queryKeys.notes.pending) as Note[] | undefined;
         const noteToApprove = pendingNotes?.find((note) => note.id === noteId);
@@ -105,10 +120,9 @@ export const useApproveNote = () => {
         return old || [];
       });
 
-      return { previousPending, previousApproved };
+      return { previousPending: previousPendingNotes, previousApproved: previousApprovedNotes };
     },
     onError: (err, noteId, context) => {
-      // Revert optimistic updates on error
       if (context?.previousPending) {
         queryClient.setQueryData(queryKeys.notes.pending, context.previousPending);
       }
@@ -119,6 +133,11 @@ export const useApproveNote = () => {
   });
 };
 
+/**
+ * Hook to reject a pending note.
+ * @param {number} noteId - The ID of the note to reject.
+ * @returns {import('@tanstack/react-query').UseMutationResult<Note, Error, number>} Mutation object with reject function, loading state, and error state.
+ */
 export const useRejectNote = () => {
   const queryClient = useQueryClient();
 
@@ -131,26 +150,21 @@ export const useRejectNote = () => {
       return response.data;
     },
     onSuccess: () => {
-      // Invalidate pending notes
       queryClient.invalidateQueries({ queryKey: queryKeys.notes.pending });
       queryClient.invalidateQueries({ queryKey: queryKeys.notes.all });
     },
     onMutate: async (noteId: number) => {
-      // Cancel outgoing refetches
       await queryClient.cancelQueries({ queryKey: queryKeys.notes.pending });
 
-      // Snapshot previous value
-      const previousPending = queryClient.getQueryData(queryKeys.notes.pending);
+      const previousPendingNotes = queryClient.getQueryData(queryKeys.notes.pending);
 
-      // Optimistically update pending notes (remove the rejected note)
       queryClient.setQueryData(queryKeys.notes.pending, (old: Note[] | undefined) => {
         return old?.filter((note) => note.id !== noteId) || [];
       });
 
-      return { previousPending };
+      return { previousPending: previousPendingNotes };
     },
     onError: (err, noteId, context) => {
-      // Revert optimistic update on error
       if (context?.previousPending) {
         queryClient.setQueryData(queryKeys.notes.pending, context.previousPending);
       }
@@ -158,6 +172,11 @@ export const useRejectNote = () => {
   });
 };
 
+/**
+ * Hook to delete a note.
+ * @param {number} noteId - The ID of the note to delete.
+ * @returns {import('@tanstack/react-query').UseMutationResult<Note, Error, number>} Mutation object with delete function, loading state, and error state.
+ */
 export const useDeleteNote = () => {
   const queryClient = useQueryClient();
 
@@ -170,21 +189,17 @@ export const useDeleteNote = () => {
       return response.data;
     },
     onSuccess: () => {
-      // Invalidate all note queries
       queryClient.invalidateQueries({ queryKey: queryKeys.notes.all });
       queryClient.invalidateQueries({ queryKey: queryKeys.notes.pending });
       queryClient.invalidateQueries({ queryKey: queryKeys.notes.approved });
     },
     onMutate: async (noteId: number) => {
-      // Cancel outgoing refetches
       await queryClient.cancelQueries({ queryKey: queryKeys.notes.pending });
       await queryClient.cancelQueries({ queryKey: queryKeys.notes.approved });
 
-      // Snapshot previous values
-      const previousPending = queryClient.getQueryData(queryKeys.notes.pending);
-      const previousApproved = queryClient.getQueryData(queryKeys.notes.approved);
+      const previousPendingNotes = queryClient.getQueryData(queryKeys.notes.pending);
+      const previousApprovedNotes = queryClient.getQueryData(queryKeys.notes.approved);
 
-      // Optimistically remove from both lists
       queryClient.setQueryData(queryKeys.notes.pending, (old: Note[] | undefined) => {
         return old?.filter((note) => note.id !== noteId) || [];
       });
@@ -192,10 +207,9 @@ export const useDeleteNote = () => {
         return old?.filter((note) => note.id !== noteId) || [];
       });
 
-      return { previousPending, previousApproved };
+      return { previousPending: previousPendingNotes, previousApproved: previousApprovedNotes };
     },
     onError: (err, noteId, context) => {
-      // Revert optimistic updates on error
       if (context?.previousPending) {
         queryClient.setQueryData(queryKeys.notes.pending, context.previousPending);
       }
