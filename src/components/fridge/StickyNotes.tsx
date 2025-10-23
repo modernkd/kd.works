@@ -1,14 +1,6 @@
 import { useState, useEffect } from 'react';
 import styles from './StickyNotes.module.css';
-
-interface Note {
-  id: number;
-  name: string;
-  title: string;
-  message: string;
-  created_at: string;
-  status: string;
-}
+import { Note } from '../../db/schema';
 
 interface StickyNotesProps {
   isDarkMode?: boolean;
@@ -62,7 +54,7 @@ export default function StickyNotes({
           <span className={styles.noteAuthor}>by {currentNote.name}</span>
         </div>
         <div className={styles.noteMessage}>{currentNote.message}</div>
-        <div className={styles.noteDate}>{new Date(currentNote.created_at).toLocaleDateString()}</div>
+        <div className={styles.noteDate}>{new Date(currentNote.createdAt).toLocaleDateString()}</div>
       </div>
 
       {notes.length > 1 && (

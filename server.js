@@ -1,9 +1,7 @@
 import express from 'express';
 import fs from 'fs';
 import path from 'path';
-import { db } from './src/db/index.js';
-import { notes } from './src/db/schema.js';
-import { getPendingNotes, getApprovedNotes, approveNote, rejectNote } from './src/db/auth.js';
+import apiRouter from './api/index.js';
 import { render } from './dist/entry-server.js';
 
 const app = express();
@@ -14,41 +12,7 @@ app.use(express.json());
 app.use(express.static(path.resolve('dist')));
 
 // API Routes
-app.post('/api/notes', async (req, res) => {
-  try {
-    const { name, email, title, message } = req.body;
-
-    if (!name || !email || !title || !message) {
-      return res.status(400).json({ error: 'All fields are required' });
-    }
-
-    const newNote = await db
-      .insert(notes)
-      .values({
-        name,
-        email,
-        title,
-        message,
-        status: 'pending',
-      })
-      .returning();
-
-    res.status(201).json({ success: true, note: newNote[0] });
-  } catch (error) {
-    console.error('Error creating note:', error);
-    res.status(500).json({ error: 'Failed to create note' });
-  }
-});
-
-app.get('/api/notes/approved', async (req, res) => {
-  try {
-    const approvedNotes = await getApprovedNotes();
-    res.json(approvedNotes);
-  } catch (error) {
-    console.error('Error fetching approved notes:', error);
-    res.status(500).json({ error: 'Failed to fetch notes' });
-  }
-});
+app.use('/api', apiRouter);
 
 // Static meta tag injection for different pages
 const pageMeta = {
