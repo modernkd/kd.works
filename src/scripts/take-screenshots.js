@@ -1,22 +1,25 @@
 import puppeteer from 'puppeteer';
 import sharp from 'sharp';
 
+/**
+ * Automates taking screenshots of various pages in the application using Puppeteer.
+ * Generates both full-page and cropped screenshots in WebP format for use in documentation and social media.
+ */
 async function takeScreenshots() {
-  console.log('Using existing dev server on port 3000');
-
+  // Launch browser and create new page
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
-  // Listen for console messages and errors
+  // Set up console and error logging from the page
   page.on('console', (msg) => console.log('PAGE LOG:', msg.text()));
   page.on('pageerror', (error) => console.log('PAGE ERROR:', error.message));
 
-  // Set viewport for consistent screenshots
+  // Set viewport size for consistent screenshots
   await page.setViewport({ width: 1200, height: 630 });
 
   const baseUrl = 'http://localhost:3000';
 
-  // Pages to screenshot
+  // Define pages to screenshot with optional nickname for room pages
   const pages = [
     { path: '/', filename: 'home-screenshot' },
     { path: '/fridge', filename: 'fridge-screenshot' },
@@ -24,63 +27,60 @@ async function takeScreenshots() {
     { path: '/more-cowbell/room/los-pollos-hermanos', filename: 'room-screenshot', nickname: 'walter white' },
   ];
 
+  // Process each page
   for (const { path, filename, nickname } of pages) {
-    console.log(`Taking screenshot of ${path}...`);
+    console.log(`📸 Taking screenshot of ${path}`);
 
-    console.log(`Navigating to ${baseUrl}${path}`);
+    // Navigate to the page
     await page.goto(`${baseUrl}${path}`, { waitUntil: 'networkidle2' });
 
+    // Handle room pages that require nickname input
     if (nickname) {
-      console.log(`Signing in with nickname: ${nickname}`);
       await page.waitForSelector('#nickname');
       await page.type('#nickname', nickname);
       await page.click('button[type="submit"]');
-      console.log('Signed in, waiting for room to load...');
+
       // Wait for room to load
       await new Promise((resolve) => setTimeout(resolve, 5000));
     } else {
-      console.log('Page loaded, waiting for content...');
-      // Wait a bit for any animations to settle
+      // Wait for regular pages to load
       await new Promise((resolve) => setTimeout(resolve, 3000));
     }
 
-    // Check if page has content
+    // Log page information for debugging
     const title = await page.title();
-    const bodyText = await page.evaluate(() => document.body.innerText.substring(0, 200));
-    console.log(`Page title: "${title}"`);
-    console.log(`Body preview: "${bodyText}..."`);
-    console.log('Taking screenshots...');
+    console.log(`   Title: ${title}`);
 
-    // Take full page screenshot as buffer
+    // Take full-page screenshot
     const fullScreenshotBuffer = await page.screenshot({
       fullPage: true,
       type: 'png',
     });
 
-    // Convert full screenshot to webp
+    // Convert full screenshot to WebP
     await sharp(fullScreenshotBuffer).webp({ quality: 90 }).toFile(`public/${filename}-full.webp`);
 
-    // Take the cropped version for social media as buffer
+    // Take cropped screenshot (social media dimensions)
     const croppedScreenshotBuffer = await page.screenshot({
       fullPage: false,
       clip: { x: 0, y: 0, width: 1200, height: 630 },
       type: 'png',
     });
 
-    // Convert cropped screenshot to webp
+    // Convert cropped screenshot to WebP
     await sharp(croppedScreenshotBuffer).webp({ quality: 90 }).toFile(`public/${filename}.webp`);
 
-    // If this is the home screenshot, also copy it as og-image.webp
+    // Create OG image from home screenshot
     if (filename === 'home-screenshot') {
       await sharp(croppedScreenshotBuffer).webp({ quality: 90 }).toFile('public/og-image.webp');
-      console.log('Updated og-image.webp with home screenshot');
+      console.log('   ✓ Created og-image.webp');
     }
 
-    console.log(`Saved ${filename}.webp (both full and cropped)`);
+    console.log(`   ✓ Saved ${filename}.webp and ${filename}-full.webp`);
   }
 
   await browser.close();
-  console.log('All screenshots taken!');
+  console.log('🎉 Screenshot generation complete!');
 }
 
 takeScreenshots().catch(console.error);

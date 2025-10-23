@@ -14,6 +14,10 @@ export default function DarkModeToggle({ isDarkMode, onToggle }: DarkModeToggleP
     setMounted(true);
   }, []);
 
+  /**
+   * Handles the dark mode toggle with animation.
+   * Sets animation state and calls the parent toggle function.
+   */
   const handleToggle = () => {
     setIsAnimating(true);
     onToggle();
@@ -44,7 +48,7 @@ export default function DarkModeToggle({ isDarkMode, onToggle }: DarkModeToggleP
               <path d="M0-22h50a2 2 0 0034 26v60H0Z" />
             </clipPath>
           </defs>
-          {/* Sun for light mode */}
+          {}
           {!isDarkMode && (
             <g className={styles.sunIcon}>
               <g fill="#ffe62e">
@@ -71,7 +75,7 @@ export default function DarkModeToggle({ isDarkMode, onToggle }: DarkModeToggleP
             </g>
           )}
           <g clipPath={`url(#moon-cutout-${isDarkMode ? 'dark' : 'light'})`}>
-            {/* Crescent moon for dark mode */}
+            {}
             {isDarkMode && (
               <g className={styles.crescentMoon}>
                 <defs>
@@ -84,13 +88,13 @@ export default function DarkModeToggle({ isDarkMode, onToggle }: DarkModeToggleP
                     <feDropShadow dx="0" dy="1" stdDeviation="0.5" floodColor="#00000020" />
                   </filter>
                 </defs>
-                {/* Crescent moon shape using path */}
+                {}
                 <path
                   d="M 48.8 32 A 16.8 16.8 0 0 1 32 48.8 A 16.8 16.8 0 0 1 15.2 32 A 16.8 16.8 0 0 1 32 15.2 A 12 12 0 0 0 48.8 32 Z"
                   fill="url(#moonGradient)"
                   filter="url(#moonShadow)"
                 />
-                {/* Moon craters for texture */}
+                {}
                 <circle cx="24" cy="24" r="2.4" fill="#e0e0e0" opacity="0.8" />
                 <circle cx="36" cy="28" r="1.6" fill="#e0e0e0" opacity="0.6" />
                 <circle cx="28" cy="36" r="2" fill="#e0e0e0" opacity="0.7" />

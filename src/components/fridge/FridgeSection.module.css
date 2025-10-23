@@ -1,6 +1,6 @@
 .fridgeSection {
   position: relative;
-  border: 6px solid var(--fridge-border);
+  border: 6px solid var(--fridge-border-color);
   border-top: none;
   border-bottom-right-radius: var(--fridge-outer-border-radius);
   border-bottom-left-radius: var(--fridge-outer-border-radius);
@@ -12,8 +12,8 @@
   position: relative;
   width: 100%;
   height: 100%;
-  background-color: var(--fridge-body-bg);
-  border: 2px solid var(--fridge-border);
+  background-color: var(--fridge-body-background);
+  border: 2px solid var(--fridge-border-color);
   border-top: 4px solid #777777;
   border-top-right-radius: 0.1rem;
   border-bottom-right-radius: var(--fridge-inner-border-radius);
@@ -233,7 +233,12 @@
   z-index: 10;
   border-radius: 5px;
   clip-path: polygon(0 25%, 100% 10%, 100% 90%, 0 75%);
-  background: linear-gradient(to right, var(--handle-main), var(--handle-main) 80%, var(--fridge-bg-tertiary) 80%);
+  background: linear-gradient(
+    to right,
+    var(--fridge-handle-color),
+    var(--fridge-handle-color) 80%,
+    var(--fridge-background-tertiary) 80%
+  );
   box-shadow: inset -1px 0px 4px 0px #777777;
   transition: transform 0.2s ease-in-out;
 }

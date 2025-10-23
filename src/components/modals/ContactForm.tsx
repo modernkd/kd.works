@@ -26,6 +26,10 @@ export default function ContactForm({ isVisible, onClose = () => {}, onSubmit, o
   const [connectionChecked, setConnectionChecked] = useState(false);
   const { t } = useTranslation();
 
+  /**
+   * Processes any queued contact form submissions stored in localStorage.
+   * Attempts to send them when online and clears the queue on success.
+   */
   const processQueuedSubmissions = useCallback(async () => {
     const queued = JSON.parse(localStorage.getItem(QUEUED_SUBMISSIONS_KEY) || '[]');
     if (queued.length === 0) return;
@@ -37,7 +41,6 @@ export default function ContactForm({ isVisible, onClose = () => {}, onSubmit, o
     }
   }, [t, onProcessQueued]);
 
-  // Update online status
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
@@ -51,26 +54,31 @@ export default function ContactForm({ isVisible, onClose = () => {}, onSubmit, o
     };
   }, []);
 
-  // Check Supabase connection on mount
   useEffect(() => {
     if (onProcessQueued) {
-      // If we have a process callback, assume we're connected
       setIsSupabaseConnected(true);
       setConnectionChecked(true);
     }
   }, [onProcessQueued]);
 
-  // Process queued submissions when coming online
   useEffect(() => {
     if (isOnline && isSupabaseConnected) {
       processQueuedSubmissions();
     }
   }, [isOnline, isSupabaseConnected, processQueuedSubmissions]);
 
+  /**
+   * Updates form data when user types in input fields.
+   * @param e - Change event from input or textarea
+   */
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  /**
+   * Handles form submission, either sending immediately or queuing for later.
+   * @param e - Form submit event
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -82,7 +90,6 @@ export default function ContactForm({ isVisible, onClose = () => {}, onSubmit, o
       title: formData.title || 'No Title',
     };
 
-    // If onSubmit prop is provided, use it instead of direct submission
     if (onSubmit) {
       onSubmit(submissionData);
       alert(t('contactSuccessMessage'));
@@ -91,7 +98,6 @@ export default function ContactForm({ isVisible, onClose = () => {}, onSubmit, o
       return;
     }
 
-    // Queue for later when offline or server unavailable
     if (!isOnline || !isSupabaseConnected) {
       const queued = JSON.parse(localStorage.getItem(QUEUED_SUBMISSIONS_KEY) || '[]');
       queued.push(submissionData);

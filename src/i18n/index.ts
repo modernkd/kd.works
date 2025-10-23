@@ -2,10 +2,13 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
-// Import translation files
 import enTranslations from './locales/en.json';
 import svTranslations from './locales/sv.json';
 
+/**
+ * Translation resources object containing all available locales.
+ * Each key represents a language code, and the value contains the translation data.
+ */
 const resources = {
   en: {
     translation: enTranslations,
@@ -15,7 +18,6 @@ const resources = {
   },
 };
 
-// Only initialize i18n in browser environment
 if (typeof window !== 'undefined') {
   i18n
     .use(LanguageDetector)

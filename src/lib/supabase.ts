@@ -1,6 +1,13 @@
 import { createClient } from '@supabase/supabase-js';
 
+/**
+ * Supabase URL from environment variables
+ */
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+
+/**
+ * Supabase anonymous key from environment variables
+ */
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
@@ -8,22 +15,26 @@ if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error('Missing Supabase environment variables');
 }
 
-// Create Supabase client with auth configuration
+/**
+ * Configured Supabase client instance
+ */
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
   },
 });
-console.log('Supabase client created successfully');
-console.log('Current origin for auth redirects:', window.location.origin);
 
-// Listen for auth state changes and log them
-supabase.auth.onAuthStateChange((event, session) => {
-  console.log('Auth state change:', event, session?.user?.email, 'redirected from:', document.referrer);
+/**
+ * Set up authentication state change listener
+ */
+supabase.auth.onAuthStateChange(() => {
+  // Handle authentication state changes
 });
 
-// Test connection
+/**
+ * Test Supabase connection on initialization
+ */
 supabase
   .from('notes')
   .select('count')
@@ -32,6 +43,6 @@ supabase
     if (result.error) {
       console.error('Supabase connection test failed:', result.error);
     } else {
-      console.log('Supabase connection test successful');
+      // Connection successful
     }
   });

@@ -34,7 +34,6 @@ export function render(url: string) {
     </React.StrictMode>
   );
 
-  // Extract helmet data
   const { helmet } = helmetContext as {
     helmet: { title: { toString: () => string }; meta: { toString: () => string }; link: { toString: () => string } };
   };

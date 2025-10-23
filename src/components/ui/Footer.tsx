@@ -23,7 +23,6 @@ function FooterContent({
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { i18n } = useTranslation();
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -37,6 +36,10 @@ function FooterContent({
     };
   }, []);
 
+  /**
+   * Changes the application language and closes the dropdown.
+   * @param newLocale - The new locale to switch to ('en' or 'sv')
+   */
   const handleLanguageChange = (newLocale: 'en' | 'sv') => {
     i18n.changeLanguage(newLocale);
     onLocaleChange(newLocale);

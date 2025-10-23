@@ -29,6 +29,10 @@ export default function FridgeSection({
   const { t } = useTranslation();
   const [clickedItem, setClickedItem] = useState<string | null>(null);
 
+  /**
+   * Handles click events on the fridge door to close it when open.
+   * @param e - The mouse event
+   */
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (isFridgeOpen) {
@@ -36,16 +40,19 @@ export default function FridgeSection({
     }
   };
 
+  /**
+   * Plays the sound associated with an emoji, with fallback to sparkles sound.
+   * @param emoji - The emoji to play sound for
+   */
   const playSound = (emoji: string) => {
     const soundFile = soundMap[emoji] || 'sparkles.mp3';
 
-    // Simple, direct approach - just try to play the sound
     const audio = new Audio(`/sounds/${soundFile}`);
     audio.volume = 0.5;
 
     audio.play().catch((error) => {
       console.error(`Failed to play ${soundFile} for ${emoji}:`, error);
-      // Fallback to sparkles if the specific sound fails
+
       if (soundFile !== 'sparkles.mp3') {
         const fallbackAudio = new Audio('/sounds/sparkles.mp3');
         fallbackAudio.volume = 0.5;
@@ -56,11 +63,14 @@ export default function FridgeSection({
     });
   };
 
+  /**
+   * Handles clicking on fridge items, playing sounds and changing themes.
+   * @param emoji - The emoji of the clicked item
+   */
   const handleItemClick = (emoji: string) => {
     setClickedItem(emoji);
     playSound(emoji);
 
-    // Theme change logic
     if (onThemeChange) {
       switch (emoji) {
         case '🍎':
@@ -88,9 +98,9 @@ export default function FridgeSection({
 
   return (
     <section className={styles.fridgeSection}>
-      {/* Fridge Interior - stays behind */}
+      {}
       <div className={`${styles.fridgeInterior} ${isFridgeOpen ? styles.visible : ''}`}>
-        {/* Top Shelf */}
+        {}
         <div className={`${styles.shelf} ${styles.topShelf}`} />
         <div className={`${styles.shelfItems} ${styles.topShelfItems}`}>
           <button
@@ -119,7 +129,7 @@ export default function FridgeSection({
           </button>
         </div>
 
-        {/* Middle Shelf */}
+        {}
         <div className={`${styles.shelf} ${styles.middleShelf}`} />
         <div className={`${styles.shelfItems} ${styles.middleShelfItems}`}>
           <button
@@ -148,7 +158,7 @@ export default function FridgeSection({
           </button>
         </div>
 
-        {/* Bottom Shelf */}
+        {}
         <div className={`${styles.shelf} ${styles.bottomShelf}`} />
         <div className={`${styles.shelfItems} ${styles.bottomShelfItems}`}>
           <button
@@ -178,7 +188,7 @@ export default function FridgeSection({
         </div>
       </div>
 
-      {/* Fridge Door - rotates */}
+      {}
       <div className={`${styles.fridgeDoor} ${isFridgeOpen ? styles.open : ''}`} onClick={handleClick}>
         <div className={styles.fridgeContent}>
           <div className={styles.fridgeHandleContainer}>
@@ -194,7 +204,7 @@ export default function FridgeSection({
             </div>
           </div>
 
-          {/* Family Whiteboard */}
+          {}
           <div className={styles.whiteboardContainer}>
             <FamilyWhiteboard isDarkMode={isDarkMode} />
           </div>

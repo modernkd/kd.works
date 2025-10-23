@@ -6,11 +6,20 @@ import PageContainer from '../../components/ui/PageContainer';
 import { MetaTags } from '../../hooks/useMetaTags';
 import styles from './MoreCowbellPage.module.css';
 
+/**
+ * Home page for the More Cowbell app that allows users to enter a room name.
+ * Provides a form to input room name and navigate to the collaborative sound board room.
+ */
 export default function MoreCowbellHome() {
   const [roomName, setRoomName] = useState('');
   const { t } = useTranslation();
   const navigate = useNavigate();
 
+  /**
+   * Handles form submission to navigate to the specified room.
+   * Trims whitespace and converts to lowercase for consistent room names.
+   * @param e - The form submission event
+   */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (roomName.trim()) {
