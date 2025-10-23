@@ -44,6 +44,9 @@ export default function CustomSoundModal({
     }
   }, [isOpen, onEmojiSelect]);
 
+  /**
+   * Programmatically triggers the hidden file input click.
+   */
   const handleFileInputClick = () => {
     fileInputRef.current?.click();
   };

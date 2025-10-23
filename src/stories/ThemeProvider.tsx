@@ -12,13 +12,21 @@ interface ThemeProviderProps {
   initialTheme?: string;
 }
 
+/**
+ * Theme provider component for managing application theme state.
+ * Provides theme context to child components and manages theme persistence.
+ * @param {ThemeProviderProps} props - Component props
+ * @returns {JSX.Element} Theme context provider
+ */
 export function ThemeProvider({ children, initialTheme = 'light' }: ThemeProviderProps) {
-  // Use deterministic theme for Storybook visual testing
+  // Detect if running in Storybook environment
   const isStorybook =
     typeof window !== 'undefined' && window.location?.hostname === 'localhost' && window.location?.port === '6006';
+
+  // Initialize theme state - force light theme in Storybook for consistency
   const [theme, setTheme] = useState(isStorybook ? 'light' : initialTheme);
 
-  // Apply theme to document element
+  // Apply theme to document element and handle cleanup
   React.useEffect(() => {
     const originalTheme = document.documentElement.getAttribute('data-theme');
     document.documentElement.setAttribute('data-theme', theme);

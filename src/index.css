@@ -9,48 +9,81 @@
   font-weight: 400;
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: var(--color-gray-900);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
   /* Fridge-specific variables */
-  --fridge-highlight: #fff4e6;
-  --fridge-shadow: #ff8c00;
-  --fridge-body-bg: #f57b34;
-  --fridge-border: #ff8c00;
-  --fridge-bg-primary: #fff4e6;
-  --fridge-bg-secondary: #d5692a;
-  --fridge-bg-tertiary: #f0f0f0;
-  --handle-main: #d7d4d4;
+  --fridge-highlight-color: #fff4e6;
+  --fridge-shadow-color: #ff8c00;
+  --fridge-body-background: #f57b34;
+  --fridge-border-color: #ff8c00;
+  --fridge-background-primary: #fff4e6;
+  --fridge-background-secondary: #d5692a;
+  --fridge-background-tertiary: #f0f0f0;
+  --fridge-handle-color: #d7d4d4;
   --fridge-outer-border-radius: 2rem;
   --fridge-inner-border-radius: 1.5rem;
 
+  /* Hard-coded color variables */
+  --color-orange-light: #fff4e6;
+  --color-orange: #ff8c00;
+  --color-orange-dark: #f57b34;
+  --color-orange-darker: #d5692a;
+  --color-gray-light: #f0f0f0;
+  --color-gray-medium: #d7d4d4;
+  --color-green: #48a860;
+  --color-green-dark: #333;
+  --color-yellow: #fecb00;
+  --color-blue-dark: #005293;
+  --color-red: #b22222;
+  --color-red-dark: #a02020;
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-gray-900: #242424;
+  --color-gray-100: #f8f9fa;
+  --color-gray-200: #e9ecef;
+  --color-gray-300: #dee2e6;
+  --color-gray-400: #adb5bd;
+  --color-gray-500: #6c757d;
+  --color-gray-600: #868e96;
+  --color-blue: #007bff;
+  --color-blue-dark: #0056b3;
+  --color-green-success: #28a745;
+  --color-green-success-dark: #1e7e34;
+  --color-yellow-warning: #ffc107;
+  --color-yellow-warning-dark: #e0a800;
+  --color-red-error: #dc3545;
+  --color-red-error-dark: #c82333;
+  --color-shadow-light: rgba(0, 0, 0, 0.1);
+  --color-shadow-dark: rgba(0, 0, 0, 0.15);
+
   /* Background splotch colors */
-  --splotch-color-1: rgba(34, 139, 34, 0.15);
-  --splotch-color-2: rgba(50, 205, 50, 0.601);
-  --splotch-color-3: rgba(0, 128, 0, 0.1);
-  --splotch-color-4: rgba(34, 139, 34, 0.585);
-  --splotch-color-5: rgba(50, 205, 50, 0.12);
-  --splotch-color-6: rgba(0, 128, 0, 0.281);
-  --splotch-color-7: rgba(34, 139, 34, 0.1);
-  --splotch-color-8: rgba(50, 205, 50, 0.666);
-  --splotch-color-9: rgba(34, 139, 34, 0.08);
-  --splotch-color-10: rgba(50, 205, 50, 0.05);
-  --splotch-color-11: rgba(0, 128, 0, 0.15);
-  --splotch-color-12: rgba(34, 139, 34, 0.25);
-  --splotch-color-13: rgba(50, 205, 50, 0.09);
-  --splotch-color-14: rgba(0, 128, 0, 0.12);
-  --splotch-color-15: rgba(34, 139, 34, 0.18);
-  --splotch-color-16: rgba(50, 205, 50, 0.07);
-  --splotch-linear: linear-gradient(135deg, rgba(34, 139, 34, 0.05), rgba(50, 205, 50, 0.05));
+  --background-spot-color-1: rgba(34, 139, 34, 0.15);
+  --background-spot-color-2: rgba(50, 205, 50, 0.601);
+  --background-spot-color-3: rgba(0, 128, 0, 0.1);
+  --background-spot-color-4: rgba(34, 139, 34, 0.585);
+  --background-spot-color-5: rgba(50, 205, 50, 0.12);
+  --background-spot-color-6: rgba(0, 128, 0, 0.281);
+  --background-spot-color-7: rgba(34, 139, 34, 0.1);
+  --background-spot-color-8: rgba(50, 205, 50, 0.666);
+  --background-spot-color-9: rgba(34, 139, 34, 0.08);
+  --background-spot-color-10: rgba(50, 205, 50, 0.05);
+  --background-spot-color-11: rgba(0, 128, 0, 0.15);
+  --background-spot-color-12: rgba(34, 139, 34, 0.25);
+  --background-spot-color-13: rgba(50, 205, 50, 0.09);
+  --background-spot-color-14: rgba(0, 128, 0, 0.12);
+  --background-spot-color-15: rgba(34, 139, 34, 0.18);
+  --background-spot-color-16: rgba(50, 205, 50, 0.07);
+  --background-spot-linear: linear-gradient(135deg, rgba(34, 139, 34, 0.05), rgba(50, 205, 50, 0.421));
 
   /* Fridge theme switches */
-  --fridge-theme-red: #dc3545;
-  --fridge-theme-blue: #007bff;
-  --fridge-theme-yellow: #ffc107;
-  --fridge-theme-orange: #fd7e14;
+  --fridge-theme-red: var(--color-red-error);
+  --fridge-theme-blue: var(--color-blue);
+  --fridge-theme-yellow: var(--color-yellow-warning);
+  --fridge-theme-orange: var(--color-orange);
 }
 
 body {
@@ -156,22 +189,22 @@ body {
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
-    background-color: #ffffff;
+    background-color: var(--color-white);
   }
 }
 
 [data-theme='dark'] {
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: var(--color-gray-900);
 
   /* Dark mode fridge variables */
-  --fridge-highlight: #ff6600;
-  --fridge-shadow: #ff6600;
-  --fridge-body-bg: #ff6600;
-  --fridge-border: #ff7700d8;
-  --fridge-bg-primary: #1a1a1a;
-  --fridge-bg-secondary: #2a2a2a;
-  --fridge-bg-tertiary: #aeadad;
+  --fridge-highlight-color: #ff6600;
+  --fridge-shadow-color: #ff6600;
+  --fridge-body-background: #ff6600;
+  --fridge-border-color: #ff7700d8;
+  --fridge-background-primary: #1a1a1a;
+  --fridge-background-secondary: #2a2a2a;
+  --fridge-background-tertiary: #aeadad;
 }
 
 [data-theme='dark'] body {
@@ -210,5 +243,5 @@ body {
 
 [data-theme='light'] {
   color: #213547;
-  background-color: #ffffff;
+  background-color: var(--color-white);
 }

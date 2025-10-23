@@ -1,3 +1,7 @@
+/**
+ * Mapping of emoji triggers to their corresponding sound file names
+ * Used for emoji-based sound effects in the application
+ */
 export const soundMap: Record<string, string> = {
   '✨': 'sparkles.mp3',
   '🍌': 'banana.mp3',
@@ -31,4 +35,7 @@ export const soundMap: Record<string, string> = {
   '🙋🏻‍♂️': 'hello-there.mp3',
 };
 
+/**
+ * Array of all available emoji triggers for sound effects
+ */
 export const emojis = Object.keys(soundMap);

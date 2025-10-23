@@ -6,13 +6,13 @@
 }
 
 .message.custom {
-  background-color: var(--success-light);
+  background-color: var(--success-background-light);
   border-left-color: var(--success);
-  color: var(--success-dark);
+  color: var(--success-text-dark);
 }
 
 .message.default {
-  background-color: var(--accent-light);
+  background-color: var(--accent-background-light);
   border-left-color: var(--accent);
-  color: var(--accent-dark);
+  color: var(--accent-text-dark);
 }

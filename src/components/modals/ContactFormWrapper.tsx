@@ -19,21 +19,21 @@ export default function ContactFormWrapper({
 }: ContactFormWrapperProps) {
   const [queuedSubmissions, setQueuedSubmissions] = useState<QueuedSubmission[]>(initialQueuedSubmissions);
 
+  /**
+   * Processes queued submissions by attempting to insert them into Supabase.
+   * Removes successfully processed submissions from the queue.
+   * @param submissions - Array of submission data to process
+   */
   const processQueuedSubmissions = useCallback(
     async (submissions: Array<{ name: string; email: string; title: string; message: string }>) => {
-      console.log('Processing queued submissions:', submissions.length);
-      // Process queued submissions by attempting to submit to Supabase
       for (const submission of submissions) {
         try {
-          console.log('Attempting to insert submission:', submission);
           const { error } = await supabase.from('notes').insert([submission]);
 
           if (!error) {
-            // Success - remove from our queue if it exists there
             setQueuedSubmissions((prev) =>
               prev.filter((s) => s.data.name !== submission.name || s.data.email !== submission.email)
             );
-            console.log('Processed queued submission:', submission);
           } else {
             console.error('Failed to process queued submission:', error);
           }
@@ -45,14 +45,12 @@ export default function ContactFormWrapper({
     []
   );
 
-  // Process queued submissions when online
   useEffect(() => {
     if (navigator.onLine && queuedSubmissions.length > 0) {
       processQueuedSubmissions(queuedSubmissions.map((s) => s.data));
     }
   }, [processQueuedSubmissions, queuedSubmissions]);
 
-  // Handle online/offline events
   useEffect(() => {
     const handleOnline = () => {
       if (queuedSubmissions.length > 0) {
@@ -64,6 +62,10 @@ export default function ContactFormWrapper({
     return () => window.removeEventListener('online', handleOnline);
   }, [processQueuedSubmissions, queuedSubmissions]);
 
+  /**
+   * Handles form submission by creating a queued submission and closing the form.
+   * @param formData - The form data from the contact form
+   */
   const handleFormSubmit = useCallback(
     (formData: { name: string; email: string; title: string; message: string }) => {
       const submission: QueuedSubmission = {
@@ -75,7 +77,6 @@ export default function ContactFormWrapper({
       setQueuedSubmissions((prev) => [...prev, submission]);
       onSubmissionQueued?.(submission);
 
-      // Close form after submission
       onClose?.();
     },
     [onSubmissionQueued, onClose]

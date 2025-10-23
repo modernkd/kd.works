@@ -12,12 +12,11 @@ export default function PWAInstallPrompt() {
   const [isInstalled, setIsInstalled] = useState(false);
 
   useEffect(() => {
-    // Hide on Puppeteer (headless browser)
+
     if (navigator.webdriver) {
       return;
     }
 
-    // Check if already installed
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
     const isInWebAppiOS = (window.navigator as { standalone?: boolean }).standalone === true;
 
@@ -26,14 +25,12 @@ export default function PWAInstallPrompt() {
       return;
     }
 
-    // Listen for the beforeinstallprompt event
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
       setShowPrompt(true);
     };
 
-    // Listen for successful installation
     const handleAppInstalled = () => {
       setIsInstalled(true);
       setShowPrompt(false);
@@ -48,6 +45,10 @@ export default function PWAInstallPrompt() {
     };
   }, []);
 
+  /**
+   * Triggers the PWA installation prompt and handles the user's response.
+   * Cleans up the prompt state after user interaction.
+   */
   const handleInstallClick = async () => {
     if (!deferredPrompt) return;
 
@@ -60,6 +61,9 @@ export default function PWAInstallPrompt() {
     }
   };
 
+  /**
+   * Dismisses the PWA installation prompt.
+   */
   const handleDismiss = () => {
     setShowPrompt(false);
   };

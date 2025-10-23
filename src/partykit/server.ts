@@ -1,45 +1,63 @@
 import type * as Party from 'partykit/server';
 
-console.log('PartyKit server.ts loaded');
-
+/**
+ * Represents a user connected to a PartyKit room.
+ */
 interface User {
+  /** Unique identifier for the user */
   id: string;
+  /** Display name of the user */
   name: string;
 }
 
+/**
+ * PartyKit server implementation for real-time collaborative sound board functionality.
+ * Handles user connections, sound events, and custom sound management.
+ */
 export default class Server implements Party.Server {
-  constructor(readonly room: Party.Room) {
-    console.log(`Server constructor called for room: ${this.room.id}`);
-  }
+  constructor(readonly room: Party.Room) {}
 
+  /** Map of connected users, keyed by their connection ID */
   users: Map<string, User> = new Map();
 
+  /**
+   * Called when a new connection is established.
+   * Currently empty but structured for future connection handling.
+   */
   onConnect() {
     try {
-      console.log(`Connected: room: ${this.room.id}`);
+      // Connection handling logic can be added here
     } catch {
-      // console.error(`Error in onConnect`);
+      // Error handling for connection issues
     }
   }
 
+  /**
+   * Handles incoming messages from connected clients.
+   * Processes different message types for room management, sound events, and custom sound operations.
+   * @param {string} message - JSON string containing the message data
+   * @param {Party.Connection} sender - The connection that sent the message
+   */
   async onMessage(message: string, sender: Party.Connection) {
-    console.log(`Received message from ${sender.id}: ${message}`);
     try {
       const data = JSON.parse(message);
-      console.log(`Parsed data:`, data);
+
       if (data.type === 'join') {
+        // Add user to the room's user list
         this.users.set(sender.id, { id: sender.id, name: data.name });
-        console.log(`${data.name} joined room ${this.room.id}`);
+
         // Send existing custom sounds to the new user
         await this.sendExistingCustomSounds(sender);
-        // Send current users list to new user
+
+        // Send current user list to the new user
         sender.send(
           JSON.stringify({
             type: 'usersList',
             users: Array.from(this.users.values()),
           })
         );
-        // Broadcast user joined to others
+
+        // Notify all other users about the new user
         const joinMsg = JSON.stringify({
           type: 'userJoined',
           user: { id: sender.id, name: data.name },
@@ -50,10 +68,10 @@ export default class Server implements Party.Server {
           }
         }
       } else if (data.type === 'sound') {
+        // Handle sound play events
         const user = this.users.get(sender.id);
         if (user) {
-          console.log(`${user.name} played sound: ${data.emoji}`);
-          // Broadcast sound event
+          // Broadcast sound play to all users in the room
           this.room.broadcast(
             JSON.stringify({
               type: 'soundPlayed',
@@ -64,12 +82,13 @@ export default class Server implements Party.Server {
           );
         }
       } else if (data.type === 'addCustomSound') {
+        // Handle adding custom sounds
         const user = this.users.get(sender.id);
         if (user) {
-          console.log(`${user.name} added custom sound: ${data.emoji}`);
-          // Store in room storage
+          // Store the custom sound in room storage
           await this.room.storage.put(`customSound_${data.emoji}`, data.sound);
-          // Broadcast to all users
+
+          // Broadcast the new custom sound to all users
           this.room.broadcast(
             JSON.stringify({
               type: 'customSoundAdded',
@@ -80,11 +99,13 @@ export default class Server implements Party.Server {
           );
         }
       } else if (data.type === 'deleteCustomSound') {
+        // Handle deleting custom sounds
         const user = this.users.get(sender.id);
         if (user && data.emoji) {
-          console.log(`${user.name} deleted custom sound: ${data.emoji}`);
+          // Remove the custom sound from room storage
           await this.room.storage.delete(`customSound_${data.emoji}`);
-          // Broadcast deletion to all users
+
+          // Broadcast the deletion to all users
           this.room.broadcast(
             JSON.stringify({
               type: 'customSoundDeleted',
@@ -93,11 +114,13 @@ export default class Server implements Party.Server {
           );
         }
       } else if (data.type === 'editCustomSound') {
+        // Handle editing custom sounds
         const user = this.users.get(sender.id);
         if (user && data.emoji && data.sound) {
-          console.log(`${user.name} edited custom sound: ${data.emoji}`);
+          // Update the custom sound in room storage
           await this.room.storage.put(`customSound_${data.emoji}`, data.sound);
-          // Broadcast update to all users
+
+          // Broadcast the update to all users
           this.room.broadcast(
             JSON.stringify({
               type: 'customSoundUpdated',
@@ -109,17 +132,24 @@ export default class Server implements Party.Server {
         }
       }
     } catch {
-      // console.error("Error in onMessage");
-      // console.error("Invalid message:", message);
+      // Silently handle parsing errors or other message processing issues
     }
   }
 
+  /**
+   * Sends all existing custom sounds stored in room storage to a specific connection.
+   * This ensures new users receive all custom sounds that were added before they joined.
+   * @param {Party.Connection} conn - The connection to send the custom sounds to
+   */
   async sendExistingCustomSounds(conn: Party.Connection) {
-    // Get all custom sounds from storage
+    // Retrieve all keys from room storage
     const keys = await this.room.storage.list();
     for (const [key, value] of keys) {
+      // Check if the key represents a custom sound (starts with 'customSound_')
       if (key.startsWith('customSound_')) {
+        // Extract the emoji from the key
         const emoji = key.replace('customSound_', '');
+        // Send the custom sound data to the connection
         conn.send(
           JSON.stringify({
             type: 'customSoundAdded',
@@ -131,12 +161,19 @@ export default class Server implements Party.Server {
     }
   }
 
+  /**
+   * Handles connection close events.
+   * Removes the user from the room and notifies all remaining users.
+   * @param {Party.Connection} conn - The connection that was closed
+   */
   onClose(conn: Party.Connection) {
+    // Find the user associated with the closed connection
     const user = this.users.get(conn.id);
     if (user) {
+      // Remove the user from the users map
       this.users.delete(conn.id);
-      console.log(`${user.name} left room ${this.room.id}`);
-      // Broadcast user left
+
+      // Broadcast to all remaining users that this user left
       this.room.broadcast(
         JSON.stringify({
           type: 'userLeft',

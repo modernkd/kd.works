@@ -5,8 +5,8 @@
   transform: translate(-50%, -50%) rotate(-2deg);
   width: 35vw;
   height: auto;
-  background-color: var(--sticky-note);
-  border: 2px solid var(--sticky-note-border);
+  background-color: var(--sticky-note-background);
+  border: 2px solid var(--sticky-note-background-border);
   border-radius: 5px;
   padding: 1.25rem;
   z-index: 5;

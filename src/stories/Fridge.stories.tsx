@@ -9,7 +9,7 @@ const meta = {
   component: Fridge,
   decorators: [
     (Story, context) => {
-      // Get the theme for this story
+
       const storyTheme = context.parameters?.theme || context.globals?.theme || 'light';
       return (
         <ThemeProvider initialTheme={storyTheme}>
@@ -46,7 +46,6 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Light mode stories
 export const LightModeClosed: Story = {
   name: 'Light Mode - Closed',
   globals: {
@@ -92,7 +91,6 @@ export const LightModeFreezerOpen: Story = {
   },
 };
 
-// Dark mode stories
 export const DarkModeClosed: Story = {
   name: 'Dark Mode - Closed',
   globals: {
