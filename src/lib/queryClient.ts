@@ -1,5 +1,8 @@
 import { QueryClient } from '@tanstack/react-query';
 
+/**
+ * Configured React Query client with optimized settings for the application
+ */
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -8,7 +11,7 @@ export const queryClient = new QueryClient({
       networkMode: 'offlineFirst',
       refetchOnReconnect: true,
       retry: (failureCount, error) => {
-        // Don't retry on 4xx errors
+        // Don't retry on 4xx errors (client errors)
         if (error instanceof Error && error.message.includes('4')) {
           return false;
         }

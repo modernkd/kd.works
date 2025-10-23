@@ -1,11 +1,15 @@
-// API client functions for making HTTP requests to the backend
-// Note: This file is deprecated in favor of direct Supabase integration
-
 import { NewNote, Note } from '../db/schema';
 import { supabase } from './supabase';
 
+/**
+ * Base URL for API endpoints
+ */
 const API_BASE_URL = '/api';
 
+/**
+ * Standard API response structure
+ * @template T - The type of data returned on success
+ */
 interface ApiResponse<T = unknown> {
   success: boolean;
   data?: T;
@@ -13,14 +17,22 @@ interface ApiResponse<T = unknown> {
   message?: string;
 }
 
+/**
+ * User information structure
+ */
 interface User {
   id: string;
   email: string;
 }
 
-// Generic fetch wrapper with error handling
+/**
+ * Makes an API request to the specified endpoint
+ * @template T - The expected response data type
+ * @param endpoint - The API endpoint path
+ * @param options - Fetch options including method, headers, body
+ * @returns Promise resolving to ApiResponse
+ */
 async function apiRequest<T>(endpoint: string, options: RequestInit = {}): Promise<ApiResponse<T>> {
-  console.log(`[API] Making request to: ${API_BASE_URL}${endpoint}`);
   try {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       headers: {
@@ -30,34 +42,31 @@ async function apiRequest<T>(endpoint: string, options: RequestInit = {}): Promi
       ...options,
     });
 
-    console.log(`[API] Response status: ${response.status} ${response.statusText}`);
-
-    let data;
-    let text;
+    let parsedData;
+    let responseText;
     try {
-      text = await response.text();
-      console.log(`[API] Response body:`, text.substring(0, 200));
-      data = JSON.parse(text);
+      responseText = await response.text();
+
+      parsedData = JSON.parse(responseText);
     } catch (parseError) {
       console.error('[API] Failed to parse JSON response:', parseError);
       console.error('[API] Response status:', response.status);
       console.error('[API] Response headers:', Object.fromEntries(response.headers.entries()));
-      console.error('[API] Response body (first 500 chars):', text ? text.substring(0, 500) : 'N/A');
+      console.error('[API] Response body (first 500 chars):', responseText ? responseText.substring(0, 500) : 'N/A');
       throw new Error('Invalid JSON response from server');
     }
 
     if (!response.ok) {
-      console.error('[API] Request failed with status:', response.status, data);
+      console.error('[API] Request failed with status:', response.status, parsedData);
       return {
         success: false,
-        error: data.error || `HTTP ${response.status}: ${response.statusText}`,
+        error: parsedData.error || `HTTP ${response.status}: ${response.statusText}`,
       };
     }
 
-    console.log('[API] Request successful:', data);
     return {
       success: true,
-      data: data as T,
+      data: parsedData as T,
     };
   } catch (error) {
     console.error('[API] Request failed:', error);
@@ -68,9 +77,16 @@ async function apiRequest<T>(endpoint: string, options: RequestInit = {}): Promi
   }
 }
 
-// Auth API functions
+/**
+ * Authentication API methods
+ */
 export const authApi = {
-  // Send magic link for sign in
+  /**
+   * Signs in a user with email and redirect URL
+   * @param email - User's email address
+   * @param redirectTo - URL to redirect after sign in
+   * @returns Promise resolving to API response with message
+   */
   signIn: async (email: string, redirectTo: string): Promise<ApiResponse<{ message: string }>> => {
     return apiRequest('/auth/signin', {
       method: 'POST',
@@ -78,32 +94,45 @@ export const authApi = {
     });
   },
 
-  // Get current user
+  /**
+   * Gets the current authenticated user
+   * @returns Promise resolving to API response with user data
+   */
   getCurrentUser: async (): Promise<ApiResponse<{ user: User }>> => {
     return apiRequest('/auth/me');
   },
 
-  // Sign out
+  /**
+   * Signs out the current user
+   * @returns Promise resolving to API response with message
+   */
   signOut: async (): Promise<ApiResponse<{ message: string }>> => {
     return apiRequest('/auth/signout', {
       method: 'POST',
     });
   },
 
-  // Verify authentication
+  /**
+   * Verifies the current user's authentication
+   * @returns Promise resolving to API response with user data
+   */
   verify: async (): Promise<ApiResponse<{ user: User }>> => {
     return apiRequest('/auth/verify', {
       method: 'POST',
     });
   },
 };
-
-// Direct Supabase integration for notes
+/**
+ * Notes API methods for managing notes in the database
+ */
 export const notesApi = {
-  // Create a new note
+  /**
+   * Creates a new note in the database
+   * @param noteData - The note data to create
+   * @returns Promise resolving to API response with created note and message
+   */
   create: async (noteData: NewNote): Promise<ApiResponse<{ note: Note; message: string }>> => {
     try {
-      console.log('[Supabase] Creating note:', noteData);
       const { data, error } = await supabase.from('notes').insert(noteData).select().single();
 
       if (error) {
@@ -111,7 +140,6 @@ export const notesApi = {
         return { success: false, error: error.message };
       }
 
-      console.log('[Supabase] Note created:', data);
       return {
         success: true,
         data: { note: data, message: 'Note submitted successfully and is pending approval' },
@@ -122,10 +150,12 @@ export const notesApi = {
     }
   },
 
-  // Get approved notes
+  /**
+   * Retrieves all approved notes
+   * @returns Promise resolving to API response with array of approved notes
+   */
   getApproved: async (): Promise<ApiResponse<{ notes: Note[] }>> => {
     try {
-      console.log('[Supabase] Fetching approved notes');
       const { data, error } = await supabase
         .from('notes')
         .select('*')
@@ -137,7 +167,6 @@ export const notesApi = {
         return { success: false, error: error.message };
       }
 
-      console.log('[Supabase] Approved notes:', data);
       return { success: true, data: { notes: data || [] } };
     } catch (error) {
       console.error('[Supabase] Get approved failed:', error);
@@ -145,10 +174,12 @@ export const notesApi = {
     }
   },
 
-  // Get pending notes (admin only)
+  /**
+   * Retrieves all pending notes
+   * @returns Promise resolving to API response with array of pending notes
+   */
   getPending: async (): Promise<ApiResponse<{ notes: Note[] }>> => {
     try {
-      console.log('[Supabase] Fetching pending notes');
       const { data, error } = await supabase
         .from('notes')
         .select('*')
@@ -160,7 +191,6 @@ export const notesApi = {
         return { success: false, error: error.message };
       }
 
-      console.log('[Supabase] Pending notes:', data);
       return { success: true, data: { notes: data || [] } };
     } catch (error) {
       console.error('[Supabase] Get pending failed:', error);
@@ -168,10 +198,12 @@ export const notesApi = {
     }
   },
 
-  // Get all notes (admin only - combines pending and approved)
+  /**
+   * Retrieves all notes regardless of status
+   * @returns Promise resolving to API response with array of all notes
+   */
   getAll: async (): Promise<ApiResponse<{ notes: Note[] }>> => {
     try {
-      console.log('[Supabase] Fetching all notes');
       const { data, error } = await supabase.from('notes').select('*').order('created_at', { ascending: false });
 
       if (error) {
@@ -179,7 +211,6 @@ export const notesApi = {
         return { success: false, error: error.message };
       }
 
-      console.log('[Supabase] All notes:', data);
       return { success: true, data: { notes: data || [] } };
     } catch (error) {
       console.error('[Supabase] Get all failed:', error);
@@ -187,10 +218,13 @@ export const notesApi = {
     }
   },
 
-  // Approve a note (admin only)
+  /**
+   * Approves a pending note
+   * @param noteId - The ID of the note to approve
+   * @returns Promise resolving to API response with success message
+   */
   approve: async (noteId: number): Promise<ApiResponse<{ message: string }>> => {
     try {
-      console.log('[Supabase] Approving note:', noteId);
       const { error } = await supabase
         .from('notes')
         .update({
@@ -204,7 +238,6 @@ export const notesApi = {
         return { success: false, error: error.message };
       }
 
-      console.log('[Supabase] Note approved:', noteId);
       return { success: true, data: { message: 'Note approved successfully' } };
     } catch (error) {
       console.error('[Supabase] Approve failed:', error);
@@ -212,10 +245,13 @@ export const notesApi = {
     }
   },
 
-  // Reject a note (admin only)
+  /**
+   * Rejects a pending note
+   * @param noteId - The ID of the note to reject
+   * @returns Promise resolving to API response with success message
+   */
   reject: async (noteId: number): Promise<ApiResponse<{ message: string }>> => {
     try {
-      console.log('[Supabase] Rejecting note:', noteId);
       const { error } = await supabase.from('notes').update({ status: 'rejected' }).eq('id', noteId);
 
       if (error) {
@@ -223,7 +259,6 @@ export const notesApi = {
         return { success: false, error: error.message };
       }
 
-      console.log('[Supabase] Note rejected:', noteId);
       return { success: true, data: { message: 'Note rejected successfully' } };
     } catch (error) {
       console.error('[Supabase] Reject failed:', error);
@@ -231,10 +266,13 @@ export const notesApi = {
     }
   },
 
-  // Delete a note (admin only)
+  /**
+   * Deletes a note from the database
+   * @param noteId - The ID of the note to delete
+   * @returns Promise resolving to API response with success message
+   */
   delete: async (noteId: number): Promise<ApiResponse<{ message: string }>> => {
     try {
-      console.log('[Supabase] Deleting note:', noteId);
       const { error } = await supabase.from('notes').delete().eq('id', noteId);
 
       if (error) {
@@ -242,7 +280,6 @@ export const notesApi = {
         return { success: false, error: error.message };
       }
 
-      console.log('[Supabase] Note deleted:', noteId);
       return { success: true, data: { message: 'Note deleted successfully' } };
     } catch (error) {
       console.error('[Supabase] Delete failed:', error);
@@ -251,7 +288,10 @@ export const notesApi = {
   },
 };
 
-// Health check
+/**
+ * Performs a health check on the API
+ * @returns Promise resolving to API response with health status information
+ */
 export const healthCheck = async (): Promise<ApiResponse<{ message: string; timestamp: string; version: string }>> => {
   return apiRequest('/health');
 };

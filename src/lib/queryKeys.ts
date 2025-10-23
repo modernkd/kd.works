@@ -1,4 +1,7 @@
-// Query keys for TanStack Query caching
+/**
+ * Query keys for React Query caching
+ * Structured to provide consistent cache invalidation patterns
+ */
 export const queryKeys = {
   auth: {
     currentUser: ['auth', 'currentUser'] as const,
