@@ -85,5 +85,6 @@
   "adminTableDate": "Datum",
   "adminTableActions": "Åtgärder",
   "adminActionsButton": "Åtgärder",
-  "adminArchiveButton": "Arkivera"
+  "adminArchiveButton": "Arkivera",
+  "adminReapproveButton": "Återgodkänn"
 }

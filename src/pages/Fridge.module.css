@@ -17,8 +17,6 @@
   font-family: Arial, Helvetica, sans-serif;
   position: relative;
   transition: all 0.5s ease-in-out;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(1px);
   border-radius: 1rem;
   margin: 2rem;
 }

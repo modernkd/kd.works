@@ -8,6 +8,14 @@ import { MetaTags } from '../hooks/useMetaTags';
 import styles from './Admin.module.css';
 import { supabase } from '../lib/supabase';
 import type { User } from '@supabase/supabase-js';
+import {
+  useReactTable,
+  getCoreRowModel,
+  getSortedRowModel,
+  flexRender,
+  type ColumnDef,
+  type SortingState,
+} from '@tanstack/react-table';
 
 interface Note {
   id: number;
@@ -20,6 +28,139 @@ interface Note {
   approved_at?: string;
 }
 
+const getColumns = (
+  t: (key: string) => string,
+  toggleDropdown: (noteId: number, event: React.MouseEvent) => void,
+  openDropdown: number | null,
+  handleAction: (action: string, noteId: number) => Promise<void>
+): ColumnDef<Note>[] => [
+  {
+    accessorKey: 'title',
+    header: ({ column }) => (
+      <button onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')} className={styles.sortButton}>
+        {t('adminTableTitle')}
+        {{
+          asc: ' 🔼',
+          desc: ' 🔽',
+        }[column.getIsSorted() as string] ?? ''}
+      </button>
+    ),
+    cell: ({ getValue }) => <span className={styles.titleCell}>{getValue() as string}</span>,
+  },
+  {
+    accessorKey: 'message',
+    header: ({ column }) => (
+      <button onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')} className={styles.sortButton}>
+        {t('adminTableMessage')}
+        {{
+          asc: ' 🔼',
+          desc: ' 🔽',
+        }[column.getIsSorted() as string] ?? ''}
+      </button>
+    ),
+    cell: ({ getValue }) => <span className={styles.messageCell}>{getValue() as string}</span>,
+  },
+  {
+    accessorKey: 'name',
+    header: ({ column }) => (
+      <button onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')} className={styles.sortButton}>
+        {t('adminTableName')}
+        {{
+          asc: ' 🔼',
+          desc: ' 🔽',
+        }[column.getIsSorted() as string] ?? ''}
+      </button>
+    ),
+  },
+  {
+    accessorKey: 'email',
+    header: ({ column }) => (
+      <button onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')} className={styles.sortButton}>
+        {t('adminTableEmail')}
+        {{
+          asc: ' 🔼',
+          desc: ' 🔽',
+        }[column.getIsSorted() as string] ?? ''}
+      </button>
+    ),
+  },
+  {
+    accessorKey: 'status',
+    header: ({ column }) => (
+      <button onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')} className={styles.sortButton}>
+        {t('adminTableStatus')}
+        {{
+          asc: ' 🔼',
+          desc: ' 🔽',
+        }[column.getIsSorted() as string] ?? ''}
+      </button>
+    ),
+    cell: ({ getValue }) => {
+      const status = getValue() as string;
+      return <span className={`${styles.noteStatus} ${styles[`status-${status}`]}`}>{status}</span>;
+    },
+  },
+  {
+    accessorKey: 'created_at',
+    header: ({ column }) => (
+      <button onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')} className={styles.sortButton}>
+        {t('adminTableDate')}
+        {{
+          asc: ' 🔼',
+          desc: ' 🔽',
+        }[column.getIsSorted() as string] ?? ''}
+      </button>
+    ),
+    cell: ({ getValue }) => new Date(getValue() as string).toLocaleDateString(),
+  },
+  {
+    id: 'actions',
+    header: () => t('adminTableActions'),
+    cell: ({ row }) => {
+      const note = row.original;
+      return (
+        <div className={styles.actionsCell}>
+          <div className={styles.dropdown}>
+            <button onClick={(e) => toggleDropdown(note.id, e)} className={styles.dropdownTrigger}>
+              {t('adminActionsButton')} ▼
+            </button>
+            {openDropdown === note.id && (
+              <div className={styles.dropdownMenu}>
+                {note.status === 'pending' && (
+                  <>
+                    <button onClick={() => handleAction('approve', note.id)} className={styles.dropdownItem}>
+                      {t('adminApproveButton')}
+                    </button>
+                    <button onClick={() => handleAction('reject', note.id)} className={styles.dropdownItem}>
+                      {t('adminRejectButton')}
+                    </button>
+                  </>
+                )}
+                {note.status === 'approved' && (
+                  <button onClick={() => handleAction('archive', note.id)} className={styles.dropdownItem}>
+                    {t('adminArchiveButton')}
+                  </button>
+                )}
+                {note.status === 'rejected' && (
+                  <button onClick={() => handleAction('reapprove', note.id)} className={styles.dropdownItem}>
+                    {t('adminReapproveButton')}
+                  </button>
+                )}
+                <button
+                  onClick={() => handleAction('delete', note.id)}
+                  className={`${styles.dropdownItem} ${styles.deleteItem}`}
+                >
+                  {t('adminDeleteButton')}
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    },
+  },
+];
+
 export default function Admin() {
   const [user, setUser] = useState<User | null>(null);
   const [notes, setNotes] = useState<Note[]>([]);
@@ -27,6 +168,7 @@ export default function Admin() {
   const [locale, setLocale] = useLocale();
   const [isDarkMode, setIsDarkMode] = useCookieState<boolean>('darkMode', false);
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
+  const [sorting, setSorting] = useState<SortingState>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
 
@@ -131,6 +273,7 @@ export default function Admin() {
 
   const approveNote = async (noteId: number) => {
     try {
+      console.log(`Approving note ${noteId}`);
       const { error } = await supabase
         .from('notes')
         .update({
@@ -140,8 +283,10 @@ export default function Admin() {
         .eq('id', noteId);
 
       if (error) {
+        console.error('Approve error:', error);
         alert('Failed to approve note');
       } else {
+        console.log(`Note ${noteId} approved successfully`);
         fetchNotes();
       }
     } catch (error) {
@@ -204,8 +349,20 @@ export default function Admin() {
     setTimeout(() => {
       const dropdown = button.nextElementSibling as HTMLElement;
       if (dropdown) {
-        dropdown.style.left = `${rect.left}px`;
-        dropdown.style.top = `${rect.bottom + 4}px`;
+        const containerRect = dropdownRef.current?.getBoundingClientRect();
+        if (containerRect) {
+          // Calculate position relative to the container
+          const relativeLeft = rect.left - containerRect.left;
+          const relativeTop = rect.bottom - containerRect.top + 4;
+
+          dropdown.style.position = 'absolute';
+          dropdown.style.left = `${relativeLeft}px`;
+          dropdown.style.top = `${relativeTop}px`;
+        } else {
+          // Fallback to viewport positioning
+          dropdown.style.left = `${rect.left}px`;
+          dropdown.style.top = `${rect.bottom + 4}px`;
+        }
       }
     }, 0);
   };
@@ -220,6 +377,10 @@ export default function Admin() {
       case 'reject':
         await rejectNote(noteId);
         break;
+      case 'reapprove':
+        console.log(`Reapproving note ${noteId}`);
+        await approveNote(noteId);
+        break;
       case 'archive':
         await rejectNote(noteId); // Archive by rejecting approved notes
         break;
@@ -228,6 +389,18 @@ export default function Admin() {
         break;
     }
   };
+
+  const columns = getColumns(t, toggleDropdown, openDropdown, handleAction);
+  const table = useReactTable({
+    data: notes,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    onSortingChange: setSorting,
+    state: {
+      sorting,
+    },
+  });
 
   // Update theme attribute on document element
   useEffect(() => {
@@ -296,62 +469,22 @@ export default function Admin() {
           <div className={styles.notesTableContainer} ref={dropdownRef}>
             <table className={styles.notesTable}>
               <thead>
-                <tr>
-                  <th>{t('adminTableTitle')}</th>
-                  <th>{t('adminTableMessage')}</th>
-                  <th>{t('adminTableName')}</th>
-                  <th>{t('adminTableEmail')}</th>
-                  <th>{t('adminTableStatus')}</th>
-                  <th>{t('adminTableDate')}</th>
-                  <th>{t('adminTableActions')}</th>
-                </tr>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <tr key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <th key={header.id}>
+                        {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                      </th>
+                    ))}
+                  </tr>
+                ))}
               </thead>
               <tbody>
-                {notes.map((note) => (
-                  <tr key={note.id}>
-                    <td className={styles.titleCell}>{note.title}</td>
-                    <td className={styles.messageCell}>{note.message}</td>
-                    <td>{note.name}</td>
-                    <td>{note.email}</td>
-                    <td>
-                      <span className={`${styles.noteStatus} ${styles[`status-${note.status}`]}`}>{note.status}</span>
-                    </td>
-                    <td>{new Date(note.created_at).toLocaleDateString()}</td>
-                    <td className={styles.actionsCell}>
-                      <div className={styles.dropdown}>
-                        <button onClick={(e) => toggleDropdown(note.id, e)} className={styles.dropdownTrigger}>
-                          {t('adminActionsButton')} ▼
-                        </button>
-                        {openDropdown === note.id && (
-                          <div className={styles.dropdownMenu}>
-                            {note.status === 'pending' && (
-                              <>
-                                <button
-                                  onClick={() => handleAction('approve', note.id)}
-                                  className={styles.dropdownItem}
-                                >
-                                  {t('adminApproveButton')}
-                                </button>
-                                <button onClick={() => handleAction('reject', note.id)} className={styles.dropdownItem}>
-                                  {t('adminRejectButton')}
-                                </button>
-                              </>
-                            )}
-                            {note.status === 'approved' && (
-                              <button onClick={() => handleAction('archive', note.id)} className={styles.dropdownItem}>
-                                {t('adminArchiveButton')}
-                              </button>
-                            )}
-                            <button
-                              onClick={() => handleAction('delete', note.id)}
-                              className={`${styles.dropdownItem} ${styles.deleteItem}`}
-                            >
-                              {t('adminDeleteButton')}
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                    </td>
+                {table.getRowModel().rows.map((row) => (
+                  <tr key={row.id}>
+                    {row.getVisibleCells().map((cell) => (
+                      <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+                    ))}
                   </tr>
                 ))}
               </tbody>
