@@ -7,8 +7,14 @@ import { useLocale } from '../hooks/useLocale';
 import { MetaTags } from '../hooks/useMetaTags';
 import { useCurrentUser, useSignIn, useSignOut } from '../hooks/useAuth';
 import { useAllNotes, useApproveNote, useRejectNote, useDeleteNote } from '../hooks/useNotes';
+import { toggleDarkMode } from '../lib/themeUtils';
 import styles from './Admin.module.css';
 
+/**
+ * Admin panel component for managing fridge notes.
+ * Provides functionality to approve, reject, and delete notes submitted by users.
+ * Requires authentication via magic link sent to admin email.
+ */
 export default function Admin() {
   const [locale, setLocale] = useLocale();
   const [isDarkMode, setIsDarkMode] = useCookieState<boolean>('darkMode', false);
@@ -16,7 +22,6 @@ export default function Admin() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
 
-  // Use TanStack Query hooks
   const { data: user } = useCurrentUser();
   const signInMutation = useSignIn();
   const signOutMutation = useSignOut();
@@ -25,7 +30,10 @@ export default function Admin() {
   const rejectNoteMutation = useRejectNote();
   const deleteNoteMutation = useDeleteNote();
 
-  // Close dropdown when clicking outside or scrolling
+  /**
+   * Handles closing dropdown menus when clicking outside or scrolling.
+   * Adds event listeners for mousedown and scroll events to close any open dropdown.
+   */
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -45,6 +53,10 @@ export default function Admin() {
     };
   }, []);
 
+  /**
+   * Initiates admin sign-in by sending a magic link to the admin email.
+   * Uses Supabase auth to send the magic link with redirect to admin panel.
+   */
   const signIn = async () => {
     try {
       await signInMutation.mutateAsync({
@@ -58,6 +70,10 @@ export default function Admin() {
     }
   };
 
+  /**
+   * Handles admin sign-out by calling the sign-out mutation.
+   * Logs any errors that occur during the sign-out process.
+   */
   const signOutHandler = async () => {
     try {
       await signOutMutation.mutateAsync();
@@ -66,6 +82,11 @@ export default function Admin() {
     }
   };
 
+  /**
+   * Approves a note by calling the approve mutation.
+   * Shows an alert if the operation fails.
+   * @param noteId - The ID of the note to approve
+   */
   const approveNoteHandler = async (noteId: number) => {
     try {
       await approveNoteMutation.mutateAsync(noteId);
@@ -75,6 +96,11 @@ export default function Admin() {
     }
   };
 
+  /**
+   * Rejects a note by calling the reject mutation.
+   * Shows an alert if the operation fails.
+   * @param noteId - The ID of the note to reject
+   */
   const rejectNoteHandler = async (noteId: number) => {
     try {
       await rejectNoteMutation.mutateAsync(noteId);
@@ -84,6 +110,11 @@ export default function Admin() {
     }
   };
 
+  /**
+   * Deletes a note permanently after user confirmation.
+   * Shows a confirmation dialog before proceeding with deletion.
+   * @param noteId - The ID of the note to delete
+   */
   const deleteNoteHandler = async (noteId: number) => {
     if (!confirm('Are you sure you want to permanently delete this note?')) {
       return;
@@ -97,10 +128,19 @@ export default function Admin() {
     }
   };
 
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
+  /**
+   * Toggles the dark mode theme for the application.
+   */
+  const handleToggleDarkMode = () => {
+    setIsDarkMode(toggleDarkMode(isDarkMode));
   };
 
+  /**
+   * Toggles the dropdown menu for a specific note.
+   * Positions the dropdown relative to the button that triggered it.
+   * @param noteId - The ID of the note whose dropdown to toggle
+   * @param event - The mouse event that triggered the toggle
+   */
   const toggleDropdown = (noteId: number, event: React.MouseEvent) => {
     event.stopPropagation();
     const button = event.target as HTMLElement;
@@ -113,7 +153,6 @@ export default function Admin() {
 
     setOpenDropdown(noteId);
 
-    // Position the dropdown dynamically after state update
     setTimeout(() => {
       const dropdown = button.nextElementSibling as HTMLElement;
       if (dropdown) {
@@ -123,6 +162,12 @@ export default function Admin() {
     }, 0);
   };
 
+  /**
+   * Handles actions from the dropdown menu for a specific note.
+   * Closes the dropdown and performs the requested action.
+   * @param action - The action to perform ('approve', 'reject', 'archive', 'delete')
+   * @param noteId - The ID of the note to perform the action on
+   */
   const handleAction = async (action: string, noteId: number) => {
     setOpenDropdown(null);
 
@@ -142,7 +187,9 @@ export default function Admin() {
     }
   };
 
-  // Update theme attribute on document element
+  /**
+   * Applies the dark mode theme to the document root when isDarkMode changes.
+   */
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.setAttribute('data-theme', 'dark');
@@ -164,7 +211,7 @@ export default function Admin() {
           showDarkModeToggle={true}
           isDarkMode={isDarkMode}
           showBackLink={true}
-          onDarkModeToggle={toggleDarkMode}
+          onDarkModeToggle={handleToggleDarkMode}
           locale={locale}
           linkTo="/fridge"
           linkText="fridge"
@@ -195,7 +242,7 @@ export default function Admin() {
         showDarkModeToggle={true}
         isDarkMode={isDarkMode}
         showBackLink={true}
-        onDarkModeToggle={toggleDarkMode}
+        onDarkModeToggle={handleToggleDarkMode}
         locale={locale}
         linkTo="/fridge"
         linkText="Fridge"
