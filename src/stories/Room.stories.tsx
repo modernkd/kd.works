@@ -4,14 +4,11 @@ import { HelmetProvider } from 'react-helmet-async';
 import RoomPage, { RoomPageProps } from '../pages/more-cowbell/room/RoomPage';
 import { ThemeProvider } from './ThemeProvider';
 
-// Mock hooks and dependencies to avoid network calls and external dependencies
-
 const meta = {
   title: 'Pages/More-Cowbell/Room',
   component: RoomPage,
   decorators: [
     (Story, context) => {
-      // Get the theme for this story
       const storyTheme = context.parameters?.theme || context.globals?.theme || 'light';
       return (
         <ThemeProvider initialTheme={storyTheme}>

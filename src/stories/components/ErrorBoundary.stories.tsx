@@ -33,7 +33,6 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof ErrorBoundary>;
 
-// Component that throws an error
 const ErrorComponent = () => {
   throw new Error('Test error for ErrorBoundary');
 };
