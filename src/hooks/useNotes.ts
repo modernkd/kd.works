@@ -1,11 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { notesApi } from '../lib/api';
 import { queryKeys } from '../lib/queryKeys';
-import { NewNote, Note } from '../db/schema';
+import { NewNote, FrontendNote } from '../db/schema';
 
 /**
  * Hook to fetch all approved notes.
- * @returns {import('@tanstack/react-query').UseQueryResult<Note[], Error>} Query object with approved notes data, loading state, and error state.
+ * @returns {import('@tanstack/react-query').UseQueryResult<FrontendNote[], Error>} Query object with approved notes data, loading state, and error state.
  */
 export const useApprovedNotes = () => {
   return useQuery({
@@ -23,7 +23,7 @@ export const useApprovedNotes = () => {
 
 /**
  * Hook to fetch all pending notes.
- * @returns {import('@tanstack/react-query').UseQueryResult<Note[], Error>} Query object with pending notes data, loading state, and error state.
+ * @returns {import('@tanstack/react-query').UseQueryResult<FrontendNote[], Error>} Query object with pending notes data, loading state, and error state.
  */
 export const usePendingNotes = () => {
   return useQuery({
@@ -41,7 +41,7 @@ export const usePendingNotes = () => {
 
 /**
  * Hook to fetch all notes regardless of status.
- * @returns {import('@tanstack/react-query').UseQueryResult<Note[], Error>} Query object with all notes data, loading state, and error state.
+ * @returns {import('@tanstack/react-query').UseQueryResult<FrontendNote[], Error>} Query object with all notes data, loading state, and error state.
  */
 export const useAllNotes = () => {
   return useQuery({
@@ -60,7 +60,7 @@ export const useAllNotes = () => {
 /**
  * Hook to create a new note.
  * @param {NewNote} noteData - The data for the new note to create.
- * @returns {import('@tanstack/react-query').UseMutationResult<Note, Error, NewNote>} Mutation object with create function, loading state, and error state.
+ * @returns {import('@tanstack/react-query').UseMutationResult<FrontendNote, Error, NewNote>} Mutation object with create function, loading state, and error state.
  */
 export const useCreateNote = () => {
   const queryClient = useQueryClient();
@@ -81,7 +81,7 @@ export const useCreateNote = () => {
 /**
  * Hook to approve a pending note.
  * @param {number} noteId - The ID of the note to approve.
- * @returns {import('@tanstack/react-query').UseMutationResult<Note, Error, number>} Mutation object with approve function, loading state, and error state.
+ * @returns {import('@tanstack/react-query').UseMutationResult<FrontendNote, Error, number>} Mutation object with approve function, loading state, and error state.
  */
 export const useApproveNote = () => {
   const queryClient = useQueryClient();
@@ -106,15 +106,15 @@ export const useApproveNote = () => {
       const previousPendingNotes = queryClient.getQueryData(queryKeys.notes.pending);
       const previousApprovedNotes = queryClient.getQueryData(queryKeys.notes.approved);
 
-      queryClient.setQueryData(queryKeys.notes.pending, (old: Note[] | undefined) => {
+      queryClient.setQueryData(queryKeys.notes.pending, (old: FrontendNote[] | undefined) => {
         return old?.filter((note) => note.id !== noteId) || [];
       });
 
-      queryClient.setQueryData(queryKeys.notes.approved, (old: Note[] | undefined) => {
-        const pendingNotes = queryClient.getQueryData(queryKeys.notes.pending) as Note[] | undefined;
+      queryClient.setQueryData(queryKeys.notes.approved, (old: FrontendNote[] | undefined) => {
+        const pendingNotes = queryClient.getQueryData(queryKeys.notes.pending) as FrontendNote[] | undefined;
         const noteToApprove = pendingNotes?.find((note) => note.id === noteId);
         if (noteToApprove) {
-          const approvedNote = { ...noteToApprove, status: 'approved' as const, approvedAt: new Date().toISOString() };
+          const approvedNote = { ...noteToApprove, status: 'approved' as const, approved_at: new Date().toISOString() };
           return [...(old || []), approvedNote];
         }
         return old || [];
@@ -136,7 +136,7 @@ export const useApproveNote = () => {
 /**
  * Hook to reject a pending note.
  * @param {number} noteId - The ID of the note to reject.
- * @returns {import('@tanstack/react-query').UseMutationResult<Note, Error, number>} Mutation object with reject function, loading state, and error state.
+ * @returns {import('@tanstack/react-query').UseMutationResult<FrontendNote, Error, number>} Mutation object with reject function, loading state, and error state.
  */
 export const useRejectNote = () => {
   const queryClient = useQueryClient();
@@ -158,7 +158,7 @@ export const useRejectNote = () => {
 
       const previousPendingNotes = queryClient.getQueryData(queryKeys.notes.pending);
 
-      queryClient.setQueryData(queryKeys.notes.pending, (old: Note[] | undefined) => {
+      queryClient.setQueryData(queryKeys.notes.pending, (old: FrontendNote[] | undefined) => {
         return old?.filter((note) => note.id !== noteId) || [];
       });
 
@@ -175,7 +175,7 @@ export const useRejectNote = () => {
 /**
  * Hook to delete a note.
  * @param {number} noteId - The ID of the note to delete.
- * @returns {import('@tanstack/react-query').UseMutationResult<Note, Error, number>} Mutation object with delete function, loading state, and error state.
+ * @returns {import('@tanstack/react-query').UseMutationResult<FrontendNote, Error, number>} Mutation object with delete function, loading state, and error state.
  */
 export const useDeleteNote = () => {
   const queryClient = useQueryClient();
@@ -200,10 +200,10 @@ export const useDeleteNote = () => {
       const previousPendingNotes = queryClient.getQueryData(queryKeys.notes.pending);
       const previousApprovedNotes = queryClient.getQueryData(queryKeys.notes.approved);
 
-      queryClient.setQueryData(queryKeys.notes.pending, (old: Note[] | undefined) => {
+      queryClient.setQueryData(queryKeys.notes.pending, (old: FrontendNote[] | undefined) => {
         return old?.filter((note) => note.id !== noteId) || [];
       });
-      queryClient.setQueryData(queryKeys.notes.approved, (old: Note[] | undefined) => {
+      queryClient.setQueryData(queryKeys.notes.approved, (old: FrontendNote[] | undefined) => {
         return old?.filter((note) => note.id !== noteId) || [];
       });
 

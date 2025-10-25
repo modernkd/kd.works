@@ -13,3 +13,7 @@ export const notes = pgTable('notes', {
 
 export type Note = typeof notes.$inferSelect;
 export type NewNote = typeof notes.$inferInsert;
+export type FrontendNote = Omit<Note, 'createdAt' | 'approvedAt'> & {
+  created_at: Date;
+  approved_at: Date | null;
+};

@@ -1,4 +1,4 @@
-import { NewNote, Note } from '../db/schema';
+import { NewNote, FrontendNote } from '../db/schema';
 import { supabase } from './supabase';
 
 /**
@@ -131,7 +131,7 @@ export const notesApi = {
    * @param noteData - The note data to create
    * @returns Promise resolving to API response with created note and message
    */
-  create: async (noteData: NewNote): Promise<ApiResponse<{ note: Note; message: string }>> => {
+  create: async (noteData: NewNote): Promise<ApiResponse<{ note: FrontendNote; message: string }>> => {
     try {
       const { data, error } = await supabase.from('notes').insert(noteData).select().single();
 
@@ -154,7 +154,7 @@ export const notesApi = {
    * Retrieves all approved notes
    * @returns Promise resolving to API response with array of approved notes
    */
-  getApproved: async (): Promise<ApiResponse<{ notes: Note[] }>> => {
+  getApproved: async (): Promise<ApiResponse<{ notes: FrontendNote[] }>> => {
     try {
       const { data, error } = await supabase
         .from('notes')
@@ -178,7 +178,7 @@ export const notesApi = {
    * Retrieves all pending notes
    * @returns Promise resolving to API response with array of pending notes
    */
-  getPending: async (): Promise<ApiResponse<{ notes: Note[] }>> => {
+  getPending: async (): Promise<ApiResponse<{ notes: FrontendNote[] }>> => {
     try {
       const { data, error } = await supabase
         .from('notes')
@@ -202,7 +202,7 @@ export const notesApi = {
    * Retrieves all notes regardless of status
    * @returns Promise resolving to API response with array of all notes
    */
-  getAll: async (): Promise<ApiResponse<{ notes: Note[] }>> => {
+  getAll: async (): Promise<ApiResponse<{ notes: FrontendNote[] }>> => {
     try {
       const { data, error } = await supabase.from('notes').select('*').order('created_at', { ascending: false });
 

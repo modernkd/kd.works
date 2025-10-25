@@ -281,7 +281,7 @@ export default function Admin() {
                       <td>
                         <span className={`${styles.noteStatus} ${styles[`status-${note.status}`]}`}>{note.status}</span>
                       </td>
-                      <td>{new Date(note.createdAt).toLocaleDateString()}</td>
+                      <td>{new Date(note.created_at).toLocaleDateString()}</td>
                       <td className={styles.actionsCell}>
                         <div className={styles.dropdown}>
                           <button onClick={(e) => toggleDropdown(note.id, e)} className={styles.dropdownTrigger}>
