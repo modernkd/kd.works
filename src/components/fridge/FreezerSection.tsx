@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import MagnetText from '../magnets/MagnetText';
+import MagnetText from './magnets/MagnetText';
 import DarkModeToggle from '../ui/DarkModeToggle';
 import styles from './FreezerSection.module.css';
 

@@ -21,7 +21,7 @@
   transform-style: preserve-3d;
   transform-origin: left center;
   transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
+  /* overflow: hidden; */
   z-index: -1;
 }
 
