@@ -6,7 +6,7 @@ import Header from '../components/ui/Header';
 import { useLocale } from '../hooks/useLocale';
 import { useCookieState } from '../hooks/useCookieState';
 import { MetaTags } from '../hooks/useMetaTags';
-import { applyFridgeTheme } from '../utils/backgroundUtils';
+import { applyFridgeTheme } from '../utils/fridgeThemes';
 import { toggleDarkMode } from '../lib/themeUtils';
 import type { FridgeTheme, QueuedSubmission } from '../types';
 import styles from './Fridge.module.css';

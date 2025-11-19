@@ -1,6 +1,86 @@
 import type { FridgeTheme } from '../types';
 import { applyRandomizedBackground } from '../lib/backgroundUtils';
 
+/**
+ * Default gradient configurations for fridge themes
+ */
+const getDefaultGradients = () => {
+  const root = document.documentElement;
+  return [
+    {
+      color: getComputedStyle(root).getPropertyValue('--splotch-color-1').trim() || 'rgba(34, 139, 34, 0.15)',
+      size: '80px 80px',
+    },
+    {
+      color: getComputedStyle(root).getPropertyValue('--splotch-color-2').trim() || 'rgba(50, 205, 50, 0.601)',
+      size: '60px 60px',
+    },
+    {
+      color: getComputedStyle(root).getPropertyValue('--splotch-color-3').trim() || 'rgba(0, 128, 0, 0.1)',
+      size: '90px 90px',
+    },
+    {
+      color: getComputedStyle(root).getPropertyValue('--splotch-color-4').trim() || 'rgba(34, 139, 34, 0.585)',
+      size: '50px 50px',
+    },
+    {
+      color: getComputedStyle(root).getPropertyValue('--splotch-color-5').trim() || 'rgba(50, 205, 50, 0.12)',
+      size: '70px 70px',
+    },
+    {
+      color: getComputedStyle(root).getPropertyValue('--splotch-color-6').trim() || 'rgba(0, 128, 0, 0.281)',
+      size: '80px 80px',
+    },
+    {
+      color: getComputedStyle(root).getPropertyValue('--splotch-color-7').trim() || 'rgba(34, 139, 34, 0.1)',
+      size: '65px 65px',
+    },
+    {
+      color: getComputedStyle(root).getPropertyValue('--splotch-color-8').trim() || 'rgba(50, 205, 50, 0.666)',
+      size: '55px 55px',
+    },
+    {
+      color: getComputedStyle(root).getPropertyValue('--splotch-color-9').trim() || 'rgba(34, 139, 34, 0.08)',
+      size: '75px 75px',
+    },
+    {
+      color: getComputedStyle(root).getPropertyValue('--splotch-color-10').trim() || 'rgba(50, 205, 50, 0.05)',
+      size: '85px 85px',
+    },
+    {
+      color: getComputedStyle(root).getPropertyValue('--splotch-color-11').trim() || 'rgba(0, 128, 0, 0.15)',
+      size: '45px 45px',
+    },
+    {
+      color: getComputedStyle(root).getPropertyValue('--splotch-color-12').trim() || 'rgba(34, 139, 34, 0.25)',
+      size: '95px 95px',
+    },
+    {
+      color: getComputedStyle(root).getPropertyValue('--splotch-color-13').trim() || 'rgba(50, 205, 50, 0.09)',
+      size: '60px 60px',
+    },
+    {
+      color: getComputedStyle(root).getPropertyValue('--splotch-color-14').trim() || 'rgba(0, 128, 0, 0.12)',
+      size: '70px 70px',
+    },
+    {
+      color: getComputedStyle(root).getPropertyValue('--splotch-color-15').trim() || 'rgba(34, 139, 34, 0.18)',
+      size: '50px 50px',
+    },
+    {
+      color: getComputedStyle(root).getPropertyValue('--splotch-color-16').trim() || 'rgba(50, 205, 50, 0.07)',
+      size: '80px 80px',
+    },
+    {
+      color:
+        getComputedStyle(root).getPropertyValue('--splotch-linear').trim() ||
+        'linear-gradient(135deg, rgba(34, 139, 34, 0.05), rgba(50, 205, 50, 0.05))',
+      size: '100% 100%',
+      isLinear: true,
+    },
+  ];
+};
+
 export const applyFridgeTheme = (theme: FridgeTheme) => {
   const root = document.documentElement;
   switch (theme) {
@@ -168,84 +248,12 @@ export const applyFridgeTheme = (theme: FridgeTheme) => {
       break;
   }
 
-  applyRandomizedBackground(gradients);
+  // Apply randomized background using the shared gradients function
+  applyRandomizedBackground(getDefaultGradients());
 };
 
 export const randomizeBackground = () => {
-  const root = document.documentElement;
-  const gradients = [
-    {
-      color: getComputedStyle(root).getPropertyValue('--splotch-color-1').trim() || 'rgba(34, 139, 34, 0.15)',
-      size: '80px 80px',
-    },
-    {
-      color: getComputedStyle(root).getPropertyValue('--splotch-color-2').trim() || 'rgba(50, 205, 50, 0.601)',
-      size: '60px 60px',
-    },
-    {
-      color: getComputedStyle(root).getPropertyValue('--splotch-color-3').trim() || 'rgba(0, 128, 0, 0.1)',
-      size: '90px 90px',
-    },
-    {
-      color: getComputedStyle(root).getPropertyValue('--splotch-color-4').trim() || 'rgba(34, 139, 34, 0.585)',
-      size: '50px 50px',
-    },
-    {
-      color: getComputedStyle(root).getPropertyValue('--splotch-color-5').trim() || 'rgba(50, 205, 50, 0.12)',
-      size: '70px 70px',
-    },
-    {
-      color: getComputedStyle(root).getPropertyValue('--splotch-color-6').trim() || 'rgba(0, 128, 0, 0.281)',
-      size: '80px 80px',
-    },
-    {
-      color: getComputedStyle(root).getPropertyValue('--splotch-color-7').trim() || 'rgba(34, 139, 34, 0.1)',
-      size: '65px 65px',
-    },
-    {
-      color: getComputedStyle(root).getPropertyValue('--splotch-color-8').trim() || 'rgba(50, 205, 50, 0.666)',
-      size: '55px 55px',
-    },
-    {
-      color: getComputedStyle(root).getPropertyValue('--splotch-color-9').trim() || 'rgba(34, 139, 34, 0.08)',
-      size: '75px 75px',
-    },
-    {
-      color: getComputedStyle(root).getPropertyValue('--splotch-color-10').trim() || 'rgba(50, 205, 50, 0.05)',
-      size: '85px 85px',
-    },
-    {
-      color: getComputedStyle(root).getPropertyValue('--splotch-color-11').trim() || 'rgba(0, 128, 0, 0.15)',
-      size: '45px 45px',
-    },
-    {
-      color: getComputedStyle(root).getPropertyValue('--splotch-color-12').trim() || 'rgba(34, 139, 34, 0.25)',
-      size: '95px 95px',
-    },
-    {
-      color: getComputedStyle(root).getPropertyValue('--splotch-color-13').trim() || 'rgba(50, 205, 50, 0.09)',
-      size: '60px 60px',
-    },
-    {
-      color: getComputedStyle(root).getPropertyValue('--splotch-color-14').trim() || 'rgba(0, 128, 0, 0.12)',
-      size: '70px 70px',
-    },
-    {
-      color: getComputedStyle(root).getPropertyValue('--splotch-color-15').trim() || 'rgba(34, 139, 34, 0.18)',
-      size: '50px 50px',
-    },
-    {
-      color: getComputedStyle(root).getPropertyValue('--splotch-color-16').trim() || 'rgba(50, 205, 50, 0.07)',
-      size: '80px 80px',
-    },
-    {
-      color:
-        getComputedStyle(root).getPropertyValue('--splotch-linear').trim() ||
-        'linear-gradient(135deg, rgba(34, 139, 34, 0.05), rgba(50, 205, 50, 0.05))',
-      size: '100% 100%',
-      isLinear: true,
-    },
-  ];
+  const gradients = getDefaultGradients();
 
   const radialGradients = gradients.slice(0, 16).map((g) => {
     const x = Math.floor(Math.random() * 100);
