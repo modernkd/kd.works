@@ -1,9 +1,9 @@
 import { Routes, Route } from 'react-router-dom';
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense } from 'react';
 import PWAInstallPrompt from './components/ui/PWAInstallPrompt';
 import LoadingScreen from './components/ui/LoadingScreen';
-import { BouncingKdProvider, useBouncingKdContext } from './contexts/BouncingKdContext';
-import BouncingKd from './components/fridge/BouncingKd';
+import { BouncingKdProvider } from './contexts/BouncingKdContext';
+import BouncingKdRenderer from './components/BouncingKdRenderer';
 
 // Layouts
 const Layout = lazy(() => import('./pages/Layout'));
@@ -42,32 +42,6 @@ function App() {
       </Suspense>
       <BouncingKdRenderer />
     </BouncingKdProvider>
-  );
-}
-
-function BouncingKdRenderer() {
-  const { bouncingKds, clearAllBouncingKds } = useBouncingKdContext();
-
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        clearAllBouncingKds();
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [clearAllBouncingKds]);
-
-  return (
-    <>
-      {bouncingKds.map((kd) => (
-        <BouncingKd key={kd.id} isBouncing={true} initialPosition={kd.position} />
-      ))}
-    </>
   );
 }
 
