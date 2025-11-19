@@ -22,6 +22,10 @@ export default function FreezerSection({
   const { t } = useTranslation();
   const snowContainerRef = useRef<HTMLDivElement>(null);
 
+  /**
+   * Handles click events on the freezer door to close it when open.
+   * @param e - The mouse event
+   */
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (isFreezerOpen) {
@@ -29,15 +33,19 @@ export default function FreezerSection({
     }
   };
 
-  // Snow animation effect
   useEffect(() => {
     const snowContainer = snowContainerRef.current;
     if (!snowContainer) return;
 
     let snowflakes: { element: HTMLDivElement; x: number; y: number; speed: number; accumulated: boolean }[] = [];
+    // Array to track individual snowflake elements and their animation state
     let animationId: number | undefined;
     let createInterval: number | undefined;
 
+    /**
+     * Creates a new snowflake element and adds it to the animation array.
+     * Limits total snowflakes to 100 for performance reasons.
+     */
     const createSnowflake = () => {
       if (snowflakes.length > 100) return; // Limit snowflakes for performance
 
@@ -57,13 +65,15 @@ export default function FreezerSection({
       });
     };
 
+    /**
+     * Animation loop that updates snowflake positions and handles accumulation at the bottom.
+     */
     const animate = () => {
       snowflakes.forEach((flake) => {
         if (!flake.accumulated) {
           flake.y += flake.speed;
           flake.element.style.top = flake.y + 'px';
 
-          // Check if reached bottom of freezer section
           const containerHeight = snowContainer.offsetHeight;
           if (flake.y >= containerHeight - 50) {
             flake.accumulated = true;
@@ -77,11 +87,9 @@ export default function FreezerSection({
     };
 
     if (isFreezerOpen) {
-      // Start snow when door is open
       createInterval = window.setInterval(createSnowflake, 200);
       animate();
     } else {
-      // Clear snow when door closes
       if (animationId !== undefined) {
         cancelAnimationFrame(animationId);
       }
@@ -108,7 +116,7 @@ export default function FreezerSection({
 
   return (
     <section className={styles.freezerSection}>
-      {/* Freezer Interior - stays behind */}
+      {}
       <div className={`${styles.freezerInterior} ${isFreezerOpen ? styles.visible : ''}`}>
         <div ref={snowContainerRef} className={styles.snowContainer}></div>
         {isFreezerOpen && (
@@ -122,7 +130,7 @@ export default function FreezerSection({
         )}
       </div>
 
-      {/* Freezer Door - rotates */}
+      {}
       <div className={`${styles.freezerDoor} ${isFreezerOpen ? styles.open : ''}`} onClick={handleClick}>
         <a href="/more-cowbell" className={styles.cowbellMagnet}>
           🐮🛎️
@@ -132,14 +140,14 @@ export default function FreezerSection({
           <MagnetText text={t('hiText')} size="large" />
         </div>
 
-        {/* Moose Magnet - Switches to Swedish */}
+        {}
         <div className={styles.mooseMagnetContainer}>
           <button onClick={() => setLocale('sv')} className={styles.mooseMagnet}>
             🫎
           </button>
         </div>
 
-        {/* Eagle Magnet - Switches to English */}
+        {}
         <div className={styles.eagleMagnetContainer}>
           <button onClick={() => setLocale('en')} className={styles.eagleMagnet}>
             🦅

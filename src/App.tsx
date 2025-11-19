@@ -3,11 +3,9 @@ import { lazy, Suspense } from 'react';
 import PWAInstallPrompt from './components/ui/PWAInstallPrompt';
 import LoadingScreen from './components/ui/LoadingScreen';
 
-// Layouts
 const Layout = lazy(() => import('./pages/Layout'));
 const MoreCowbellLayout = lazy(() => import('./pages/more-cowbell/Layout'));
 
-// Pages
 const Home = lazy(() => import('./pages/Home'));
 const Fridge = lazy(() => import('./pages/Fridge'));
 const Admin = lazy(() => import('./pages/Admin'));

@@ -9,7 +9,6 @@ const meta = {
   component: Home,
   decorators: [
     (Story, context) => {
-      // Get the theme for this story
       const storyTheme = context.parameters?.theme || context.globals?.theme || 'light';
       return (
         <ThemeProvider initialTheme={storyTheme}>

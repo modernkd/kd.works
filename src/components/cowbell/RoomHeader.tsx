@@ -8,6 +8,11 @@ interface RoomHeaderProps {
   isOnline?: boolean;
 }
 
+/**
+ * Generates display names for users, handling duplicates by adding indices.
+ * @param users - Array of user objects with id and name properties
+ * @returns Array of display names with duplicates numbered and truncated if too long
+ */
 function getDisplayNames(users: { id: string; name: string }[]) {
   const nameCounts = new Map<string, number>();
   users.forEach((u) => {

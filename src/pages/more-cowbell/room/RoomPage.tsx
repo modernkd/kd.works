@@ -7,7 +7,9 @@ import { MetaTags } from '../../../hooks/useMetaTags';
 import { PartySocket } from 'partysocket';
 import { Howl } from 'howler';
 
-// Play cowbell sound when entering the room
+/**
+ * Plays the "gotta have more cowbell" sound effect when entering a room.
+ */
 const playCowbellSound = () => {
   const sound = new Howl({
     src: ['/sounds/gotta-have-more-cowbell.mp3'],
@@ -25,11 +27,17 @@ import CustomSoundModal from '../../../components/modals/CustomSoundModal';
 import ManageCustomSoundsModal from '../../../components/modals/ManageCustomSoundsModal';
 import styles from './RoomPage.module.css';
 
+/**
+ * Represents a user in the room.
+ */
 interface User {
   id: string;
   name: string;
 }
 
+/**
+ * WebSocket message interface for real-time communication.
+ */
 interface Message {
   type: string;
   user?: User;
@@ -38,18 +46,31 @@ interface Message {
   sound?: string;
 }
 
+/**
+ * Application message for displaying in the UI.
+ */
 interface AppMessage {
   id: string;
   text: string;
   type: 'join' | 'leave' | 'sound' | 'custom';
 }
 
+/**
+ * Props for the RoomPage component.
+ */
 export interface RoomPageProps {
+  /** Override room name for testing/storybook purposes */
   roomOverride?: string;
+  /** Callback for socket messages (used in testing) */
   onSocketMessage?: (message: Message) => void;
+  /** Callback for socket sends (used in testing) */
   onSocketSend?: (message: string) => void;
 }
 
+/**
+ * Main room page component for the collaborative emoji sound board.
+ * Handles real-time communication, sound playback, and custom sound management.
+ */
 export default function RoomPage({ roomOverride, onSocketMessage, onSocketSend }: RoomPageProps = {}) {
   const { room: paramRoom } = useParams<{ room: string }>();
   const room = roomOverride || paramRoom;
@@ -62,7 +83,6 @@ export default function RoomPage({ roomOverride, onSocketMessage, onSocketSend }
     }
   }, [room, roomOverride, navigate]);
 
-  // Play cowbell sound when component mounts (user enters room)
   useEffect(() => {
     if (room && !roomOverride) {
       playCowbellSound();
@@ -84,6 +104,10 @@ export default function RoomPage({ roomOverride, onSocketMessage, onSocketSend }
   const fileInputRef = useRef<HTMLInputElement>(null);
   const socketRef = useRef<PartySocket | null>(null);
 
+  /**
+   * Handles incoming WebSocket messages and updates application state accordingly.
+   * Processes different message types for user management, sound events, and custom sounds.
+   */
   const handleMessage = useCallback(
     (message: Message) => {
       if (message.type === 'usersList') {
@@ -147,6 +171,10 @@ export default function RoomPage({ roomOverride, onSocketMessage, onSocketSend }
     [t]
   );
 
+  /**
+   * Plays a sound using Howler.js. Handles both built-in sounds and custom data URLs.
+   * @param soundFile - The sound file path or data URL to play
+   */
   const playSound = (soundFile: string) => {
     const src = soundFile.startsWith('data:') ? [soundFile] : [`/sounds/${soundFile}`];
     const sound = new Howl({
@@ -164,7 +192,6 @@ export default function RoomPage({ roomOverride, onSocketMessage, onSocketSend }
     }
   }, []);
 
-  // Online/offline detection
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
@@ -178,7 +205,6 @@ export default function RoomPage({ roomOverride, onSocketMessage, onSocketSend }
     };
   }, []);
 
-  // Load custom sounds from localStorage
   useEffect(() => {
     const savedCustomSounds = localStorage.getItem(`customSounds_${room}`);
     if (savedCustomSounds) {
@@ -193,7 +219,6 @@ export default function RoomPage({ roomOverride, onSocketMessage, onSocketSend }
   useEffect(() => {
     if (isSignedIn && room && nickname.trim() && !roomOverride) {
       if (isOnline) {
-        // Online: connect to PartyKit
         if (socketRef.current) {
           socketRef.current.close();
         }
@@ -222,7 +247,6 @@ export default function RoomPage({ roomOverride, onSocketMessage, onSocketSend }
 
         socketRef.current = socket;
       } else {
-        // Offline: simulate connection
         setIsConnected(true);
         addMessage(setMessages, t('offlineModeMessage'), 'join');
       }
@@ -239,6 +263,9 @@ export default function RoomPage({ roomOverride, onSocketMessage, onSocketSend }
     return () => timers.forEach(clearTimeout);
   }, [messages]);
 
+  /**
+   * Handles user sign-in by storing the nickname and updating state.
+   */
   const handleSignIn = () => {
     if (nickname.trim()) {
       localStorage.setItem('nickname', nickname);
@@ -246,15 +273,18 @@ export default function RoomPage({ roomOverride, onSocketMessage, onSocketSend }
     }
   };
 
+  /**
+   * Handles emoji click events to play sounds.
+   * Plays locally and broadcasts to other users if online.
+   * @param emoji - The emoji that was clicked
+   */
   const handleEmojiClick = (emoji: string) => {
     const sound = soundMap[emoji] || customSounds[emoji];
     if (sound) {
       if (!isOnline || !socketRef.current) {
-        // Play locally only when offline
         playSound(sound);
       }
       if (isOnline && socketRef.current) {
-        // Send to server if online
         socketRef.current.send(
           JSON.stringify({
             type: 'sound',
@@ -263,16 +293,23 @@ export default function RoomPage({ roomOverride, onSocketMessage, onSocketSend }
           })
         );
       } else {
-        // Offline: show local message
         addMessage(setMessages, t('playedSoundOffline', { emoji }), 'sound');
       }
     }
   };
 
+  /**
+   * Handles emoji selection from the emoji picker.
+   * @param emojiObject - Object containing the selected emoji
+   */
   const onEmojiSelect = (emojiObject: { emoji: string }) => {
     setSelectedEmoji(emojiObject.emoji);
   };
 
+  /**
+   * Handles the submission of a custom sound upload.
+   * Converts the file to a data URL and updates custom sounds state.
+   */
   const handleUploadSubmit = () => {
     if (selectedEmoji && selectedFile) {
       const reader = new FileReader();
@@ -284,7 +321,6 @@ export default function RoomPage({ roomOverride, onSocketMessage, onSocketSend }
           return newSounds;
         });
         if (isOnline && socketRef.current) {
-          // Send to server if online
           socketRef.current.send(
             JSON.stringify({
               type: isEditing ? 'editCustomSound' : 'addCustomSound',
@@ -293,7 +329,6 @@ export default function RoomPage({ roomOverride, onSocketMessage, onSocketSend }
             })
           );
         } else {
-          // Offline: show local message
           addMessage(
             setMessages,
             t(isEditing ? 'customSoundUpdatedOffline' : 'customSoundAddedOffline', { emoji: selectedEmoji }),
@@ -306,6 +341,9 @@ export default function RoomPage({ roomOverride, onSocketMessage, onSocketSend }
     }
   };
 
+  /**
+   * Opens the custom sound upload modal and resets form state.
+   */
   const openModal = () => {
     closeManageModal();
     setShowModal(true);
@@ -317,6 +355,9 @@ export default function RoomPage({ roomOverride, onSocketMessage, onSocketSend }
     }
   };
 
+  /**
+   * Closes the custom sound upload modal and resets form state.
+   */
   const closeModal = () => {
     closeManageModal();
     setShowModal(false);
@@ -328,14 +369,25 @@ export default function RoomPage({ roomOverride, onSocketMessage, onSocketSend }
     }
   };
 
+  /**
+   * Opens the manage custom sounds modal.
+   */
   const openManageModal = () => {
     setShowManageModal(true);
   };
 
+  /**
+   * Closes the manage custom sounds modal.
+   */
   const closeManageModal = () => {
     setShowManageModal(false);
   };
 
+  /**
+   * Handles deletion of a custom sound.
+   * Removes from local state and localStorage, broadcasts to other users if online.
+   * @param emoji - The emoji associated with the sound to delete
+   */
   const handleDelete = (emoji: string) => {
     setCustomSounds((prev) => {
       const newSounds = { ...prev };
@@ -344,7 +396,6 @@ export default function RoomPage({ roomOverride, onSocketMessage, onSocketSend }
       return newSounds;
     });
     if (isOnline && socketRef.current) {
-      // Send to server if online
       socketRef.current.send(
         JSON.stringify({
           type: 'deleteCustomSound',
@@ -352,12 +403,15 @@ export default function RoomPage({ roomOverride, onSocketMessage, onSocketSend }
         })
       );
     } else {
-      // Offline: show local message
       addMessage(setMessages, t('customSoundDeletedOffline', { emoji }), 'custom');
     }
     closeManageModal();
   };
 
+  /**
+   * Handles editing of a custom sound by opening the upload modal in edit mode.
+   * @param emoji - The emoji associated with the sound to edit
+   */
   const handleEdit = (emoji: string) => {
     setSelectedEmoji(emoji);
     setIsEditing(true);

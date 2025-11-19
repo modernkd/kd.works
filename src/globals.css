@@ -22,14 +22,14 @@
   --shadow-hover: rgba(0, 0, 0, 0.15);
 
   /* Component specific variables */
-  --magnet-bg-light: #ffd700;
-  --magnet-bg-dark: #4a4a4a;
-  --sticky-note: #ffeb3b;
+  --magnet-background-light: #ffd700;
+  --magnet-background-dark: #4a4a4a;
+  --sticky-note-background: #ffeb3b;
   --sticky-note-border: #f57c00;
-  --success-light: #d4edda;
-  --success-dark: #155724;
-  --accent-light: #cce5ff;
-  --accent-dark: #004085;
+  --success-background-light: #d4edda;
+  --success-text-dark: #155724;
+  --accent-background-light: #cce5ff;
+  --accent-text-dark: #004085;
 }
 
 /* Dark theme */
@@ -66,9 +66,9 @@
   --accent-blue-hover: #0051cc;
 
   /* Component specific variables for dark mode */
-  --magnet-bg-light: #007bff;
-  --magnet-bg-dark: #666666;
-  --sticky-note: #ffeb3b;
+  --magnet-background-light: #007bff;
+  --magnet-background-dark: #666666;
+  --sticky-note-background: #ffeb3b;
   --sticky-note-border: #f57c00;
 }
 

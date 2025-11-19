@@ -6,15 +6,25 @@ import Header from '../components/ui/Header';
 import { useLocale } from '../hooks/useLocale';
 import { useCookieState } from '../hooks/useCookieState';
 import { MetaTags } from '../hooks/useMetaTags';
-import { applyFridgeTheme } from '../utils/fridgeThemes';
+import { applyFridgeTheme } from '../utils/backgroundUtils';
+import { toggleDarkMode } from '../lib/themeUtils';
 import type { FridgeTheme, QueuedSubmission } from '../types';
 import styles from './Fridge.module.css';
 
+/**
+ * Props for the Fridge component.
+ */
 interface FridgeProps {
+  /** Initial state of whether the fridge door is open */
   initialIsFridgeOpen?: boolean;
+  /** Initial state of whether the freezer door is open */
   initialIsFreezerOpen?: boolean;
 }
 
+/**
+ * Fridge page component that renders an interactive fridge-themed contact page.
+ * Features include door toggling, theme changes, and contact form functionality.
+ */
 export default function Fridge({ initialIsFridgeOpen = false, initialIsFreezerOpen = false }: FridgeProps) {
   const [isLeavingNote, setIsLeavingNote] = useState(false);
   const [locale, setLocale] = useLocale();
@@ -23,7 +33,9 @@ export default function Fridge({ initialIsFridgeOpen = false, initialIsFreezerOp
   const [isFridgeOpen, setIsFridgeOpen] = useState(initialIsFridgeOpen);
   const [queuedSubmissions, setQueuedSubmissions] = useState<QueuedSubmission[]>([]);
 
-  // Update theme attribute on document element
+  /**
+   * Applies dark mode theme to the document when isDarkMode state changes.
+   */
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.setAttribute('data-theme', 'dark');
@@ -32,19 +44,31 @@ export default function Fridge({ initialIsFridgeOpen = false, initialIsFreezerOp
     }
   }, [isDarkMode]);
 
-  // Handle theme changes from fridge items
+  /**
+   * Handles theme changes for the fridge by applying the selected theme.
+   * @param theme - The fridge theme to apply
+   */
   const handleThemeChange = (theme: FridgeTheme) => {
     applyFridgeTheme(theme);
   };
 
+  /**
+   * Toggles the note-taking state, showing/hiding the contact form.
+   */
   const handleNoteTaking = () => {
     setIsLeavingNote(!isLeavingNote);
   };
 
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
+  /**
+   * Toggles the dark mode theme for the application.
+   */
+  const handleToggleDarkMode = () => {
+    setIsDarkMode(toggleDarkMode(isDarkMode));
   };
 
+  /**
+   * Toggles the freezer door state. Closes fridge door if it's open.
+   */
   const handleFreezerToggle = () => {
     setIsFreezerOpen(!isFreezerOpen);
     if (isFridgeOpen) {
@@ -52,6 +76,9 @@ export default function Fridge({ initialIsFridgeOpen = false, initialIsFreezerOp
     }
   };
 
+  /**
+   * Toggles the fridge door state. Closes freezer door if it's open.
+   */
   const handleFridgeToggle = () => {
     setIsFridgeOpen(!isFridgeOpen);
     if (isFreezerOpen) {
@@ -59,6 +86,9 @@ export default function Fridge({ initialIsFridgeOpen = false, initialIsFreezerOp
     }
   };
 
+  /**
+   * Handles clicks on the fridge body. Closes the note-taking form if it's open.
+   */
   const handleFridgeClick = () => {
     if (isLeavingNote) {
       setIsLeavingNote(false);
@@ -77,7 +107,7 @@ export default function Fridge({ initialIsFridgeOpen = false, initialIsFreezerOp
         showDarkModeToggle={true}
         isDarkMode={isDarkMode}
         showBackLink={false}
-        onDarkModeToggle={toggleDarkMode}
+        onDarkModeToggle={handleToggleDarkMode}
         locale={locale}
         linkTo="/"
         linkText="Home"
@@ -85,17 +115,17 @@ export default function Fridge({ initialIsFridgeOpen = false, initialIsFreezerOp
       {isLeavingNote && <div className={styles.backdrop} onClick={() => setIsLeavingNote(false)} />}
       <main className={styles.fridgeContainer}>
         <div className={`${styles.fridgeBody} ${isLeavingNote ? styles.open : ''}`} onClick={handleFridgeClick}>
-          {/* Shadow Left */}
+          {/* Fridge shadow elements for visual depth */}
           <div className={styles.fridgeShadowLeft} />
 
-          {/* Highlight Right */}
+          {/* Fridge highlight and top shadow for 3D effect */}
           <div className={styles.fridgeHighlightRight} />
           <div className={styles.fridgeTopShadow} />
 
-          {/* Fridge Door Content */}
+          {/* Main fridge door component with all interactive functionality */}
           <FridgeDoor
             setLocale={setLocale}
-            onDarkModeToggle={toggleDarkMode}
+            onDarkModeToggle={handleToggleDarkMode}
             isDarkMode={isDarkMode}
             isFreezerOpen={isFreezerOpen}
             onFreezerToggle={handleFreezerToggle}
@@ -110,7 +140,7 @@ export default function Fridge({ initialIsFridgeOpen = false, initialIsFreezerOp
           <div className={styles.fridgeGlow} />
         </div>
       </main>
-      {/* Contact Form */}
+      {/* Contact form wrapper for leaving notes */}
       <ContactFormWrapper
         isVisible={isLeavingNote}
         onClose={() => setIsLeavingNote(false)}

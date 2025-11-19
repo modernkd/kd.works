@@ -1,15 +1,15 @@
 import type { FridgeTheme } from '../types';
+import { applyRandomizedBackground } from '../lib/backgroundUtils';
 
 export const applyFridgeTheme = (theme: FridgeTheme) => {
-  // Apply theme-specific CSS variables
   const root = document.documentElement;
   switch (theme) {
     case 'red':
-      root.style.setProperty('--fridge-body-bg', '#ff4444');
+      root.style.setProperty('--fridge-body-background', '#ff4444');
       root.style.setProperty('--fridge-border', '#cc0000');
-      root.style.setProperty('--fridge-bg-primary', '#ffe6e6');
+      root.style.setProperty('--fridge-background-primary', '#ffe6e6');
       root.style.setProperty('--fridge-shadow', '#cc0000');
-      // Update splotch colors for red theme
+
       root.style.setProperty('--splotch-color-1', 'rgba(255, 68, 68, 0.15)');
       root.style.setProperty('--splotch-color-2', 'rgba(255, 102, 102, 0.601)');
       root.style.setProperty('--splotch-color-3', 'rgba(255, 0, 0, 0.1)');
@@ -32,11 +32,11 @@ export const applyFridgeTheme = (theme: FridgeTheme) => {
       );
       break;
     case 'orange':
-      root.style.setProperty('--fridge-body-bg', '#f57b34');
+      root.style.setProperty('--fridge-body-background', '#f57b34');
       root.style.setProperty('--fridge-border', '#ff8c00');
-      root.style.setProperty('--fridge-bg-primary', '#fff4e6');
+      root.style.setProperty('--fridge-background-primary', '#fff4e6');
       root.style.setProperty('--fridge-shadow', '#ff8c00');
-      // Update splotch colors for orange theme
+
       root.style.setProperty('--splotch-color-1', 'rgba(245, 123, 52, 0.15)');
       root.style.setProperty('--splotch-color-2', 'rgba(255, 140, 0, 0.601)');
       root.style.setProperty('--splotch-color-3', 'rgba(255, 165, 0, 0.1)');
@@ -59,11 +59,11 @@ export const applyFridgeTheme = (theme: FridgeTheme) => {
       );
       break;
     case 'blue':
-      root.style.setProperty('--fridge-body-bg', '#4444ff');
+      root.style.setProperty('--fridge-body-background', '#4444ff');
       root.style.setProperty('--fridge-border', '#0000cc');
-      root.style.setProperty('--fridge-bg-primary', '#e6e6ff');
+      root.style.setProperty('--fridge-background-primary', '#e6e6ff');
       root.style.setProperty('--fridge-shadow', '#0000cc');
-      // Update splotch colors for blue theme
+
       root.style.setProperty('--splotch-color-1', 'rgba(68, 68, 255, 0.15)');
       root.style.setProperty('--splotch-color-2', 'rgba(0, 0, 204, 0.601)');
       root.style.setProperty('--splotch-color-3', 'rgba(0, 0, 255, 0.1)');
@@ -86,11 +86,11 @@ export const applyFridgeTheme = (theme: FridgeTheme) => {
       );
       break;
     case 'yellow':
-      root.style.setProperty('--fridge-body-bg', '#ffff44');
+      root.style.setProperty('--fridge-body-background', '#ffff44');
       root.style.setProperty('--fridge-border', '#cccc00');
-      root.style.setProperty('--fridge-bg-primary', '#ffffe6');
+      root.style.setProperty('--fridge-background-primary', '#ffffe6');
       root.style.setProperty('--fridge-shadow', '#cccc00');
-      // Update splotch colors for yellow theme
+
       root.style.setProperty('--splotch-color-1', 'rgba(255, 255, 68, 0.15)');
       root.style.setProperty('--splotch-color-2', 'rgba(204, 204, 0, 0.601)');
       root.style.setProperty('--splotch-color-3', 'rgba(255, 255, 0, 0.1)');
@@ -113,11 +113,11 @@ export const applyFridgeTheme = (theme: FridgeTheme) => {
       );
       break;
     case 'green':
-      root.style.setProperty('--fridge-body-bg', '#44ff44');
+      root.style.setProperty('--fridge-body-background', '#44ff44');
       root.style.setProperty('--fridge-border', '#00cc00');
-      root.style.setProperty('--fridge-bg-primary', '#e6ffe6');
+      root.style.setProperty('--fridge-background-primary', '#e6ffe6');
       root.style.setProperty('--fridge-shadow', '#00cc00');
-      // Update splotch colors for green theme
+
       root.style.setProperty('--splotch-color-1', 'rgba(34, 139, 34, 0.15)');
       root.style.setProperty('--splotch-color-2', 'rgba(50, 205, 50, 0.601)');
       root.style.setProperty('--splotch-color-3', 'rgba(0, 128, 0, 0.1)');
@@ -140,12 +140,11 @@ export const applyFridgeTheme = (theme: FridgeTheme) => {
       );
       break;
     default:
-      // Reset to default orange theme
-      root.style.setProperty('--fridge-body-bg', '#f57b34');
+      root.style.setProperty('--fridge-body-background', '#f57b34');
       root.style.setProperty('--fridge-border', '#ff8c00');
-      root.style.setProperty('--fridge-bg-primary', '#fff4e6');
+      root.style.setProperty('--fridge-background-primary', '#fff4e6');
       root.style.setProperty('--fridge-shadow', '#ff8c00');
-      // Reset splotch colors to green
+
       root.style.setProperty('--splotch-color-1', 'rgba(34, 139, 34, 0.15)');
       root.style.setProperty('--splotch-color-2', 'rgba(50, 205, 50, 0.601)');
       root.style.setProperty('--splotch-color-3', 'rgba(0, 128, 0, 0.1)');
@@ -169,11 +168,10 @@ export const applyFridgeTheme = (theme: FridgeTheme) => {
       break;
   }
 
-  // Force background regeneration by calling the function directly
-  randomizeBackground();
+  applyRandomizedBackground(gradients);
 };
 
-const randomizeBackground = () => {
+export const randomizeBackground = () => {
   const root = document.documentElement;
   const gradients = [
     {

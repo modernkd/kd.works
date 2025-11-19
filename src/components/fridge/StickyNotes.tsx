@@ -26,21 +26,25 @@ export default function StickyNotes({
   const [internalNotes, setInternalNotes] = useState<Note[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Use props if provided, otherwise use internal state
   const notes = propNotes !== undefined ? propNotes : internalNotes;
   const setNotes = propSetNotes || setInternalNotes;
 
   useEffect(() => {
-    // Only fetch if no notes prop is provided and we have a fetch callback
     if (propNotes === undefined && onFetchNotes) {
       onFetchNotes().then(setNotes).catch(console.error);
     }
   }, [propNotes, setNotes, onFetchNotes]);
 
+  /**
+   * Advances to the next note in the carousel.
+   */
   const nextNote = () => {
     setCurrentIndex((prev) => (prev + 1) % notes.length);
   };
 
+  /**
+   * Goes back to the previous note in the carousel.
+   */
   const prevNote = () => {
     setCurrentIndex((prev) => (prev - 1 + notes.length) % notes.length);
   };

@@ -23,7 +23,7 @@
 
 .fridgeBody {
   position: relative;
-  box-shadow: var(--fridge-shadow);
+  box-shadow: var(--fridge-shadow-color);
   margin-bottom: 1.25rem;
   transition: all 0.5s ease-in-out;
   @media screen and (max-width: 768px) {
@@ -47,7 +47,7 @@
   width: 100%;
   height: 100%;
   border-radius: 40px;
-  box-shadow: 0 0 20px 5px var(--fridge-shadow);
+  box-shadow: 0 0 20px 5px var(--fridge-shadow-color);
   opacity: 0.6;
   pointer-events: none;
   animation: glowPulse 3s infinite;

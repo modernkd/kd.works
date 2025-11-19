@@ -26,6 +26,7 @@ export default function ManageCustomSoundsModal({
 }: ManageCustomSoundsModalProps) {
   const { t } = useTranslation();
 
+  // Convert custom sounds object to array format for easier rendering
   const soundEntries: CustomSound[] = Object.entries(customSounds).map(([emoji, sound]) => ({
     emoji,
     sound,

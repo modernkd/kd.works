@@ -1,6 +1,7 @@
-// Mock utilities for Storybook to avoid network dependencies
-
-// Mock Supabase client
+/**
+ * Mock Supabase client for Storybook testing.
+ * Provides fake implementations of Supabase auth and database methods.
+ */
 export const mockSupabase = {
   auth: {
     getUser: async () => ({ data: { user: null }, error: null }),
@@ -36,14 +37,20 @@ export const mockSupabase = {
   }),
 };
 
-// Mock PartyKit socket
+/**
+ * Mock PartyKit WebSocket class for Storybook testing.
+ * Provides fake implementations of WebSocket methods.
+ */
 export class MockPartySocket {
   addEventListener = () => {};
   send = () => {};
   close = () => {};
 }
 
-// Mock localStorage
+/**
+ * Mock localStorage API for Storybook testing.
+ * Provides fake implementations of localStorage methods.
+ */
 export const mockLocalStorage = {
   getItem: () => null,
   setItem: () => {},
@@ -51,12 +58,18 @@ export const mockLocalStorage = {
   clear: () => {},
 };
 
-// Mock navigator.onLine
+/**
+ * Mock navigator API for Storybook testing.
+ * Provides fake implementations of navigator properties.
+ */
 export const mockNavigator = {
   onLine: true,
 };
 
-// Mock sample data
+/**
+ * Mock notes data for Storybook testing.
+ * Contains sample contact form submissions with different statuses.
+ */
 export const mockNotes = [
   {
     id: 1,
@@ -79,15 +92,26 @@ export const mockNotes = [
   },
 ];
 
+/**
+ * Mock users data for Storybook testing.
+ * Contains sample user objects for real-time features.
+ */
 export const mockUsers = [
   { id: 'user1', name: 'Alice' },
   { id: 'user2', name: 'Bob' },
   { id: 'user3', name: 'Charlie' },
 ];
 
+/**
+ * Mock custom sounds data for Storybook testing.
+ * Currently empty but structured for future custom sound testing.
+ */
 export const mockCustomSounds = {};
 
-// Mock environment variables for Storybook
+/**
+ * Mock environment variables for Storybook testing.
+ * Provides fake Supabase configuration values.
+ */
 export const mockEnv = {
   VITE_SUPABASE_URL: 'https://mock-supabase-url.supabase.co',
   VITE_SUPABASE_ANON_KEY: 'mock-anon-key',

@@ -1,7 +1,7 @@
 .freezerSection {
   position: relative;
   height: 30rem;
-  border: 6px solid var(--fridge-border);
+  border: 6px solid var(--fridge-border-color);
   border-top-right-radius: var(--fridge-outer-border-radius);
   border-top-left-radius: var(--fridge-outer-border-radius);
   border-bottom: none;
@@ -14,9 +14,9 @@
   left: 0;
   width: 100%;
   height: 100%;
-  border: 2px solid var(--fridge-border);
+  border: 2px solid var(--fridge-border-color);
   border-bottom: 4px solid #777777;
-  background-color: var(--fridge-body-bg);
+  background-color: var(--fridge-body-background);
   border-top-right-radius: var(--fridge-inner-border-radius);
   border-top-left-radius: var(--fridge-inner-border-radius);
   border-bottom-right-radius: 0.2rem;
@@ -222,7 +222,12 @@
   z-index: 10;
   border-radius: 5px;
   clip-path: polygon(0 25%, 100% 10%, 100% 90%, 0 75%);
-  background: linear-gradient(to right, var(--handle-main), var(--handle-main) 80%, var(--fridge-bg-tertiary) 80%);
+  background: linear-gradient(
+    to right,
+    var(--fridge-handle-color),
+    var(--fridge-handle-color) 80%,
+    var(--fridge-background-tertiary) 80%
+  );
   box-shadow: inset -1px 0px 4px 0px #777777;
   transition: transform 0.2s ease-in-out;
 }
@@ -272,7 +277,6 @@
   transition: transform 0.2s ease-in-out;
   background-color: #b22222;
 }
-
 .eagleMagnet:hover {
   background-color: #a02020;
   transform: scale(1.05);
