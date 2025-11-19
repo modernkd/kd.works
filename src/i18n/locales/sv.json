@@ -64,6 +64,7 @@
   "offlineMode": "Offline-läge",
   "offlineModeMessage": "Offline-läge - ljud spelas lokalt",
   "playedSoundOffline": "Spelade {{emoji}} lokalt",
+  "pressEscapeToEndMadness": "Tryck escape för att avsluta galenskapen.",
   "customSoundAddedOffline": "Lade till anpassat ljud {{emoji}} lokalt",
   "customSoundUpdatedOffline": "Uppdaterade anpassat ljud {{emoji}} lokalt",
   "customSoundDeletedOffline": "Tog bort anpassat ljud {{emoji}} lokalt",

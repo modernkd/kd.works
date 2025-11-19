@@ -7,6 +7,9 @@ import '../src/index.css';
 // Initialize i18n for Storybook
 import '../src/i18n';
 
+// Import the PreviewWrapper component
+import { PreviewWrapper } from './preview-component';
+
 // Mock global objects for Storybook
 Object.defineProperty(window, 'localStorage', {
   value: {
@@ -75,6 +78,13 @@ const preview: Preview = {
       },
     },
   },
+  decorators: [
+    (Story) => (
+      <PreviewWrapper>
+        <Story />
+      </PreviewWrapper>
+    ),
+  ],
 };
 
 export default preview;

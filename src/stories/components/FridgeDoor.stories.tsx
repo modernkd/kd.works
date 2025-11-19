@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import '../../i18n';
-import FridgeDoor from '../../components/fridge/FridgeDoor';
+import FridgeDoor from '../../components/fridge/TheWholeAppliance';
 import { ThemeProvider } from '../ThemeProvider';
 
 const meta = {

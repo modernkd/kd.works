@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import '../../i18n';
-import MagnetText from '../../components/magnets/MagnetText';
+import MagnetText from '../../components/fridge/magnets/MagnetText';
 import { ThemeProvider } from '../ThemeProvider';
 
 const meta = {

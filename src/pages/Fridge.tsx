@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import FridgeDoor from '../components/fridge/FridgeDoor';
+import TheWholeAppliance from '../components/fridge/TheWholeAppliance';
 import ContactFormWrapper from '../components/modals/ContactFormWrapper';
 import Footer from '../components/ui/Footer';
 import Header from '../components/ui/Header';
@@ -93,7 +93,7 @@ export default function Fridge({ initialIsFridgeOpen = false, initialIsFreezerOp
           <div className={styles.fridgeTopShadow} />
 
           {/* Fridge Door Content */}
-          <FridgeDoor
+          <TheWholeAppliance
             setLocale={setLocale}
             onDarkModeToggle={toggleDarkMode}
             isDarkMode={isDarkMode}
